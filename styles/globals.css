@@ -124,6 +124,14 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+a {
+  text-decoration: none;
+  outline: none;
+}
+a:hover,
+a:active {
+  text-decoration: none;
+}
 :root {
   --brandColor: #7360bd;
   --black_100: #1f2c37;

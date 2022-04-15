@@ -3,10 +3,8 @@ import Layout from "@components/layout";
 import type { NextPage } from "next";
 import styles from "@styles/blog.module.css";
 import PostItem from "@components/blog/post-item";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 
-const Home: NextPage = () => {
+const Blog: NextPage = () => {
   return (
     <Layout>
       <div className={styles.container}>
@@ -48,4 +46,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default Blog;

@@ -49,12 +49,21 @@
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
 }
 .postItem {
-  width: 23%;
+  width: 23.5%;
   cursor: pointer;
   margin-bottom: 30px;
+  padding: 0 1%;
+}
+.postItem:nth-child(1) {
+  padding-left: 0;
+}
+.postItem:nth-child(5n) {
+  padding-left: 0;
+}
+.postItem:nth-child(4n) {
+  padding-right: 0;
 }
 .postTitle {
   font-size: 16px;
@@ -99,12 +108,20 @@
 
 @media screen and (max-width: 800px) {
   .postItem {
-    width: 47%;
+    width: 48%;
+    padding: 2%;
+  }
+  .postItem:nth-child(2n-1) {
+    padding-left: 0%;
+  }
+  .postItem:nth-child(2n) {
+    padding-right: 0%;
   }
 }
 
 @media screen and (max-width: 500px) {
   .postItem {
     width: 100%;
+    padding: 0;
   }
 }
