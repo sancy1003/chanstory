@@ -102,8 +102,8 @@ section {
 }
 body {
   line-height: 1;
-  font-family: "Noto Sans KR", sans-serif;
-  color: #1f2c37;
+  font-family: "Nanum Barun Gothic", sans-serif;
+  color: var(--black_100);
 }
 ol,
 ul {
@@ -124,36 +124,16 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
-.BRAND_COLOR {
-  color: #7360bd;
-}
-.BLACK_100 {
-  color: #1f2c37;
-}
-.BLACK_90 {
-  color: #434e58;
-}
-.BLACK_80 {
-  color: #66707a;
-}
-.BLACK_70 {
-  color: #78828a;
-}
-.BLACK_60 {
-  color: #9ca4ab;
-}
-.BLACK_50 {
-  color: #bfc6cc;
-}
-.BLACK_40 {
-  color: #d1d8dd;
-}
-.BLACK_30 {
-  color: #e3e9ed;
-}
-.BLACK_20 {
-  color: #ecf1f6;
-}
-.BLACK_10 {
-  color: #f5f6f7;
+:root {
+  --brandColor: #7360bd;
+  --black_100: #1f2c37;
+  --black_90: #434e58;
+  --black_80: #66707a;
+  --black_70: #78828a;
+  --black_60: #9ca4ab;
+  --black_50: #bfc6cc;
+  --black_40: #d1d8dd;
+  --black_30: #e3e9ed;
+  --black_20: #ecf1f6;
+  --black_10: #f5f6f7;
 }

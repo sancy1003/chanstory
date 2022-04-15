@@ -15,7 +15,7 @@ export default function Layout({ title, children }: LayoutProps) {
         <title>{title ? `${title} - chanstory` : `chanstory`}</title>
       </Head>
       <div className={styles.header}>
-        <div className={`${styles.logo} BRAND_COLOR`}>Chanstory</div>
+        <div className={styles.logo}>Chanstory</div>
         <div>Login</div>
       </div>
       {children}
