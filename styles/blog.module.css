@@ -106,6 +106,141 @@
   object-fit: cover;
 }
 
+/* post detail */
+.postingHeader {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--black_40);
+  padding-bottom: 30px;
+  margin-bottom: 30px;
+}
+.postingTitleWrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding-right: 30px;
+  font-size: 18px;
+}
+.postingTitleWrap svg {
+  color: var(--brandColor);
+  margin-right: 40px;
+  cursor: pointer;
+  padding-top: 4px;
+}
+.postingRegistTime {
+  font-size: 14px;
+  color: var(--black_70);
+}
+.postingContentWrap {
+  width: 100%;
+  border-bottom: 1px solid var(--black_40);
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+.postingContent {
+  width: 100%;
+  line-height: 130%;
+  white-space: pre-line;
+  word-break: keep-all;
+  color: var(--black_90);
+}
+.postingTag {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 80px;
+}
+.postingTag li {
+  margin-right: 20px;
+  background-color: var(--black_20);
+  color: var(--black_70);
+  padding: 10px 24px;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+.postingTag li:nth-last-child(1) {
+  margin-right: 0;
+}
+.commentWrap {
+  width: 100%;
+  border-bottom: 1px solid var(--black_40);
+  padding-bottom: 50px;
+  margin-bottom: 50px;
+}
+.commentBox {
+  display: flex;
+  margin-bottom: 50px;
+}
+.underCommentBox {
+  display: flex;
+  margin-bottom: 30px;
+  padding-left: 80px;
+}
+.underCommentBox:nth-last-child(1) {
+  margin-bottom: 50px;
+}
+.commentBox:nth-last-child(1) {
+  margin-bottom: 0;
+}
+.profileImage {
+  width: 55px;
+  height: 55px;
+  border-radius: 100%;
+  margin-right: 20px;
+  object-position: center;
+  object-fit: cover;
+}
+.comment {
+  flex: 1;
+}
+.commentInfo {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.commentInfo svg {
+  color: var(--black_60);
+  cursor: pointer;
+  padding-top: 4px;
+}
+.commentWriterInfo {
+  display: flex;
+  align-items: flex-end;
+}
+.commentWriterInfo .nickname {
+  margin-right: 15px;
+  font-size: 16px;
+  font-weight: bold;
+}
+.commentWriterInfo .registTime {
+  font-size: 12px;
+  color: var(--black_60);
+}
+.commentContent {
+  word-break: keep-all;
+  white-space: pre-line;
+  color: var(--black_90);
+}
+.commentContent span {
+  margin-right: 10px;
+  color: var(--brandColor);
+  font-weight: bold;
+}
+.morePostWrap {
+  width: 100%;
+}
+.morePostTitle {
+  margin-bottom: 30px;
+  font-size: 18px;
+}
+.morePostTitle span {
+  color: var(--brandColor);
+  font-weight: bold;
+}
+
 @media screen and (max-width: 800px) {
   .postItem {
     width: 48%;
