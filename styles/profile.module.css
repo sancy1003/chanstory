@@ -9,7 +9,7 @@
 }
 .container {
   max-width: 458px;
-  padding: 100px 20px 20px 20px;
+  padding: 100px 20px 100px 20px;
   box-sizing: border-box;
   margin: 0 auto;
 }
@@ -25,7 +25,12 @@
   display: flex;
   flex-direction: column;
 }
-.loginInput {
+.inputTitle {
+  font-size: 16px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+.formInput {
   flex: 1;
   border: 1px solid var(--black_40);
   padding: 14px 20px;
@@ -33,7 +38,7 @@
   margin-bottom: 20px;
   font-size: 16px;
 }
-.loginInput:focus {
+.formInput:focus {
   outline: none;
 }
 .btnLogin {

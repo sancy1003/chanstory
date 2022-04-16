@@ -4,19 +4,18 @@ import { useForm } from "react-hook-form";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
-interface LoginForm {
-  email?: string;
-  password?: string;
+interface SignupForm {
+  email: string;
+  password: string;
+  passwordConfirm: string;
+  nickname: string;
 }
 
-const Login: NextPage = () => {
+const Signup: NextPage = () => {
   const router = useRouter();
-  const { register, watch, handleSubmit, reset } = useForm<LoginForm>();
-  const onSubmit = (data: LoginForm) => {
+  const { register, watch, handleSubmit, reset } = useForm<SignupForm>();
+  const onSubmit = (data: SignupForm) => {
     console.log(data);
-  };
-  const onClickSignUp = () => {
-    router.push("/signup");
   };
 
   return (
@@ -27,6 +26,7 @@ const Login: NextPage = () => {
       <div className={styles.container}>
         <div className={styles.logo}>chanstory</div>
         <form onSubmit={handleSubmit(onSubmit)} className={styles.loginForm}>
+          <div className={styles.inputTitle}>아이디 (이메일)</div>
           <input
             {...register("email", {
               required: true,
@@ -35,30 +35,41 @@ const Login: NextPage = () => {
             placeholder={"아이디 (이메일)"}
             className={styles.formInput}
           />
+          <div className={styles.inputTitle}>비밀번호</div>
           <input
             {...register("password", {
               required: true,
             })}
             type="password"
-            placeholder={"비밀번호"}
+            placeholder={"6 ~ 20자"}
+            className={styles.formInput}
+          />
+          <div className={styles.inputTitle}>비밀번호 확인</div>
+          <input
+            {...register("passwordConfirm", {
+              required: true,
+            })}
+            type="password"
+            placeholder={"6 ~ 20자"}
+            className={styles.formInput}
+          />
+          <div className={styles.inputTitle}>닉네임</div>
+          <input
+            {...register("nickname", {
+              required: true,
+            })}
+            type="text"
+            placeholder={"2 ~ 16자"}
             className={styles.formInput}
             style={{ marginBottom: "50px" }}
           />
           <button onClick={handleSubmit(onSubmit)} className={styles.btnLogin}>
-            로그인
+            가입하기
           </button>
-          <button onClick={onClickSignUp} className={styles.btnSignUp}>
-            회원가입
-          </button>
-          <div className={styles.btnWrap}>
-            <div>아이디 찾기</div>
-            <div>|</div>
-            <div>비밀번호 찾기</div>
-          </div>
         </form>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default Signup;
