@@ -77,3 +77,42 @@
 .btnWrap div:nth-child(2) {
   cursor: default;
 }
+.section {
+  width: 100%;
+  margin-bottom: 120px;
+}
+.sectionTitle {
+  color: var(--brandColor);
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+.profileBox {
+  width: 100%;
+  display: flex;
+}
+.profileImage {
+  width: 130px;
+  height: 130px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 999px;
+  margin-right: 40px;
+}
+.profileInfoBox {
+  flex: 1;
+}
+.profileInfo {
+  margin-bottom: 30px;
+}
+.profileInfo:nth-last-child(1) {
+  margin-bottom: 0;
+}
+.profileInfo .title {
+  font-size: 14px;
+  color: var(--black_70);
+  margin-bottom: 6px;
+}
+.profileInfo .content {
+  font-size: 16px;
+}

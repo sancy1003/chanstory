@@ -21,7 +21,7 @@ const Signup: NextPage = () => {
   return (
     <div className={styles.bg}>
       <Head>
-        <title>로그인 - chanstory</title>
+        <title>회원가입 - chanstory</title>
       </Head>
       <div className={styles.container}>
         <div className={styles.logo}>chanstory</div>
