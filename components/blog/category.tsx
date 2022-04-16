@@ -10,7 +10,11 @@ export default function Category({ isHome }: CategoryProps) {
   const router = useRouter();
   const currentCategory = isHome ? "home" : router.query.category;
   const onClickCategory = (link: string) => {
-    router.push(`/blog/${link}`);
+    if (link === "home") {
+      router.push(`/blog`);
+    } else {
+      router.push(`/blog/${link}`);
+    }
   };
 
   return (

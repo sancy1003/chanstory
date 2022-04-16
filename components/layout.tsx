@@ -18,7 +18,9 @@ export default function Layout({ title, children }: LayoutProps) {
         <Link href={"/"}>
           <a className={styles.logo}>Chanstory</a>
         </Link>
-        <div>Login</div>
+        <Link href={"/login"}>
+          <a className={styles.login}>로그인</a>
+        </Link>
       </div>
       {children}
     </div>

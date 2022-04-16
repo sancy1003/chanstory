@@ -1,0 +1,74 @@
+.bg {
+  background-color: var(--black_10);
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-height: 650px;
+}
+.container {
+  max-width: 458px;
+  padding: 100px 20px 20px 20px;
+  box-sizing: border-box;
+  margin: 0 auto;
+}
+.logo {
+  color: var(--brandColor);
+  font-weight: bold;
+  font-size: 40px;
+  text-align: center;
+  margin-bottom: 50px;
+}
+.loginForm {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.loginInput {
+  flex: 1;
+  border: 1px solid var(--black_40);
+  padding: 14px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+.loginInput:focus {
+  outline: none;
+}
+.btnLogin {
+  flex: 1;
+  padding: 14px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 0;
+  background-color: var(--brandColor);
+  color: #fff;
+  cursor: pointer;
+}
+.btnSignUp {
+  flex: 1;
+  padding: 14px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 0;
+  background-color: #fff;
+  border: 1px solid var(--black_40);
+  color: var(--black_70);
+  cursor: pointer;
+}
+.btnWrap {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--black_70);
+}
+.btnWrap div {
+  margin: 0 20px;
+  cursor: pointer;
+}
+.btnWrap div:nth-child(2) {
+  cursor: default;
+}
