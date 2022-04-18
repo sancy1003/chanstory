@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+}
+
+datasource db {
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
+}
+
+model User {
+  id              Int       @id @default(autoincrement())
+  nickname        String
+  profileURL      String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  status          Int       @default(1)
+  role            Role      @default(USER)
+  writtenComments Comment[] @relation("WrittenComments")
+  tegedComments   Comment[] @relation("TagUser")
+}
+
+model Post {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  isHide    Boolean   @default(false)
+  content   String    @db.LongText
+  tags      String?   @db.MediumText
+  category  Int
+  Comment   Comment[]
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  author    User     @relation(name: "WrittenComments", fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  Int
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int
+  commentId Int
+  tagUser   User?    @relation(name: "TagUser", fields: [taguserId], references: [id])
+  taguserId Int?
+  content   String   @db.MediumText
+  status    Int      @default(1)
+}
+
+enum Role {
+  USER
+  ADMIN
+}
