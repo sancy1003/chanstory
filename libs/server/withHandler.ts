@@ -15,7 +15,7 @@ interface ConfigType {
 
 export default function withHandler({
   methods,
-  isPrivate = true,
+  isPrivate = false,
   handler,
 }: ConfigType) {
   return async function (

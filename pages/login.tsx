@@ -5,7 +5,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 
 interface LoginForm {
-  email?: string;
+  account?: string;
   password?: string;
 }
 
@@ -28,10 +28,10 @@ const Login: NextPage = () => {
         <div className={styles.logo}>chanstory</div>
         <form onSubmit={handleSubmit(onSubmit)} className={styles.loginForm}>
           <input
-            {...register("email", {
+            {...register("account", {
               required: true,
             })}
-            type="email"
+            type="account"
             placeholder={"아이디"}
             className={styles.formInput}
           />

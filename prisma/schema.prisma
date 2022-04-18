@@ -14,7 +14,9 @@ datasource db {
 
 model User {
   id              Int       @id @default(autoincrement())
-  nickname        String
+  account         String    @unique
+  nickname        String    @unique
+  password        String
   profileURL      String?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt

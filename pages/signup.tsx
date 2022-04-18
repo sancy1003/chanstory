@@ -3,12 +3,18 @@ import styles from "@styles/profile.module.css";
 import { useForm } from "react-hook-form";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import useMutation from "@libs/client/useMutation";
+import { useEffect } from "react";
 
 interface SignupForm {
   account: string;
   password: string;
   passwordConfirm: string;
   nickname: string;
+}
+interface signupResult {
+  ok: boolean;
+  error: string;
 }
 
 const Signup: NextPage = () => {
@@ -17,11 +23,33 @@ const Signup: NextPage = () => {
     register,
     handleSubmit,
     getValues,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useForm<SignupForm>();
+  const [signup, { data: signupResult, loading }] =
+    useMutation<signupResult>(`/api/user/signup`);
   const onSubmit = (data: SignupForm) => {
-    console.log(data);
+    if (loading) return;
+    clearErrors(["account", "nickname"]);
+    signup(data);
   };
+
+  useEffect(() => {
+    if (signupResult && !signupResult.ok && signupResult.error) {
+      if (signupResult.error === "이미 사용중인 아이디가 있어요.") {
+        setError("account", {
+          type: "alreadyExists",
+          message: signupResult.error,
+        });
+      } else if (signupResult.error === "이미 사용중인 닉네임이 있어요.") {
+        setError("nickname", {
+          type: "alreadyExists",
+          message: signupResult.error,
+        });
+      }
+    }
+  }, [signupResult, useMutation]);
 
   return (
     <div className={styles.bg}>
