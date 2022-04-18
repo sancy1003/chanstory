@@ -32,7 +32,7 @@ const Login: NextPage = () => {
               required: true,
             })}
             type="email"
-            placeholder={"아이디 (이메일)"}
+            placeholder={"아이디"}
             className={styles.formInput}
           />
           <input
@@ -50,11 +50,11 @@ const Login: NextPage = () => {
           <button onClick={onClickSignUp} className={styles.btnSignUp}>
             회원가입
           </button>
-          <div className={styles.btnWrap}>
+          {/* <div className={styles.btnWrap}>
             <div>아이디 찾기</div>
             <div>|</div>
             <div>비밀번호 찾기</div>
-          </div>
+          </div> */}
         </form>
       </div>
     </div>

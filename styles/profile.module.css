@@ -25,6 +25,15 @@
   display: flex;
   flex-direction: column;
 }
+.formInputWrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+.formInputWrap:nth-last-child(2) {
+  margin-bottom: 50px;
+}
 .inputTitle {
   font-size: 16px;
   margin-bottom: 10px;
@@ -35,11 +44,15 @@
   border: 1px solid var(--black_40);
   padding: 14px 20px;
   border-radius: 8px;
-  margin-bottom: 20px;
   font-size: 16px;
 }
 .formInput:focus {
   outline: none;
+}
+.formInputWarn {
+  margin-top: 5px;
+  font-size: 13px;
+  color: #f93737;
 }
 .btnLogin {
   flex: 1;
