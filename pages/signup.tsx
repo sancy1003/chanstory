@@ -12,8 +12,8 @@ interface SignupForm {
   passwordConfirm: string;
   nickname: string;
 }
-interface signupResult {
-  ok: boolean;
+interface SignupResult {
+  result: boolean;
   error: string;
 }
 
@@ -28,7 +28,7 @@ const Signup: NextPage = () => {
     formState: { errors },
   } = useForm<SignupForm>();
   const [signup, { data: signupResult, loading }] =
-    useMutation<signupResult>(`/api/user/signup`);
+    useMutation<SignupResult>(`/api/user/signup`);
   const onSubmit = (data: SignupForm) => {
     if (loading) return;
     clearErrors(["account", "nickname"]);
@@ -36,7 +36,7 @@ const Signup: NextPage = () => {
   };
 
   useEffect(() => {
-    if (signupResult && !signupResult.ok && signupResult.error) {
+    if (signupResult && !signupResult.result && signupResult.error) {
       if (signupResult.error === "이미 사용중인 아이디가 있어요.") {
         setError("account", {
           type: "alreadyExists",
@@ -49,7 +49,7 @@ const Signup: NextPage = () => {
         });
       }
     }
-  }, [signupResult, useMutation]);
+  }, [signupResult]);
 
   return (
     <div className={styles.bg}>

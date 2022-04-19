@@ -1,15 +1,16 @@
 import { useRouter } from "next/router";
 import Layout from "@components/layout";
-import type { NextPage } from "next";
+import type { NextPage, NextPageContext } from "next";
 import styles from "@styles/blog.module.css";
 import PostItem from "@components/blog/post-item";
 import Category from "@components/blog/category";
+import { SessionUserData, withSsrSession } from "@libs/server/withSession";
 
-const Blog: NextPage = () => {
+const Blog: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
   const router = useRouter();
 
   return (
-    <Layout>
+    <Layout user={user}>
       <div className={styles.container}>
         <Category />
         <div className={styles.section}>
@@ -31,5 +32,14 @@ const Blog: NextPage = () => {
     </Layout>
   );
 };
+
+export const getServerSideProps = withSsrSession(async function ({
+  req,
+}: NextPageContext) {
+  const user = req?.session.user;
+  return {
+    props: { user: user ? user : null },
+  };
+});
 
 export default Blog;

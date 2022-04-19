@@ -1,12 +1,13 @@
-import { NextPage } from "next";
+import { NextPage, NextPageContext } from "next";
 import styles from "@styles/blog.module.css";
 import Layout from "@components/layout";
 import PostItem from "@components/blog/post-item";
 import { FaChevronLeft, FaEllipsisH } from "react-icons/fa";
+import { SessionUserData, withSsrSession } from "@libs/server/withSession";
 
-const Post: NextPage = () => {
+const Post: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
   return (
-    <Layout>
+    <Layout user={user}>
       <div className={styles.container}>
         <div className={styles.postingHeader}>
           <div className={styles.postingTitleWrap}>
@@ -150,5 +151,14 @@ const Post: NextPage = () => {
     </Layout>
   );
 };
+
+export const getServerSideProps = withSsrSession(async function ({
+  req,
+}: NextPageContext) {
+  const user = req?.session.user;
+  return {
+    props: { user: user ? user : null },
+  };
+});
 
 export default Post;

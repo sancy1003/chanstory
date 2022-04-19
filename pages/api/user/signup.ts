@@ -18,16 +18,14 @@ async function handler(
     },
   });
   if (checkAccount) {
-    console.log("1");
     return res.json({
-      ok: false,
+      result: false,
       error: "이미 사용중인 아이디가 있어요.",
     });
   }
   if (checkNickname) {
-    console.log("2");
     return res.json({
-      ok: false,
+      result: false,
       error: "이미 사용중인 닉네임이 있어요.",
     });
   }
@@ -38,9 +36,8 @@ async function handler(
       nickname,
     },
   });
-  console.log("성공");
   return res.json({
-    ok: true,
+    result: true,
   });
 }
 
