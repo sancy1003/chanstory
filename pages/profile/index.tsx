@@ -10,18 +10,21 @@ import ring from "@resource/lottie/ring.json";
 import { FaEllipsisV } from "react-icons/fa";
 import { useRouter } from "next/router";
 import useDelete from "@libs/client/useDelete";
-import ConfirmModal from "@components/confirm-modal";
+import ConfirmModal from "@components/modal/confirm-modal";
+import NicknameChangeModal from "@components/modal/nickname-change-modal";
 
 interface ProfileImageForm {
   profileImage: FileList;
 }
 interface Respone {
   result: boolean;
+  nickname: string;
   error?: string;
 }
 
 const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
   const router = useRouter();
+  const [nicknameChangeModal, setNicknameChangeModal] = useState(false);
   const [deleteConfirmModal, setDeleteConfirmModal] = useState(false);
   const moreBtnRef = useRef<HTMLSpanElement>(null);
   const [moreBtnView, setMoreBtnView] = useState<Boolean>(false);
@@ -95,6 +98,16 @@ const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
     const response = await useDelete("/api/user");
     if (response && response.result) router.push("/");
   };
+  const [
+    onChangeNickname,
+    { data: changeNicknameData, loading: changeNicknameLoading },
+  ] = useMutation<Respone>(`/api/user/`);
+  useEffect(() => {
+    if (changeNicknameData && changeNicknameData.result && userProfile) {
+      setNicknameChangeModal(false);
+      setUserProfile({ ...userProfile, nickname: changeNicknameData.nickname });
+    }
+  }, [changeNicknameData]);
 
   return (
     <>
@@ -114,8 +127,14 @@ const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
                 />
                 {moreBtnView && (
                   <ul className={styles.moreBtnBox}>
-                    <li>닉네임 변경</li>
-                    <li>비밀번호 변경</li>
+                    <li
+                      onClick={() => {
+                        setMoreBtnView(false);
+                        setNicknameChangeModal(true);
+                      }}
+                    >
+                      닉네임 변경
+                    </li>
                     <li onClick={onLogout}>로그아웃</li>
                     <li
                       onClick={() => {
@@ -204,6 +223,15 @@ const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
           </div>
         </div>
       </Layout>
+      <NicknameChangeModal
+        isView={nicknameChangeModal}
+        cancel={() => setNicknameChangeModal(false)}
+        fn={({ text }: { text: string }) =>
+          onChangeNickname({ nickname: text })
+        }
+        changeNicknameLoading={changeNicknameLoading}
+        changeNicknameData={changeNicknameData}
+      />
       <ConfirmModal
         isView={deleteConfirmModal}
         cancel={() => setDeleteConfirmModal(false)}

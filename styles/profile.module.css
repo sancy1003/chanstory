@@ -143,7 +143,11 @@
 .profileBox {
   width: 100%;
   display: flex;
-  padding: 0 16px;
+  padding: 30px 20px;
+  box-shadow: 0 10px 5px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+  border-radius: 8px;
+  border: 1px solid var(--black_20);
 }
 .profileImageWrap {
   position: relative;

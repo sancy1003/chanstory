@@ -24,7 +24,18 @@ async function handler(
     });
   }
   if (req.method === "POST") {
-    const { nickname, password } = req.body;
+    const { nickname } = req.body;
+    const checkNickname = await client.user.findUnique({
+      where: {
+        nickname,
+      },
+    });
+    if (checkNickname) {
+      return res.json({
+        result: false,
+        error: "이미 사용중인 닉네임이 있어요.",
+      });
+    }
     if (nickname) {
       await client.user.update({
         where: {
@@ -39,14 +50,9 @@ async function handler(
         nickname,
       };
       await req.session.save();
-    } else if (password) {
-      await client.user.update({
-        where: {
-          id: user?.id,
-        },
-        data: {
-          password,
-        },
+      res.json({
+        result: true,
+        nickname,
       });
     }
   }

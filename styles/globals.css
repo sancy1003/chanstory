@@ -106,6 +106,15 @@ body {
   color: var(--black_100);
   padding-top: 50px;
 }
+input {
+  color: var(--black_100);
+}
+input:focus,
+input:active,
+button:focus,
+button:active {
+  outline: none;
+}
 ol,
 ul {
   list-style: none;
