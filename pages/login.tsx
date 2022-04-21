@@ -88,9 +88,6 @@ const Login: NextPage = () => {
             >
               로그인
             </button>
-            <button onClick={onClickSignUp} className={styles.btnSignUp}>
-              회원가입
-            </button>
           </div>
           {/* <div className={styles.btnWrap}>
             <div>아이디 찾기</div>
@@ -98,6 +95,11 @@ const Login: NextPage = () => {
             <div>비밀번호 찾기</div>
           </div> */}
         </form>
+        <div className={styles.btnWrap}>
+          <button onClick={onClickSignUp} className={styles.btnSignUp}>
+            회원가입
+          </button>
+        </div>
       </div>
     </div>
   );

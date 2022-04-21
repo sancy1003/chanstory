@@ -36,7 +36,9 @@ const Signup: NextPage = () => {
   };
 
   useEffect(() => {
-    if (signupResult && !signupResult.result && signupResult.error) {
+    if (signupResult && signupResult.result) {
+      router.push("/login");
+    } else if (signupResult && !signupResult.result && signupResult.error) {
       if (signupResult.error === "이미 사용중인 아이디가 있어요.") {
         setError("account", {
           type: "alreadyExists",
@@ -65,7 +67,7 @@ const Signup: NextPage = () => {
               {...register("account", {
                 required: "사용하실 아이디를 입력해주세요.",
                 minLength: {
-                  value: 6,
+                  value: 4,
                   message: "아이디가 너무 짧아요. (4 ~ 20자)",
                 },
                 maxLength: {
