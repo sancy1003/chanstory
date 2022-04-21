@@ -110,13 +110,45 @@
   width: 100%;
   display: flex;
 }
-.profileImage {
+.profileImageWrap {
+  position: relative;
   width: 130px;
   height: 130px;
+  margin-right: 40px;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.profileImageWrap:hover .profileImageCover {
+  display: flex;
+}
+.profileImageCover {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.6);
+  left: 0;
+  top: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+.profileImageCover span,
+.profileImageCover label {
+  cursor: pointer;
+  color: #fff;
+}
+.input-file-button {
+  padding: 6px 25px;
+  background-color: #ff6600;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+}
+.profileImage {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: center;
-  border-radius: 999px;
-  margin-right: 40px;
 }
 .profileInfoBox {
   flex: 1;

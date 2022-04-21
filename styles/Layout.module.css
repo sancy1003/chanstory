@@ -29,6 +29,8 @@
   height: 35px;
   border-radius: 99px;
   margin-right: 14px;
+  object-fit: cover;
+  object-position: center;
 }
 .userNickname {
   color: var(--brandColor);
