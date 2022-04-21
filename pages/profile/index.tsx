@@ -2,26 +2,40 @@ import { NextPage, NextPageContext } from "next";
 import styles from "@styles/profile.module.css";
 import Layout from "@components/layout";
 import { SessionUserData, withSsrSession } from "@libs/server/withSession";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import useMutation from "@libs/client/useMutation";
 import Lottie from "react-lottie-player";
 import ring from "@resource/lottie/ring.json";
-import Image from "next/image";
+import { FaEllipsisV } from "react-icons/fa";
+import { useRouter } from "next/router";
 
 interface ProfileImageForm {
   profileImage: FileList;
 }
-interface EditProfileImageResponse {
+interface Respone {
   result: boolean;
   error?: string;
 }
 
 const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
-  const [userProfile, setUserProfile] = useState(user);
-  const [profileURL, setProfileURL] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [editProfileImage, { data }] = useMutation<EditProfileImageResponse>(
+  const router = useRouter();
+  const moreBtnRef = useRef<HTMLSpanElement>(null);
+  const [moreBtnView, setMoreBtnView] = useState<Boolean>(false);
+  const modalCloseHandler = ({ target }: any) => {
+    if (moreBtnView && !moreBtnRef?.current?.contains(target))
+      setMoreBtnView(false);
+  };
+  useEffect(() => {
+    window.addEventListener("click", modalCloseHandler);
+    return () => {
+      window.removeEventListener("click", modalCloseHandler);
+    };
+  });
+  const [userProfile, setUserProfile] = useState<SessionUserData | null>(user);
+  const [profileURL, setProfileURL] = useState<string | null>(null);
+  const [loading, setLoading] = useState<Boolean>(false);
+  const [editProfileImage, { data }] = useMutation<Respone>(
     `/api/user/profileImage`
   );
   const { watch, register } = useForm<ProfileImageForm>();
@@ -74,11 +88,36 @@ const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
       }
     }
   }, [data]);
+  const onLogout = async () => {
+    const response = await (await fetch(`/api/user/logout`)).json();
+    if (response.result) router.push("/");
+  };
+
   return (
     <Layout user={userProfile}>
       <div className={styles.container}>
         <div className={styles.section}>
-          <div className={styles.sectionTitle}>프로필 정보</div>
+          <div className={styles.sectionTitle}>
+            <span>프로필 정보</span>
+            <span
+              ref={moreBtnRef}
+              style={{ display: "flex", alignItems: "center" }}
+            >
+              <FaEllipsisV
+                onClick={() => {
+                  setMoreBtnView(!moreBtnView);
+                }}
+              />
+              {moreBtnView && (
+                <ul className={styles.moreBtnBox}>
+                  <li>닉네임 변경</li>
+                  <li>비밀번호 변경</li>
+                  <li onClick={onLogout}>로그아웃</li>
+                  <li>회원 탈퇴</li>
+                </ul>
+              )}
+            </span>
+          </div>
           <div className={styles.profileBox}>
             {loading ? (
               <div className={styles.profileImageWrap}>

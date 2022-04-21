@@ -101,14 +101,49 @@
   margin-bottom: 120px;
 }
 .sectionTitle {
-  color: var(--brandColor);
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--brandColor);
+  margin-bottom: 30px;
+  padding: 12px 14px;
+  border-radius: 8px;
+}
+.sectionTitle span {
+  color: #fff;
   font-size: 18px;
   font-weight: bold;
-  margin-bottom: 30px;
+}
+.moreBtnBox {
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid var(--black_40);
+  border-radius: 4px;
+  width: fit-content;
+  right: 0;
+  top: 105%;
+}
+.moreBtnBox li {
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 12px;
+  text-align: center;
+  color: var(--black_90);
+  font-weight: normal;
+}
+.moreBtnBox li:hover {
+  background-color: var(--black_10);
+}
+.sectionTitle svg {
+  cursor: pointer;
+  color: #fff;
+  font-size: 18px;
 }
 .profileBox {
   width: 100%;
   display: flex;
+  padding: 0 16px;
 }
 .profileImageWrap {
   position: relative;
