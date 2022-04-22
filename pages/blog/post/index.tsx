@@ -64,7 +64,7 @@ const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
     } else if (data?.error) {
       alert(data.error);
     }
-  }, [data]);
+  }, [data, router]);
   return (
     <Layout user={user}>
       <div className={styles.container}>

@@ -3,7 +3,7 @@ interface Response {
   error?: string;
 }
 
-export default async function useDelete(url: string): Promise<Response> {
+export default async function fetchDelete(url: string): Promise<Response> {
   const response = await (
     await fetch(url, {
       method: "DELETE",

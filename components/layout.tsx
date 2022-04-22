@@ -4,6 +4,7 @@ import Head from "next/head";
 import styles from "@styles/Layout.module.css";
 import { SessionUserData } from "@libs/server/withSession";
 import { useRouter } from "next/router";
+import { loadProfileURL } from "@libs/client/commonFunction";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -30,7 +31,7 @@ export default function Layout({ title, children, user }: LayoutProps) {
             <img
               src={
                 user.profileURL
-                  ? `https://imagedelivery.net/R2WiK4wfRK3oBXTwjgzQfA/${user?.profileURL}/avatar`
+                  ? loadProfileURL(user?.profileURL, "avatar")
                   : "https://mblogthumb-phinf.pstatic.net/MjAyMTAxMTBfMzEg/MDAxNjEwMjY1OTUzMDYw.AxFQ9Wdgv12xNiWneVpoLZGvpPRT1n2P4dWJ133saWIg.QbSPY2ColrEk1IhmRlxh8kacD6r1SBEp6b2hdjVHRU4g.JPEG.wjswldms0191/IMG_6859.jpg?type=w800"
               }
               className={styles.userProfileImage}

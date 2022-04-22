@@ -9,9 +9,10 @@ import Lottie from "react-lottie-player";
 import ring from "@resource/lottie/ring.json";
 import { FaEllipsisV } from "react-icons/fa";
 import { useRouter } from "next/router";
-import useDelete from "@libs/client/useDelete";
+import fetchDelete from "@libs/client/fetchDelete";
 import ConfirmModal from "@components/modal/confirm-modal";
 import NicknameChangeModal from "@components/modal/nickname-change-modal";
+import { loadProfileURL } from "@libs/client/commonFunction";
 
 interface ProfileImageForm {
   profileImage: FileList;
@@ -48,7 +49,7 @@ const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
   const deleteImage = async () => {
     if (loading) return;
     setLoading(true);
-    const response = await useDelete("/api/user/profileImage");
+    const response = await fetchDelete("/api/user/profileImage");
     if (response && response.result && userProfile) {
       setUserProfile({ ...userProfile, profileURL: null });
     }
@@ -95,7 +96,7 @@ const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
     if (response.result) router.push("/");
   };
   const onDelete = async () => {
-    const response = await useDelete("/api/user");
+    const response = await fetchDelete("/api/user");
     if (response && response.result) router.push("/");
   };
   const [
@@ -185,7 +186,7 @@ const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
                   </div>
                   <img
                     className={styles.profileImage}
-                    src={`https://imagedelivery.net/R2WiK4wfRK3oBXTwjgzQfA/${userProfile?.profileURL}/avatar`}
+                    src={loadProfileURL(userProfile?.profileURL, "avatar")}
                   />
                 </div>
               ) : (

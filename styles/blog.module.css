@@ -179,6 +179,27 @@
 .commentBox:nth-last-child(1) {
   margin-bottom: 0;
 }
+.commentInput {
+  resize: none;
+  flex: 1;
+  height: 105px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid var(--black_40);
+  padding: 10px;
+  box-sizing: border-box;
+}
+.btnWriteComment {
+  border: none;
+  border-radius: 4px;
+  background-color: var(--brandColor);
+  color: #fff;
+  cursor: pointer;
+  padding: 8px 40px;
+}
+.commentLength {
+  margin-right: 20px;
+}
 .profileImage {
   width: 55px;
   height: 55px;
