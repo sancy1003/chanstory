@@ -13,38 +13,53 @@ datasource db {
 }
 
 model User {
-  id              Int       @id @default(autoincrement())
-  account         String    @unique
-  nickname        String    @unique
-  password        String
-  profileURL      String?
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  status          Int       @default(1)
-  role            Role      @default(USER)
-  writtenComments Comment[] @relation("WrittenComments")
-  tegedComments   Comment[] @relation("TagUser")
+  id            Int         @id @default(autoincrement())
+  account       String      @unique
+  nickname      String      @unique
+  password      String
+  profileURL    String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  status        Int         @default(1)
+  role          Role        @default(USER)
+  comments      Comment[]
+  recomments    Recomment[]
+  tegedComments Recomment[] @relation("TagUser")
 }
 
 model Post {
-  id        Int       @id @default(autoincrement())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  isHide    Boolean   @default(false)
-  content   String    @db.LongText
-  tags      String?   @db.MediumText
-  category  Int
-  Comment   Comment[]
+  id           Int       @id @default(autoincrement())
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  isHide       Boolean   @default(false)
+  thumbnailURL String?   @db.MediumText
+  title        String    @db.MediumText
+  content      String    @db.LongText
+  tags         String?   @db.MediumText
+  category     Int
+  comments     Comment[]
 }
 
 model Comment {
+  id         Int         @id @default(autoincrement())
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  author     User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId   Int
+  post       Post        @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId     Int
+  content    String      @db.MediumText
+  status     Int         @default(1)
+  recomments Recomment[]
+}
+
+model Recomment {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  author    User     @relation(name: "WrittenComments", fields: [authorId], references: [id], onDelete: Cascade)
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId  Int
-  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId    Int
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
   commentId Int
   tagUser   User?    @relation(name: "TagUser", fields: [taguserId], references: [id])
   taguserId Int?

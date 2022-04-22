@@ -107,6 +107,7 @@ body {
   padding-top: 50px;
 }
 input {
+  font-family: "Nanum Barun Gothic", sans-serif;
   color: var(--black_100);
 }
 input:focus,

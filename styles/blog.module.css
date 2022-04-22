@@ -240,6 +240,39 @@
   color: var(--brandColor);
   font-weight: bold;
 }
+.postTitleInput {
+  width: 100%;
+  padding: 10px 8px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: 1px solid var(--black_40);
+  font-size: 16px;
+}
+.tagInput {
+  width: 500px;
+  padding: 10px 8px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: 1px solid var(--black_40);
+  font-size: 16px;
+}
+.btnPostingBox {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+.btnPosting {
+  padding: 14px 40px;
+  background-color: var(--brandColor);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
 
 @media screen and (max-width: 800px) {
   .postItem {

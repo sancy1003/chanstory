@@ -111,7 +111,7 @@ const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
 
   return (
     <>
-      <Layout user={userProfile}>
+      <Layout user={userProfile} title="프로필">
         <div className={styles.container}>
           <div className={styles.section}>
             <div className={styles.sectionTitle}>

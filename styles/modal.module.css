@@ -9,6 +9,7 @@
   align-items: flex-start;
   justify-content: center;
   padding: 10px;
+  z-index: 999;
 }
 .modalInputbox {
   margin-bottom: 20px;

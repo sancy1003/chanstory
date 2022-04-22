@@ -11,6 +11,7 @@
   left: 0;
   height: 60px;
   box-shadow: 0px 5px 7px rgba(0, 0, 0, 0.03);
+  z-index: 99;
 }
 .logo {
   font-weight: bold;
