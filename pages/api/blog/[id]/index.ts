@@ -7,24 +7,15 @@ async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
-  const { id } = req.query;
   if (req.method === "GET") {
+    const { id } = req.query;
     const post = await client.post.findUnique({
       where: { id: +id },
       include: {
         comments: {
-          select: { id: true, updatedAt: true, content: true, status: true },
           include: {
-            author: {
-              select: { id: true, nickname: true },
-            },
+            author: {},
             recomments: {
-              select: {
-                id: true,
-                updatedAt: true,
-                content: true,
-                status: true,
-              },
               include: {
                 author: {
                   select: { id: true, nickname: true },
@@ -46,6 +37,7 @@ async function handler(
   if (req.method === "POST") {
   }
   if (req.method === "DELETE") {
+    const { id } = req.query;
     await client.post.delete({
       where: {
         id: +id,
