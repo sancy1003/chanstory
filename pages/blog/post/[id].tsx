@@ -25,12 +25,21 @@ interface CommentResponse {
   comment: CommentWithAuthor;
   error?: string;
 }
+interface RecommentResponse {
+  result: boolean;
+  recomment: RecommentWithAuthor;
+  error?: string;
+}
 interface CommentForm {
   comment: string;
 }
 interface CommentWithAuthor extends Comment {
   author: User;
-  recomments: Recomment[];
+  recomments: RecommentWithAuthor[];
+}
+interface RecommentWithAuthor extends Recomment {
+  author: User;
+  tagUser: User;
 }
 interface PostWithComments extends Post {
   comments: CommentWithAuthor[];
@@ -44,17 +53,22 @@ interface MoreBtn {
   type: string;
   id: number;
 }
-interface EditCommentState {
+interface CommentState {
   type: string;
   id: number;
   content: string;
+}
+interface RecommentState {
+  id: number;
+  nickname: string;
+  tagedUserId: number;
 }
 
 const Viewer = dynamic(() => import("@components/viewer"), { ssr: false });
 
 const PostDetail: NextPage<PostProps> = ({ user }) => {
   const router = useRouter();
-  const [editComment, setEditComment] = useState<EditCommentState | null>(null);
+  const [editComment, setEditComment] = useState<CommentState | null>(null);
   const [moreBtnView, setMoreBtnView] = useState<MoreBtn | null>(null);
   const moreBtnRef = useRef<HTMLDivElement[]>([]);
   const modalCloseHandler = ({ target }: any) => {
@@ -124,6 +138,7 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
     setValue: setEditValue,
     watch: editWatch,
   } = useForm<CommentForm>();
+  const [recomment, setRecomment] = useState<RecommentState | null>(null);
   const [eidt, { loading: editLoading, data: editCommentData }] =
     useMutation<Response>(`/api/blog/comment/${router?.query?.id}`);
   const onEditComment = (commentForm: CommentForm) => {
@@ -166,6 +181,62 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
       editMutate();
     }
   }, [editCommentData]);
+  const {
+    register: recommentRegister,
+    watch: recommentWatch,
+    handleSubmit: recommentHandleSubmit,
+    reset: recommentReset,
+  } = useForm<CommentForm>();
+  const [
+    registRecomment,
+    { loading: registRecommentLoading, data: registRecommentData },
+  ] = useMutation<RecommentResponse>(`/api/blog/recomment/${recomment?.id}`);
+  const onRegisterRecomment = (commentForm: CommentForm) => {
+    if (registRecommentLoading) return;
+    registRecomment({
+      content: commentForm.comment,
+      tagedUserId: recomment?.tagedUserId,
+    });
+  };
+  useEffect(() => {
+    if (
+      registRecommentData &&
+      registRecommentData.result &&
+      data &&
+      data.post &&
+      recomment
+    ) {
+      let changedComments: CommentWithAuthor[] = []; //registRecommentData.recomment
+      for (let i = 0; i < data.post.comments.length; i++) {
+        if (data.post.comments[i].id === recomment.id) {
+          changedComments.push({
+            ...data.post.comments[i],
+            recomments: [
+              ...data.post.comments[i].recomments,
+              registRecommentData.recomment,
+            ],
+          });
+        } else {
+          changedComments.push(data.post.comments[i]);
+        }
+      }
+      const recommentMutate = async () => {
+        mutate(
+          (prev) =>
+            prev && {
+              ...prev,
+              post: {
+                ...prev.post,
+                comments: changedComments,
+              },
+            }
+        );
+        recommentReset();
+        setRecomment(null);
+      };
+      recommentMutate();
+    }
+  }, []);
   const tags = data?.post?.tags?.split(", ");
   console.log(data?.post);
   return (
@@ -232,6 +303,12 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
                           <ul className={styles.moreBtnBox}>
                             <li
                               onClick={() => {
+                                recommentReset();
+                                setRecomment({
+                                  id: comment.id,
+                                  nickname: comment.author.nickname,
+                                  tagedUserId: comment.author.id,
+                                });
                                 setMoreBtnView(null);
                               }}
                             >
@@ -286,6 +363,7 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
                             },
                           })}
                           style={{ width: "100%" }}
+                          maxLength={300}
                           className={styles.commentInput}
                         />
                         <div className={styles.editBtnBox}>
@@ -309,60 +387,91 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
                         {comment.content}
                       </div>
                     )}
+                    {comment.recomments?.length > 0
+                      ? comment.recomments.map((recomment, idx) => (
+                          <div
+                            style={idx === 0 ? { marginTop: 30 } : {}}
+                            className={styles.underCommentBox}
+                            key={`recomment_${idx}`}
+                          >
+                            <img
+                              className={styles.profileImage}
+                              src={loadProfileURL(
+                                recomment.author.profileURL
+                                  ? recomment.author.profileURL
+                                  : "",
+                                "avatar"
+                              )}
+                            />
+                            <div className={styles.comment}>
+                              <div className={styles.commentInfo}>
+                                <div className={styles.commentWriterInfo}>
+                                  <div className={styles.nickname}>
+                                    {recomment?.author.nickname}
+                                  </div>
+                                  <div className={styles.registTime}>
+                                    2022-04-15
+                                  </div>
+                                </div>
+                                <FaEllipsisH />
+                              </div>
+                              <div className={styles.commentContent}>
+                                {recomment?.tagUser.nickname !==
+                                recomment?.author.nickname ? (
+                                  <span>@ {recomment?.tagUser.nickname}</span>
+                                ) : (
+                                  ""
+                                )}
+                                {recomment.content}
+                              </div>
+                            </div>
+                          </div>
+                        ))
+                      : ""}
+                    {recomment?.id === comment.id ? (
+                      <form
+                        onSubmit={recommentHandleSubmit(onRegisterRecomment)}
+                        className={styles.recommentBox}
+                      >
+                        <div className={styles.recommentTagBox}>
+                          {`@ ${recomment.nickname}`}
+                        </div>
+                        <textarea
+                          {...recommentRegister("comment", {
+                            required: true,
+                            maxLength: {
+                              value: 300,
+                              message: "",
+                            },
+                          })}
+                          maxLength={300}
+                          style={{ width: "100%" }}
+                          className={styles.commentInput}
+                        />
+                        <div className={styles.editBtnBox}>
+                          <div className={styles.commentLength}>
+                            {recommentWatch("comment")
+                              ? recommentWatch("comment").length
+                              : 0}{" "}
+                            / 300
+                          </div>
+                          <button className={styles.btnEdit}>등록</button>
+                          <div
+                            onClick={() => setRecomment(null)}
+                            className={styles.btnEditCancel}
+                          >
+                            취소
+                          </div>
+                        </div>
+                      </form>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </div>
               );
             }
           )}
-          <div>
-            <div className={styles.commentBox} style={{ marginBottom: "30px" }}>
-              <img className={styles.profileImage} src="#" />
-              <div className={styles.comment}>
-                <div className={styles.commentInfo}>
-                  <div className={styles.commentWriterInfo}>
-                    <div className={styles.nickname}>상하이버거</div>
-                    <div className={styles.registTime}>2022-04-15</div>
-                  </div>
-                  <FaEllipsisH />
-                </div>
-                <div className={styles.commentContent}>
-                  {`포스팅 잘 보고갑니다.`}
-                </div>
-              </div>
-            </div>
-            <div className={styles.underCommentBox}>
-              <img className={styles.profileImage} src="#" />
-              <div className={styles.comment}>
-                <div className={styles.commentInfo}>
-                  <div className={styles.commentWriterInfo}>
-                    <div className={styles.nickname}>주인</div>
-                    <div className={styles.registTime}>2022-04-15</div>
-                  </div>
-                  <FaEllipsisH />
-                </div>
-                <div className={styles.commentContent}>
-                  <span>@ 상하이버거</span>
-                  {`감사합니다.`}
-                </div>
-              </div>
-            </div>
-            <div className={styles.underCommentBox}>
-              <img className={styles.profileImage} src="#" />
-              <div className={styles.comment}>
-                <div className={styles.commentInfo}>
-                  <div className={styles.commentWriterInfo}>
-                    <div className={styles.nickname}>상하이버거</div>
-                    <div className={styles.registTime}>2022-04-15</div>
-                  </div>
-                  <FaEllipsisH />
-                </div>
-                <div className={styles.commentContent}>
-                  <span>@ 주인</span>
-                  {`넴`}
-                </div>
-              </div>
-            </div>
-          </div>
           <form onSubmit={handleSubmit(onRegistComment)}>
             <div className={styles.commentBox} style={{ marginBottom: 10 }}>
               <img

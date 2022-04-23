@@ -8,16 +8,16 @@ async function handler(
   res: NextApiResponse<ResponseType>
 ) {
   if (req.method === "POST") {
-    const { id: postId } = req.query;
+    const { id: commentId } = req.query;
     const { user } = req.session;
-    const { content, commentId } = req.body;
+    const { content, recommentId, tagedUserId } = req.body;
     if (!user) {
       return res.json({
         result: false,
       });
     }
-    if (!commentId) {
-      const createdComment = await client.comment.create({
+    if (!recommentId) {
+      const createdRecomment = await client.recomment.create({
         data: {
           content,
           author: {
@@ -25,29 +25,34 @@ async function handler(
               id: user?.id,
             },
           },
-          post: {
+          tagUser: {
             connect: {
-              id: +postId,
+              id: tagedUserId,
+            },
+          },
+          comment: {
+            connect: {
+              id: +commentId,
             },
           },
         },
       });
-      const comment = await client.comment.findUnique({
-        where: { id: createdComment.id },
+      const recomment = await client.recomment.findUnique({
+        where: { id: createdRecomment.id },
         include: {
           author: true,
-          recomments: true,
+          tagUser: true,
         },
       });
 
       return res.json({
         result: true,
-        comment,
+        recomment,
       });
     } else {
-      await client.comment.update({
+      await client.recomment.update({
         where: {
-          id: commentId,
+          id: +recommentId,
         },
         data: {
           content,
@@ -60,7 +65,7 @@ async function handler(
   }
   if (req.method === "DELETE") {
     const { id: commentId } = req.query;
-    await client.comment.delete({
+    await client.recomment.delete({
       where: {
         id: +commentId,
       },

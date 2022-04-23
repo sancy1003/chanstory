@@ -14,15 +14,11 @@ async function handler(
       include: {
         comments: {
           include: {
-            author: {},
+            author: true,
             recomments: {
               include: {
-                author: {
-                  select: { id: true, nickname: true },
-                },
-                tagUser: {
-                  select: { id: true, nickname: true },
-                },
+                author: true,
+                tagUser: true,
               },
             },
           },
