@@ -57,6 +57,7 @@ interface CommentState {
   type: string;
   id: number;
   content: string;
+  basicCommentId?: number;
 }
 interface RecommentState {
   id: number;
@@ -109,7 +110,7 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
   }, [commentData]);
   const { register, watch, handleSubmit, reset } = useForm<CommentForm>();
   const onRegistComment = (commentForm: CommentForm) => {
-    if (loading) return;
+    if (loading || !user) return;
     regist({ content: commentForm.comment });
   };
   const onDeleteComment = async (type: string, commentId: number) => {
@@ -172,10 +173,70 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
   const [recomment, setRecomment] = useState<RecommentState | null>(null);
   const [eidt, { loading: editLoading, data: editCommentData }] =
     useMutation<Response>(`/api/blog/comment/${router?.query?.id}`);
+  const [
+    eidtRecomment,
+    { loading: editRecommentLoading, data: editRecommentCommentData },
+  ] = useMutation<Response>(
+    `/api/blog/recomment/${editComment?.basicCommentId}`
+  );
   const onEditComment = (commentForm: CommentForm) => {
-    if (editLoading) return;
-    eidt({ content: commentForm.comment, commentId: editComment?.id });
+    if (editLoading || editRecommentLoading) return;
+    if (editComment?.type === "comment") {
+      eidt({ content: commentForm.comment, commentId: editComment?.id });
+    } else if (editComment?.type === "recomment") {
+      eidtRecomment({
+        content: commentForm.comment,
+        recommentId: editComment?.id,
+      });
+    }
   };
+  useEffect(() => {
+    if (
+      editRecommentCommentData &&
+      editRecommentCommentData.result &&
+      data &&
+      editComment
+    ) {
+      let changedComments: CommentWithAuthor[] = [];
+      for (let i = 0; i < data?.post?.comments.length; i++) {
+        if (
+          data?.post?.comments[i].recomments.find(
+            (recomment) => recomment.id === editComment.id
+          )
+        ) {
+          changedComments.push({
+            ...data?.post?.comments[i],
+            recomments: [
+              ...data?.post?.comments[i].recomments.map((recomment) => {
+                if (recomment.id === editComment.id) {
+                  return { ...recomment, content: editComment.content };
+                } else {
+                  return { ...recomment };
+                }
+              }),
+            ],
+          });
+        } else {
+          changedComments.push({ ...data?.post?.comments[i] });
+        }
+      }
+      const editMutate = async () => {
+        await mutate(
+          (prev) =>
+            prev && {
+              ...prev,
+              post: {
+                ...prev.post,
+                comments: changedComments,
+              },
+            }
+        );
+        editReset();
+        setEditComment(null);
+      };
+      editMutate();
+    }
+  }, [editRecommentCommentData]);
   useEffect(() => {
     if (
       editCommentData &&
@@ -268,14 +329,19 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
       recommentMutate();
     }
   }, [registRecommentData]);
+  const allStateReset = () => {
+    setEditComment(null);
+    setRecomment(null);
+    recommentReset();
+    editReset();
+  };
   const tags = data?.post?.tags?.split(", ");
-  console.log(data?.post);
   return (
     <Layout user={user}>
       <div className={styles.container}>
         <div className={styles.postingHeader}>
           <div className={styles.postingTitleWrap}>
-            <FaChevronLeft />
+            <FaChevronLeft onClick={() => router.back()} />
             <div>{data?.post?.title}</div>
           </div>
           <div className={styles.postingRegistTime}>
@@ -329,17 +395,24 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
                         }
                         className={styles.commentBtnMoreBox}
                       >
-                        <FaEllipsisH
-                          onClick={() =>
-                            setMoreBtnView({ type: "comment", id: comment.id })
-                          }
-                        />
+                        {user ? (
+                          <FaEllipsisH
+                            onClick={() =>
+                              setMoreBtnView({
+                                type: "comment",
+                                id: comment.id,
+                              })
+                            }
+                          />
+                        ) : (
+                          ""
+                        )}
                         {moreBtnView?.type === "comment" &&
                         moreBtnView.id === comment.id ? (
                           <ul className={styles.moreBtnBox}>
                             <li
                               onClick={() => {
-                                recommentReset();
+                                allStateReset();
                                 setRecomment({
                                   id: comment.id,
                                   nickname: comment.author.nickname,
@@ -350,11 +423,12 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
                             >
                               답글
                             </li>
-                            {user?.id === comment.author.id ? (
+                            {user?.id === comment.author.id ||
+                            user?.role === "ADMIN" ? (
                               <>
                                 <li
                                   onClick={() => {
-                                    editReset();
+                                    allStateReset();
                                     setEditValue("comment", comment.content);
                                     setEditComment({
                                       type: "comment",
@@ -399,6 +473,7 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
                             },
                           })}
                           style={{ width: "100%" }}
+                          placeholder="내용을 입력해주세요."
                           maxLength={300}
                           className={styles.commentInput}
                         />
@@ -457,20 +532,24 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
                                   }
                                   className={styles.commentBtnMoreBox}
                                 >
-                                  <FaEllipsisH
-                                    onClick={() =>
-                                      setMoreBtnView({
-                                        type: "recomment",
-                                        id: recomment.id,
-                                      })
-                                    }
-                                  />
+                                  {user ? (
+                                    <FaEllipsisH
+                                      onClick={() =>
+                                        setMoreBtnView({
+                                          type: "recomment",
+                                          id: recomment.id,
+                                        })
+                                      }
+                                    />
+                                  ) : (
+                                    ""
+                                  )}
                                   {moreBtnView?.type === "recomment" &&
                                   moreBtnView.id === recomment.id ? (
                                     <ul className={styles.moreBtnBox}>
                                       <li
                                         onClick={() => {
-                                          recommentReset();
+                                          allStateReset();
                                           setRecomment({
                                             id: comment.id,
                                             nickname: recomment.author.nickname,
@@ -481,14 +560,15 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
                                       >
                                         답글
                                       </li>
-                                      {user?.id === recomment.author.id ? (
+                                      {user?.id === recomment.author.id ||
+                                      user?.role === "ADMIN" ? (
                                         <>
                                           <li
                                             onClick={() => {
-                                              editReset();
+                                              allStateReset();
                                               setEditValue(
                                                 "comment",
-                                                comment.content
+                                                recomment.content
                                               );
                                               setEditComment({
                                                 type: "recomment",
@@ -521,15 +601,54 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
                                   )}
                                 </div>
                               </div>
-                              <div className={styles.commentContent}>
-                                {recomment?.tagUser.nickname !==
-                                recomment?.author.nickname ? (
-                                  <span>@ {recomment?.tagUser.nickname}</span>
-                                ) : (
-                                  ""
-                                )}
-                                {recomment.content}
-                              </div>
+                              {editComment?.type === "recomment" &&
+                              editComment?.id === recomment.id ? (
+                                <form
+                                  onSubmit={editHandleSubmit(onEditComment)}
+                                  className={styles.commentEditBox}
+                                >
+                                  <textarea
+                                    {...editRegister("comment", {
+                                      required: true,
+                                      maxLength: {
+                                        value: 300,
+                                        message: "",
+                                      },
+                                    })}
+                                    placeholder="내용을 입력해주세요."
+                                    style={{ width: "100%" }}
+                                    maxLength={300}
+                                    className={styles.commentInput}
+                                  />
+                                  <div className={styles.editBtnBox}>
+                                    <div className={styles.commentLength}>
+                                      {editWatch("comment")
+                                        ? editWatch("comment").length
+                                        : 0}{" "}
+                                      / 300
+                                    </div>
+                                    <button className={styles.btnEdit}>
+                                      수정
+                                    </button>
+                                    <div
+                                      onClick={() => setEditComment(null)}
+                                      className={styles.btnEditCancel}
+                                    >
+                                      취소
+                                    </div>
+                                  </div>
+                                </form>
+                              ) : (
+                                <div className={styles.commentContent}>
+                                  {recomment?.tagUser.nickname !==
+                                  recomment?.author.nickname ? (
+                                    <span>@ {recomment?.tagUser.nickname}</span>
+                                  ) : (
+                                    ""
+                                  )}
+                                  {recomment.content}
+                                </div>
+                              )}
                             </div>
                           </div>
                         ))
@@ -550,6 +669,7 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
                               message: "",
                             },
                           })}
+                          placeholder="내용을 입력해주세요."
                           maxLength={300}
                           style={{ width: "100%" }}
                           className={styles.commentInput}
@@ -591,7 +711,9 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
                 {...register("comment", {
                   required: true,
                 })}
-                placeholder="댓글을 남겨보세요. 🙋‍♂️"
+                placeholder={`${
+                  !user ? "로그인 후 " : ""
+                }댓글을 남겨보세요. 🙋‍♂️`}
                 maxLength={300}
                 className={styles.commentInput}
               />
@@ -606,24 +728,37 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
               <div className={styles.commentLength}>
                 {watch("comment") ? watch("comment").length : 0} / 300
               </div>
-              <button
-                className={
-                  loading
-                    ? styles.btnWriteCommentLoading
-                    : styles.btnWriteComment
-                }
-              >
-                {loading ? (
-                  <Lottie
-                    loop
-                    animationData={ring}
-                    play
-                    style={{ width: 50, height: 50 }}
-                  />
-                ) : (
-                  "등록"
-                )}
-              </button>
+              {!user ? (
+                <div
+                  className={styles.btnWriteComment}
+                  onClick={() => {
+                    if (!user) {
+                      router.push("/login");
+                    }
+                  }}
+                >
+                  로그인
+                </div>
+              ) : (
+                <button
+                  className={
+                    loading
+                      ? styles.btnWriteCommentLoading
+                      : styles.btnWriteComment
+                  }
+                >
+                  {loading ? (
+                    <Lottie
+                      loop
+                      animationData={ring}
+                      play
+                      style={{ width: 50, height: 50 }}
+                    />
+                  ) : (
+                    "등록"
+                  )}
+                </button>
+              )}
             </div>
           </form>
         </div>
