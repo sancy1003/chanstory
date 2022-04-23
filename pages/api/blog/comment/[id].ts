@@ -10,39 +10,53 @@ async function handler(
   if (req.method === "POST") {
     const { id: postId } = req.query;
     const { user } = req.session;
-    const { content } = req.body;
+    const { content, commentId } = req.body;
     if (!user) {
       return res.json({
         result: false,
       });
     }
-    const createdComment = await client.comment.create({
-      data: {
-        content,
-        author: {
-          connect: {
-            id: user?.id,
+    if (!commentId) {
+      const createdComment = await client.comment.create({
+        data: {
+          content,
+          author: {
+            connect: {
+              id: user?.id,
+            },
+          },
+          post: {
+            connect: {
+              id: +postId,
+            },
           },
         },
-        post: {
-          connect: {
-            id: +postId,
-          },
+      });
+      const comment = await client.comment.findUnique({
+        where: { id: createdComment.id },
+        include: {
+          author: {},
+          recomments: {},
         },
-      },
-    });
-    const comment = await client.comment.findUnique({
-      where: { id: createdComment.id },
-      include: {
-        author: {},
-        recomments: {},
-      },
-    });
+      });
 
-    return res.json({
-      result: true,
-      comment,
-    });
+      return res.json({
+        result: true,
+        comment,
+      });
+    } else {
+      await client.comment.update({
+        where: {
+          id: commentId,
+        },
+        data: {
+          content,
+        },
+      });
+      return res.json({
+        result: true,
+      });
+    }
   }
   if (req.method === "DELETE") {
     const { id: commentId } = req.query;

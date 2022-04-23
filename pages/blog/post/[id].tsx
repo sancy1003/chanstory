@@ -15,6 +15,7 @@ import { useEffect, useRef, useState } from "react";
 import Lottie from "react-lottie-player";
 import ring from "@resource/lottie/ring.json";
 import fetchDelete from "@libs/client/fetchDelete";
+import Response from "@utils/types/response";
 
 interface PostProps {
   user: SessionUserData | null;
@@ -43,11 +44,17 @@ interface MoreBtn {
   type: string;
   id: number;
 }
+interface EditCommentState {
+  type: string;
+  id: number;
+  content: string;
+}
 
 const Viewer = dynamic(() => import("@components/viewer"), { ssr: false });
 
 const PostDetail: NextPage<PostProps> = ({ user }) => {
   const router = useRouter();
+  const [editComment, setEditComment] = useState<EditCommentState | null>(null);
   const [moreBtnView, setMoreBtnView] = useState<MoreBtn | null>(null);
   const moreBtnRef = useRef<HTMLDivElement[]>([]);
   const modalCloseHandler = ({ target }: any) => {
@@ -110,6 +117,55 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
       }
     }
   };
+  const {
+    register: editRegister,
+    handleSubmit: editHandleSubmit,
+    reset: editReset,
+    setValue: setEditValue,
+    watch: editWatch,
+  } = useForm<CommentForm>();
+  const [eidt, { loading: editLoading, data: editCommentData }] =
+    useMutation<Response>(`/api/blog/comment/${router?.query?.id}`);
+  const onEditComment = (commentForm: CommentForm) => {
+    if (editLoading) return;
+    eidt({ content: commentForm.comment, commentId: editComment?.id });
+  };
+  useEffect(() => {
+    if (
+      editCommentData &&
+      editCommentData.result &&
+      data &&
+      data.post &&
+      editComment
+    ) {
+      let changedComments: CommentWithAuthor[] = [];
+      for (let i = 0; i < data?.post?.comments.length; i++) {
+        if (data?.post?.comments[i].id === editComment.id) {
+          changedComments.push({
+            ...data?.post?.comments[i],
+            content: editComment.content,
+          });
+        } else {
+          changedComments.push({ ...data?.post?.comments[i] });
+        }
+      }
+      const editMutate = async () => {
+        await mutate(
+          (prev) =>
+            prev && {
+              ...prev,
+              post: {
+                ...prev.post,
+                comments: changedComments,
+              },
+            }
+        );
+        editReset();
+        setEditComment(null);
+      };
+      editMutate();
+    }
+  }, [editCommentData]);
   const tags = data?.post?.tags?.split(", ");
   console.log(data?.post);
   return (
@@ -185,6 +241,13 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
                               <>
                                 <li
                                   onClick={() => {
+                                    editReset();
+                                    setEditValue("comment", comment.content);
+                                    setEditComment({
+                                      type: "comment",
+                                      id: comment.id,
+                                      content: comment.content,
+                                    });
                                     setMoreBtnView(null);
                                   }}
                                 >
@@ -208,9 +271,44 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
                         )}
                       </div>
                     </div>
-                    <div className={styles.commentContent}>
-                      {comment.content}
-                    </div>
+                    {editComment?.type === "comment" &&
+                    editComment?.id === comment.id ? (
+                      <form
+                        onSubmit={editHandleSubmit(onEditComment)}
+                        className={styles.commentEditBox}
+                      >
+                        <textarea
+                          {...editRegister("comment", {
+                            required: true,
+                            maxLength: {
+                              value: 300,
+                              message: "",
+                            },
+                          })}
+                          style={{ width: "100%" }}
+                          className={styles.commentInput}
+                        />
+                        <div className={styles.editBtnBox}>
+                          <div className={styles.commentLength}>
+                            {editWatch("comment")
+                              ? editWatch("comment").length
+                              : 0}{" "}
+                            / 300
+                          </div>
+                          <button className={styles.btnEdit}>수정</button>
+                          <div
+                            onClick={() => setEditComment(null)}
+                            className={styles.btnEditCancel}
+                          >
+                            취소
+                          </div>
+                        </div>
+                      </form>
+                    ) : (
+                      <div className={styles.commentContent}>
+                        {comment.content}
+                      </div>
+                    )}
                   </div>
                 </div>
               );

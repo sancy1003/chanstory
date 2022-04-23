@@ -259,6 +259,44 @@
   color: var(--brandColor);
   font-weight: bold;
 }
+.commentEditBox {
+}
+.editBtnBox {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.btnEdit {
+  margin-right: 20px;
+  background-color: #fff;
+  border: 1px solid var(--brandColor);
+  width: 80px;
+  height: 40px;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0;
+  font-size: 16px;
+  color: var(--brandColor);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btnEditCancel {
+  background-color: #fff;
+  border: 1px solid var(--black_40);
+  width: 80px;
+  height: 40px;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0;
+  font-size: 16px;
+  color: var(--black_80);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
 .morePostWrap {
   width: 100%;
 }
