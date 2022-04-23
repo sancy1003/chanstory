@@ -10,13 +10,18 @@ import useSWR from "swr";
 import { useRouter } from "next/router";
 import useMutation from "@libs/client/useMutation";
 import { useForm } from "react-hook-form";
-import { Comment, Recomment, User } from "@prisma/client";
+import { Comment, Post, Recomment, User } from "@prisma/client";
+import { useEffect, useRef, useState } from "react";
+import Lottie from "react-lottie-player";
+import ring from "@resource/lottie/ring.json";
+import fetchDelete from "@libs/client/fetchDelete";
 
 interface PostProps {
   user: SessionUserData | null;
 }
 interface CommentResponse {
   result: boolean;
+  comment: CommentWithAuthor;
   error?: string;
 }
 interface CommentForm {
@@ -26,20 +31,84 @@ interface CommentWithAuthor extends Comment {
   author: User;
   recomments: Recomment[];
 }
+interface PostWithComments extends Post {
+  comments: CommentWithAuthor[];
+}
+interface PostResponse {
+  result: boolean;
+  error?: string;
+  post: PostWithComments;
+}
+interface MoreBtn {
+  type: string;
+  id: number;
+}
 
 const Viewer = dynamic(() => import("@components/viewer"), { ssr: false });
 
-const Post: NextPage<PostProps> = ({ user }) => {
+const PostDetail: NextPage<PostProps> = ({ user }) => {
   const router = useRouter();
-  const { data } = useSWR<any>(
+  const [moreBtnView, setMoreBtnView] = useState<MoreBtn | null>(null);
+  const moreBtnRef = useRef<HTMLDivElement[]>([]);
+  const modalCloseHandler = ({ target }: any) => {
+    if (moreBtnRef) {
+      for (let i = 0; i < moreBtnRef?.current?.length; i++) {
+        if (moreBtnRef?.current[i]?.contains(target)) {
+          return;
+        }
+      }
+      setMoreBtnView(null);
+    }
+  };
+  useEffect(() => {
+    window.addEventListener("click", modalCloseHandler);
+    return () => {
+      window.removeEventListener("click", modalCloseHandler);
+    };
+  });
+  const { data, mutate } = useSWR<PostResponse>(
     router?.query?.id ? `/api/blog/${router.query.id}` : null
   );
   const [regist, { loading, data: commentData, error }] =
     useMutation<CommentResponse>(`/api/blog/comment/${router?.query?.id}`);
-  const { register, watch, handleSubmit } = useForm<CommentForm>();
+  useEffect(() => {
+    if (commentData && commentData.result) {
+      reset();
+      mutate(
+        (prev) =>
+          prev && {
+            ...prev,
+            post: {
+              ...prev.post,
+              comments: [...prev.post.comments, commentData.comment],
+            },
+          }
+      );
+    }
+  }, [commentData]);
+  const { register, watch, handleSubmit, reset } = useForm<CommentForm>();
   const onRegistComment = (commentForm: CommentForm) => {
     if (loading) return;
     regist({ content: commentForm.comment });
+  };
+  const onDeleteComment = async (type: string, commentId: number) => {
+    if (type === "comment") {
+      const response = await fetchDelete(`/api/blog/comment/${commentId}`);
+      if (response.result) {
+        mutate(
+          (prev) =>
+            prev && {
+              ...prev,
+              post: {
+                ...prev.post,
+                comments: prev.post.comments.filter(
+                  (comment) => comment.id !== commentId
+                ),
+              },
+            }
+        );
+      }
+    }
   };
   const tags = data?.post?.tags?.split(", ");
   console.log(data?.post);
@@ -52,7 +121,7 @@ const Post: NextPage<PostProps> = ({ user }) => {
             <div>{data?.post?.title}</div>
           </div>
           <div className={styles.postingRegistTime}>
-            {dateToString(data?.post?.createdAt)}
+            {data?.post && dateToString(data.post.createdAt)}
           </div>
         </div>
         <div className={styles.postingContentWrap}>
@@ -93,7 +162,51 @@ const Post: NextPage<PostProps> = ({ user }) => {
                           {dateToString(comment.author.createdAt)}
                         </div>
                       </div>
-                      <FaEllipsisH />
+                      <div
+                        ref={(el) => (moreBtnRef.current[idx] = el!)}
+                        className={styles.commentBtnMoreBox}
+                      >
+                        <FaEllipsisH
+                          onClick={() =>
+                            setMoreBtnView({ type: "comment", id: comment.id })
+                          }
+                        />
+                        {moreBtnView?.type === "comment" &&
+                        moreBtnView.id === comment.id ? (
+                          <ul className={styles.moreBtnBox}>
+                            <li
+                              onClick={() => {
+                                setMoreBtnView(null);
+                              }}
+                            >
+                              답글
+                            </li>
+                            {user?.id === comment.author.id ? (
+                              <>
+                                <li
+                                  onClick={() => {
+                                    setMoreBtnView(null);
+                                  }}
+                                >
+                                  수정
+                                </li>
+                                <li
+                                  onClick={() => {
+                                    onDeleteComment("comment", comment.id);
+                                    setMoreBtnView(null);
+                                  }}
+                                >
+                                  삭제
+                                </li>
+                              </>
+                            ) : (
+                              ""
+                            )}
+                          </ul>
+                        ) : (
+                          ""
+                        )}
+                      </div>
                     </div>
                     <div className={styles.commentContent}>
                       {comment.content}
@@ -180,7 +293,24 @@ const Post: NextPage<PostProps> = ({ user }) => {
               <div className={styles.commentLength}>
                 {watch("comment") ? watch("comment").length : 0} / 300
               </div>
-              <button className={styles.btnWriteComment}>작성</button>
+              <button
+                className={
+                  loading
+                    ? styles.btnWriteCommentLoading
+                    : styles.btnWriteComment
+                }
+              >
+                {loading ? (
+                  <Lottie
+                    loop
+                    animationData={ring}
+                    play
+                    style={{ width: 50, height: 50 }}
+                  />
+                ) : (
+                  "등록"
+                )}
+              </button>
             </div>
           </form>
         </div>
@@ -218,4 +348,4 @@ export const getServerSideProps = withSsrSession(async function ({
   };
 });
 
-export default Post;
+export default PostDetail;

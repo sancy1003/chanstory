@@ -7,8 +7,8 @@ async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
-  const { id: postId } = req.query;
   if (req.method === "POST") {
+    const { id: postId } = req.query;
     const { user } = req.session;
     const { content } = req.body;
     if (!user) {
@@ -16,7 +16,7 @@ async function handler(
         result: false,
       });
     }
-    await client.comment.create({
+    const createdComment = await client.comment.create({
       data: {
         content,
         author: {
@@ -31,7 +31,26 @@ async function handler(
         },
       },
     });
+    const comment = await client.comment.findUnique({
+      where: { id: createdComment.id },
+      include: {
+        author: {},
+        recomments: {},
+      },
+    });
 
+    return res.json({
+      result: true,
+      comment,
+    });
+  }
+  if (req.method === "DELETE") {
+    const { id: commentId } = req.query;
+    await client.comment.delete({
+      where: {
+        id: +commentId,
+      },
+    });
     return res.json({
       result: true,
     });
@@ -40,7 +59,8 @@ async function handler(
 
 export default withApiSession(
   withHandler({
-    methods: ["POST"],
+    methods: ["POST", "DELETE"],
     handler,
+    isPrivate: true,
   })
 );

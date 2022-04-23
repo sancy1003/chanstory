@@ -190,12 +190,26 @@
   box-sizing: border-box;
 }
 .btnWriteComment {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 40px;
   border: none;
   border-radius: 4px;
   background-color: var(--brandColor);
   color: #fff;
   cursor: pointer;
-  padding: 8px 40px;
+}
+.btnWriteCommentLoading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 40px;
+  border: none;
+  background-color: #fff;
+  cursor: default;
 }
 .commentLength {
   margin-right: 20px;
@@ -288,6 +302,34 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+.commentBtnMoreBox {
+  position: relative;
+}
+.moreBtnBox {
+  display: flex;
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid var(--black_40);
+  border-radius: 4px;
+  width: fit-content;
+  right: 0;
+  top: 105%;
+}
+.moreBtnBox li {
+  width: 50px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 12px;
+  text-align: center;
+  color: var(--black_90);
+  font-weight: normal;
+}
+.moreBtnBox li:hover {
+  background-color: var(--black_10);
 }
 
 @media screen and (max-width: 800px) {
