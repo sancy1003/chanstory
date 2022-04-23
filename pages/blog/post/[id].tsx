@@ -116,7 +116,7 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
     if (type === "comment") {
       const response = await fetchDelete(`/api/blog/comment/${commentId}`);
       if (response.result) {
-        mutate(
+        await mutate(
           (prev) =>
             prev && {
               ...prev,
@@ -125,6 +125,37 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
                 comments: prev.post.comments.filter(
                   (comment) => comment.id !== commentId
                 ),
+              },
+            }
+        );
+      }
+    } else if (type === "recomment") {
+      const response = await fetchDelete(`/api/blog/recomment/${commentId}`);
+      if (response.result && data) {
+        let changedComments: CommentWithAuthor[] = [];
+        for (let i = 0; i < data.post.comments.length; i++) {
+          if (
+            data.post.comments[i].recomments.find(
+              (recomment) => recomment.id === commentId
+            )
+          ) {
+            changedComments.push({
+              ...data.post.comments[i],
+              recomments: data.post.comments[i].recomments.filter(
+                (recomment) => recomment.id !== commentId
+              ),
+            });
+          } else {
+            changedComments.push({ ...data.post.comments[i] });
+          }
+        }
+        mutate(
+          (prev) =>
+            prev && {
+              ...prev,
+              post: {
+                ...prev.post,
+                comments: changedComments,
               },
             }
         );
@@ -236,7 +267,7 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
       };
       recommentMutate();
     }
-  }, []);
+  }, [registRecommentData]);
   const tags = data?.post?.tags?.split(", ");
   console.log(data?.post);
   return (
@@ -267,9 +298,12 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
         </div>
         <div className={styles.commentWrap}>
           {data?.post.comments.map(
-            (comment: CommentWithAuthor, idx: number) => {
+            (comment: CommentWithAuthor, commentIdx: number) => {
               return (
-                <div className={styles.commentBox} key={`comment_${idx}`}>
+                <div
+                  className={styles.commentBox}
+                  key={`comment_${commentIdx}`}
+                >
                   <img
                     className={styles.profileImage}
                     src={loadProfileURL(
@@ -290,7 +324,9 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
                         </div>
                       </div>
                       <div
-                        ref={(el) => (moreBtnRef.current[idx] = el!)}
+                        ref={(el) =>
+                          (moreBtnRef.current[moreBtnRef.current.length] = el!)
+                        }
                         className={styles.commentBtnMoreBox}
                       >
                         <FaEllipsisH
@@ -388,11 +424,11 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
                       </div>
                     )}
                     {comment.recomments?.length > 0
-                      ? comment.recomments.map((recomment, idx) => (
+                      ? comment.recomments.map((recomment, recommentIdx) => (
                           <div
-                            style={idx === 0 ? { marginTop: 30 } : {}}
+                            style={recommentIdx === 0 ? { marginTop: 30 } : {}}
                             className={styles.underCommentBox}
-                            key={`recomment_${idx}`}
+                            key={`recomment_${recommentIdx}`}
                           >
                             <img
                               className={styles.profileImage}
@@ -410,10 +446,80 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
                                     {recomment?.author.nickname}
                                   </div>
                                   <div className={styles.registTime}>
-                                    2022-04-15
+                                    {dateToString(recomment.createdAt)}
                                   </div>
                                 </div>
-                                <FaEllipsisH />
+                                <div
+                                  ref={(el) =>
+                                    (moreBtnRef.current[
+                                      moreBtnRef.current.length
+                                    ] = el!)
+                                  }
+                                  className={styles.commentBtnMoreBox}
+                                >
+                                  <FaEllipsisH
+                                    onClick={() =>
+                                      setMoreBtnView({
+                                        type: "recomment",
+                                        id: recomment.id,
+                                      })
+                                    }
+                                  />
+                                  {moreBtnView?.type === "recomment" &&
+                                  moreBtnView.id === recomment.id ? (
+                                    <ul className={styles.moreBtnBox}>
+                                      <li
+                                        onClick={() => {
+                                          recommentReset();
+                                          setRecomment({
+                                            id: comment.id,
+                                            nickname: recomment.author.nickname,
+                                            tagedUserId: recomment.author.id,
+                                          });
+                                          setMoreBtnView(null);
+                                        }}
+                                      >
+                                        답글
+                                      </li>
+                                      {user?.id === recomment.author.id ? (
+                                        <>
+                                          <li
+                                            onClick={() => {
+                                              editReset();
+                                              setEditValue(
+                                                "comment",
+                                                comment.content
+                                              );
+                                              setEditComment({
+                                                type: "recomment",
+                                                id: recomment.id,
+                                                content: recomment.content,
+                                              });
+                                              setMoreBtnView(null);
+                                            }}
+                                          >
+                                            수정
+                                          </li>
+                                          <li
+                                            onClick={() => {
+                                              onDeleteComment(
+                                                "recomment",
+                                                recomment.id
+                                              );
+                                              setMoreBtnView(null);
+                                            }}
+                                          >
+                                            삭제
+                                          </li>
+                                        </>
+                                      ) : (
+                                        ""
+                                      )}
+                                    </ul>
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
                               </div>
                               <div className={styles.commentContent}>
                                 {recomment?.tagUser.nickname !==
