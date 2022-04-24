@@ -7,7 +7,25 @@ import useMutation from "@libs/client/useMutation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
+import useSWR from "swr";
+import { Post, Recomment, User } from "@prisma/client";
 
+interface CommentWithAuthor extends Comment {
+  author: User;
+  recomments: RecommentWithAuthor[];
+}
+interface RecommentWithAuthor extends Recomment {
+  author: User;
+  tagUser: User;
+}
+interface PostWithComments extends Post {
+  comments: CommentWithAuthor[];
+}
+interface PostResponse {
+  result: boolean;
+  error?: string;
+  post: PostWithComments;
+}
 interface PostResult {
   result: boolean;
   id: number;
@@ -22,12 +40,15 @@ interface Form {
 
 const PostEditor = dynamic(() => import("@components/editor"), { ssr: false });
 
-const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
+const Edit: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
   const router = useRouter();
+  const { data: prevData, mutate } = useSWR<PostResponse>(
+    router?.query?.id ? `/api/blog/${router.query.id}` : null
+  );
   const [isHide, setIsHide] = useState(false);
   const [post, { loading, data, error }] = useMutation<PostResult>("/api/blog");
-  const { register, handleSubmit } = useForm<Form>();
-  const [content, setContent] = useState("내용을 입력해주세요.");
+  const { register, handleSubmit, setValue } = useForm<Form>();
+  const [content, setContent] = useState<string | null>(null);
   const onPost = async (formData: Form) => {
     if (loading) return;
     let Imageurl = null;
@@ -55,22 +76,32 @@ const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
       category: +formData.category,
       isHide,
       tags: formData.tags,
-      thumbnailURL: Imageurl,
+      thumbnailURL: Imageurl ? Imageurl : prevData?.post.thumbnailURL,
+      postId: +prevData?.post.id!,
     });
   };
   useEffect(() => {
     if (data && data.result) {
-      router.push(`/blog/post/${data.id}`);
+      router.push(`/blog/post/${prevData?.post?.id}`);
     } else if (data?.error) {
       alert(data.error);
     }
   }, [data, router]);
+  useEffect(() => {
+    if (prevData && prevData.result && prevData.post) {
+      setIsHide(prevData.post.isHide);
+      if (prevData.post.tags) setValue("tags", prevData.post.tags);
+      setValue("category", prevData.post.category + "");
+      setValue("title", prevData.post.title);
+      setContent(prevData.post.content);
+    }
+  }, [prevData]);
   return (
     <Layout user={user}>
       <div className={styles.container}>
         <form onSubmit={handleSubmit(onPost)}>
           <input {...register("title")} className={styles.postTitleInput} />
-          <PostEditor content={content} fn={setContent} />
+          {content && <PostEditor content={content} fn={setContent} />}
           <div className={styles.btnPostingBox}>
             <div>
               <input
@@ -126,4 +157,4 @@ export const getServerSideProps = withSsrSession(async function ({
   };
 });
 
-export default Write;
+export default Edit;

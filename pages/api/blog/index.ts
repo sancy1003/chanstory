@@ -77,23 +77,41 @@ async function handler(
       });
     }
     const {
-      body: { content, tags, category, title, thumbnailURL, isHide },
+      body: { content, tags, category, title, thumbnailURL, isHide, postId },
     } = req;
-    const post = await client.post.create({
-      data: {
-        content,
-        tags: tags ? tags : null,
-        category,
-        title,
-        thumbnailURL: thumbnailURL ? thumbnailURL : null,
-        isHide: isHide ? isHide : false,
-      },
-    });
-
-    return res.json({
-      result: true,
-      id: post.id,
-    });
+    if (!postId) {
+      const post = await client.post.create({
+        data: {
+          content,
+          tags: tags ? tags : null,
+          category,
+          title,
+          thumbnailURL: thumbnailURL ? thumbnailURL : null,
+          isHide: isHide ? isHide : false,
+        },
+      });
+      return res.json({
+        result: true,
+        id: post.id,
+      });
+    } else {
+      await client.post.update({
+        where: {
+          id: postId,
+        },
+        data: {
+          content,
+          tags: tags ? tags : null,
+          category,
+          title,
+          thumbnailURL: thumbnailURL ? thumbnailURL : null,
+          isHide: isHide ? isHide : false,
+        },
+      });
+      return res.json({
+        result: true,
+      });
+    }
   }
 }
 

@@ -363,7 +363,7 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
             ""
           )}
         </div>
-        <div className={styles.commentWrap}>
+        <div className={styles.commentWrap} style={{ borderBottom: 0 }}>
           {data?.post.comments.map(
             (comment: CommentWithAuthor, commentIdx: number) => {
               return (
@@ -756,7 +756,7 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
             </div>
           </form>
         </div>
-        <div className={styles.morePostWrap}>
+        {/* <div className={styles.morePostWrap}>
           <div className={styles.morePostTitle}>
             <span>프론트엔드</span> 카테고리의 다른 포스트
           </div>
@@ -774,7 +774,7 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
               );
             })}
           </div>
-        </div>
+        </div> */}
       </div>
     </Layout>
   );

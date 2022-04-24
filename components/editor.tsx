@@ -7,8 +7,10 @@ import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
 import { formattingImageURL } from "@libs/client/commonFunction";
 
 export default function PostEditor({
+  content,
   fn,
 }: {
+  content: string | null;
   fn: (content: string) => void;
 }): JSX.Element {
   const editorRef = createRef<any>();
@@ -38,7 +40,7 @@ export default function PostEditor({
       <Editor
         onChange={onChangeIntroFunction}
         ref={editorRef}
-        initialValue="내용을 입력하세요."
+        initialValue={content ? content : "내용을 입력해주세요."}
         previewStyle="vertical"
         height="700px"
         initialEditType="markdown"
