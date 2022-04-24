@@ -1,3 +1,5 @@
+import { CATEGORY } from "@utils/define/category";
+
 export const dateToString = (date: Date | string) => {
   const init = new Date(date);
   return `${init.getFullYear()}-${init.getMonth() + 1 < 10 ? "0" : ""}${
@@ -10,5 +12,19 @@ export const loadProfileURL = (url?: string | null, type?: string) => {
     return `https://imagedelivery.net/R2WiK4wfRK3oBXTwjgzQfA/${url}/${imageType}`;
   } else {
     return "/images/defaultProfile.svg";
+  }
+};
+export const categoryToNumber = ({
+  query,
+  title,
+}: {
+  query?: string;
+  title?: string;
+}) => {
+  if (query) {
+    return CATEGORY.find((item) => item.query === query)?.idx;
+  }
+  if (title) {
+    return CATEGORY.find((item) => item.title === title)?.idx;
   }
 };

@@ -5,9 +5,38 @@ import styles from "@styles/blog.module.css";
 import PostItem from "@components/blog/post-item";
 import Category from "@components/blog/category";
 import { SessionUserData, withSsrSession } from "@libs/server/withSession";
+import useSWR from "swr";
+import { categoryToNumber, dateToString } from "@libs/client/commonFunction";
+import { useEffect, useState } from "react";
+import Pagination from "react-js-pagination";
+
+interface PostsResponse {
+  result: boolean;
+  posts: PostsType[];
+  postCount: number;
+}
+interface PostsType {
+  id: number;
+  title: string;
+  commentCount: number;
+  createdAt: string;
+  thumbnailURL: string | null;
+  _count: {
+    comments: number;
+    recomments: number;
+  };
+}
 
 const Blog: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
   const router = useRouter();
+  const [page, setPage] = useState(1);
+  const { data } = useSWR<PostsResponse>(
+    router?.query?.category
+      ? `/api/blog/category?category=${categoryToNumber({
+          query: router?.query?.category + "",
+        })}&page=${page}`
+      : `/api/blog/category`
+  );
 
   return (
     <Layout user={user}>
@@ -15,18 +44,32 @@ const Blog: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
         <Category />
         <div className={styles.section}>
           <div className={styles.postContainer}>
-            {[1, 1, 1, 1, 1].map((item, idx) => {
+            {data?.posts?.map((post, idx) => {
               return (
                 <PostItem
                   key={idx}
-                  commentNum={5}
-                  registTime="2022-04-15"
-                  title="NextJS Framework 구성과 기본 사용방법 포스팅"
-                  imageURL={null}
+                  commentNum={post.commentCount}
+                  registTime={dateToString(post.createdAt)}
+                  title={post.title}
+                  imageURL={post.thumbnailURL}
+                  postId={post.id}
                 />
               );
             })}
           </div>
+          {data && data.postCount > 8 ? (
+            <Pagination
+              activePage={page}
+              itemsCountPerPage={8}
+              totalItemsCount={data ? data.postCount : 0}
+              pageRangeDisplayed={5}
+              prevPageText={"‹"}
+              nextPageText={"›"}
+              onChange={(page) => setPage(page)}
+            />
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </Layout>

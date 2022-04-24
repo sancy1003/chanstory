@@ -758,7 +758,7 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
             <span>프론트엔드</span> 카테고리의 다른 포스트
           </div>
           <div className={styles.postContainer}>
-            {[1, 1, 1, 1].map((item, idx) => {
+            {[1, 1, 1, 1].map((post, idx) => {
               return (
                 <PostItem
                   key={idx}
@@ -766,6 +766,7 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
                   registTime="2022-04-15"
                   title="NextJS Framework 구성과 기본 사용방법 포스팅"
                   imageURL={null}
+                  postId={0}
                 />
               );
             })}

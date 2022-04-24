@@ -1,5 +1,6 @@
 import { loadProfileURL } from "@libs/client/commonFunction";
 import styles from "@styles/blog.module.css";
+import { useRouter } from "next/router";
 import { FaRegCommentDots } from "react-icons/fa";
 
 interface PostItemProps {
@@ -7,6 +8,7 @@ interface PostItemProps {
   registTime: string;
   title: string;
   imageURL: string | null;
+  postId: number;
 }
 
 export default function PostItem({
@@ -14,9 +16,14 @@ export default function PostItem({
   registTime,
   title,
   imageURL,
+  postId,
 }: PostItemProps) {
+  const router = useRouter();
+  const onClickPost = () => {
+    router.push(`/blog/post/${postId}`);
+  };
   return (
-    <div className={styles.postItem}>
+    <div className={styles.postItem} onClick={onClickPost}>
       <div className={styles.postImageWrap}>
         <img
           className={styles.postImage}

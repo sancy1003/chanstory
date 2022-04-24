@@ -41,6 +41,7 @@ const Blog: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
                   registTime={dateToString(post.createdAt)}
                   title={post.title}
                   imageURL={post.thumbnailURL}
+                  postId={post.id}
                 />
               );
             })}
@@ -57,6 +58,7 @@ const Blog: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
                   registTime={dateToString(post.createdAt)}
                   title={post.title}
                   imageURL={post.thumbnailURL}
+                  postId={post.id}
                 />
               );
             })}
