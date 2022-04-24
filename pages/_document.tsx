@@ -6,7 +6,7 @@ class CustomDocument extends Document {
       <Html lang="ko">
         <Head>
           <link
-            href="http://www.openhiun.com/hangul/nanumbarungothic.css"
+            href="https://www.openhiun.com/hangul/nanumbarungothic.css"
             rel="stylesheet"
             type="text/css"
           />
