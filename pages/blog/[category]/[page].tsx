@@ -29,12 +29,11 @@ interface PostsType {
 
 const Blog: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
   const router = useRouter();
-  const [page, setPage] = useState(1);
   const { data } = useSWR<PostsResponse>(
     router?.query?.category
       ? `/api/blog/category?category=${categoryToNumber({
           query: router?.query?.category + "",
-        })}&page=${page}`
+        })}&page=${router?.query?.page}`
       : `/api/blog/category`
   );
 
@@ -59,13 +58,15 @@ const Blog: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
           </div>
           {data && data.postCount > 8 ? (
             <Pagination
-              activePage={page}
+              activePage={router?.query?.page ? +router?.query?.page : 1}
               itemsCountPerPage={8}
               totalItemsCount={data ? data.postCount : 0}
               pageRangeDisplayed={5}
               prevPageText={"‹"}
               nextPageText={"›"}
-              onChange={(page) => setPage(page)}
+              onChange={(page) => {
+                router.replace(`/blog/${router.query.category}/${page}`);
+              }}
             />
           ) : (
             ""

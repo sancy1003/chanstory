@@ -4,7 +4,7 @@ import Head from "next/head";
 import styles from "@styles/Layout.module.css";
 import { SessionUserData } from "@libs/server/withSession";
 import { useRouter } from "next/router";
-import { loadProfileURL } from "@libs/client/commonFunction";
+import { formattingImageURL } from "@libs/client/commonFunction";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -31,7 +31,7 @@ export default function Layout({ title, children, user }: LayoutProps) {
         {user ? (
           <div className={styles.userWrap} onClick={onClickProfile}>
             <img
-              src={loadProfileURL(user?.profileURL, "avatar")}
+              src={formattingImageURL(user?.profileURL, "avatar")}
               className={styles.userProfileImage}
             />
             <div className={styles.userNickname}>{user.nickname}</div>

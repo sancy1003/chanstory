@@ -13,7 +13,7 @@ export default function Category({ isHome }: CategoryProps) {
     if (link === "home") {
       router.push(`/blog`);
     } else {
-      router.push(`/blog/${link}`);
+      router.push(`/blog/${link}/1`);
     }
   };
 

@@ -6,7 +6,7 @@ export const dateToString = (date: Date | string) => {
     init.getMonth() + 1
   }-${init.getDate() < 10 ? "0" : ""}${init.getDate()}`;
 };
-export const loadProfileURL = (url?: string | null, type?: string) => {
+export const formattingImageURL = (url?: string | null, type?: string) => {
   let imageType = type ? type : "public";
   if (url) {
     return `https://imagedelivery.net/R2WiK4wfRK3oBXTwjgzQfA/${url}/${imageType}`;

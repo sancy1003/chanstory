@@ -1,4 +1,4 @@
-import { loadProfileURL } from "@libs/client/commonFunction";
+import { formattingImageURL } from "@libs/client/commonFunction";
 import styles from "@styles/blog.module.css";
 import { useRouter } from "next/router";
 import { FaRegCommentDots } from "react-icons/fa";
@@ -29,7 +29,7 @@ export default function PostItem({
           className={styles.postImage}
           src={
             imageURL
-              ? loadProfileURL(imageURL)
+              ? formattingImageURL(imageURL)
               : "/images/logo/default_thumbnail.png"
           }
         />

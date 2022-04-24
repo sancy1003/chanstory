@@ -1,9 +1,10 @@
-import { createRef } from "react";
+import { createRef, useEffect } from "react";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Editor } from "@toast-ui/react-editor";
 import "tui-color-picker/dist/tui-color-picker.css";
 import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
 import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
+import { formattingImageURL } from "@libs/client/commonFunction";
 
 export default function PostEditor({
   fn,
@@ -13,6 +14,23 @@ export default function PostEditor({
   const editorRef = createRef<any>();
   const onChangeIntroFunction = () => {
     fn(editorRef.current.getInstance().getMarkdown());
+  };
+  const uploadImage = async (image: File) => {
+    console.log(image);
+    let Imageurl = null;
+    const { uploadURL } = await (await fetch(`/api/uploadImage`)).json();
+    const form = new FormData();
+    form.append("file", image, `post_conetent_${new Date()}`);
+    const {
+      result: { id },
+    } = await (
+      await fetch(uploadURL, {
+        method: "POST",
+        body: form,
+      })
+    ).json();
+    Imageurl = id;
+    return id;
   };
 
   return (
@@ -26,6 +44,13 @@ export default function PostEditor({
         initialEditType="markdown"
         useCommandShortcut={true}
         plugins={[colorSyntax]}
+        hooks={{
+          addImageBlobHook: async (blob: any, callback: any) => {
+            const imageURL = formattingImageURL(await uploadImage(blob));
+            callback(imageURL, "");
+            return;
+          },
+        }}
       />
     </>
   );

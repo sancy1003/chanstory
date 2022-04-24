@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import fetchDelete from "@libs/client/fetchDelete";
 import ConfirmModal from "@components/modal/confirm-modal";
 import NicknameChangeModal from "@components/modal/nickname-change-modal";
-import { loadProfileURL } from "@libs/client/commonFunction";
+import { formattingImageURL } from "@libs/client/commonFunction";
 
 interface ProfileImageForm {
   profileImage: FileList;
@@ -186,7 +186,7 @@ const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
                   </div>
                   <img
                     className={styles.profileImage}
-                    src={loadProfileURL(userProfile?.profileURL, "avatar")}
+                    src={formattingImageURL(userProfile?.profileURL, "avatar")}
                   />
                 </div>
               ) : (
@@ -206,7 +206,7 @@ const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
                   </div>
                   <img
                     className={styles.profileImage}
-                    src={loadProfileURL(user?.profileURL, "avatar")}
+                    src={formattingImageURL(user?.profileURL, "avatar")}
                   />
                 </div>
               )}
