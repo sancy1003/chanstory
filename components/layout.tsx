@@ -24,16 +24,14 @@ export default function Layout({ title, children, user }: LayoutProps) {
       </Head>
       <div className={styles.header}>
         <Link href={"/"}>
-          <a className={styles.logo}>Chanstory</a>
+          <a className={styles.logo}>
+            <img src={"/images/logo/logo.svg"} />
+          </a>
         </Link>
         {user ? (
           <div className={styles.userWrap} onClick={onClickProfile}>
             <img
-              src={
-                user.profileURL
-                  ? loadProfileURL(user?.profileURL, "avatar")
-                  : "https://mblogthumb-phinf.pstatic.net/MjAyMTAxMTBfMzEg/MDAxNjEwMjY1OTUzMDYw.AxFQ9Wdgv12xNiWneVpoLZGvpPRT1n2P4dWJ133saWIg.QbSPY2ColrEk1IhmRlxh8kacD6r1SBEp6b2hdjVHRU4g.JPEG.wjswldms0191/IMG_6859.jpg?type=w800"
-              }
+              src={loadProfileURL(user?.profileURL, "avatar")}
               className={styles.userProfileImage}
             />
             <div className={styles.userNickname}>{user.nickname}</div>

@@ -206,7 +206,7 @@ const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
                   </div>
                   <img
                     className={styles.profileImage}
-                    src="https://mblogthumb-phinf.pstatic.net/MjAyMTAxMTBfMzEg/MDAxNjEwMjY1OTUzMDYw.AxFQ9Wdgv12xNiWneVpoLZGvpPRT1n2P4dWJ133saWIg.QbSPY2ColrEk1IhmRlxh8kacD6r1SBEp6b2hdjVHRU4g.JPEG.wjswldms0191/IMG_6859.jpg?type=w800"
+                    src={loadProfileURL(user?.profileURL, "avatar")}
                   />
                 </div>
               )}

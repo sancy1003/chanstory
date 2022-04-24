@@ -372,12 +372,7 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
                 >
                   <img
                     className={styles.profileImage}
-                    src={loadProfileURL(
-                      comment.author.profileURL
-                        ? comment.author.profileURL
-                        : "",
-                      "avatar"
-                    )}
+                    src={loadProfileURL(comment.author.profileURL, "avatar")}
                   />
                   <div className={styles.comment}>
                     <div className={styles.commentInfo}>
@@ -508,9 +503,7 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
                             <img
                               className={styles.profileImage}
                               src={loadProfileURL(
-                                recomment.author.profileURL
-                                  ? recomment.author.profileURL
-                                  : "",
+                                recomment.author.profileURL,
                                 "avatar"
                               )}
                             />
@@ -702,10 +695,7 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
             <div className={styles.commentBox} style={{ marginBottom: 10 }}>
               <img
                 className={styles.profileImage}
-                src={loadProfileURL(
-                  user?.profileURL ? user?.profileURL : "",
-                  "avatar"
-                )}
+                src={loadProfileURL(user?.profileURL, "avatar")}
               />
               <textarea
                 {...register("comment", {
@@ -774,7 +764,7 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
                   commentNum={5}
                   registTime="2022-04-15"
                   title="NextJS Framework 구성과 기본 사용방법 포스팅"
-                  imageURL="#"
+                  imageURL={null}
                 />
               );
             })}

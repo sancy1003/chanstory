@@ -14,8 +14,12 @@
   z-index: 99;
 }
 .logo {
-  font-weight: bold;
-  color: var(--brandColor);
+  display: flex;
+  align-items: center;
+}
+.logo img {
+  width: 100px;
+  height: auto;
 }
 .login {
   color: var(--black_100);

@@ -4,7 +4,11 @@ export const dateToString = (date: Date | string) => {
     init.getMonth() + 1
   }-${init.getDate() < 10 ? "0" : ""}${init.getDate()}`;
 };
-export const loadProfileURL = (url: string, type?: string) => {
+export const loadProfileURL = (url?: string | null, type?: string) => {
   let imageType = type ? type : "public";
-  return `https://imagedelivery.net/R2WiK4wfRK3oBXTwjgzQfA/${url}/${imageType}`;
+  if (url) {
+    return `https://imagedelivery.net/R2WiK4wfRK3oBXTwjgzQfA/${url}/${imageType}`;
+  } else {
+    return "/images/defaultProfile.svg";
+  }
 };

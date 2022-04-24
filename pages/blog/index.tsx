@@ -20,7 +20,7 @@ const Blog: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
                   commentNum={5}
                   registTime="2022-04-15"
                   title="NextJS Framework 구성과 기본 사용방법 포스팅"
-                  imageURL="#"
+                  imageURL={null}
                 />
               );
             })}
@@ -36,7 +36,7 @@ const Blog: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
                   commentNum={5}
                   registTime="2022-04-15"
                   title="NextJS Framework 구성과 기본 사용방법 포스팅"
-                  imageURL="#"
+                  imageURL={null}
                 />
               );
             })}

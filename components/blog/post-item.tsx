@@ -5,7 +5,7 @@ interface PostItemProps {
   commentNum: number;
   registTime: string;
   title: string;
-  imageURL: string;
+  imageURL: string | null;
 }
 
 export default function PostItem({
@@ -17,7 +17,10 @@ export default function PostItem({
   return (
     <div className={styles.postItem}>
       <div className={styles.postImageWrap}>
-        <img className={styles.postImage} src={imageURL} />
+        <img
+          className={styles.postImage}
+          src={imageURL ? imageURL : "/images/logo/default_thumbnail.png"}
+        />
       </div>
       <div title={title} className={styles.postTitle}>
         {title}
