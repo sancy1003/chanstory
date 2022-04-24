@@ -52,6 +52,8 @@ model Comment {
   content    String      @db.MediumText
   status     Int         @default(1)
   recomments Recomment[]
+
+  @@index([authorId, postId])
 }
 
 model Recomment {
@@ -68,6 +70,8 @@ model Recomment {
   postId    Int
   content   String   @db.MediumText
   status    Int      @default(1)
+
+  @@index([authorId, postId, commentId, taguserId])
 }
 
 enum Role {

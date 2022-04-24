@@ -6,6 +6,7 @@ import PostItem from "@components/blog/post-item";
 import { SessionUserData, withSsrSession } from "@libs/server/withSession";
 import { dateToString } from "@libs/client/commonFunction";
 import useSWR from "swr";
+import client from "@libs/server/client";
 
 interface PostsResponse {
   result: boolean;
@@ -73,6 +74,10 @@ export const getServerSideProps = withSsrSession(async function ({
   req,
 }: NextPageContext) {
   const user = req?.session.user;
+  if (user) {
+    const userData = await client?.user.findUnique({ where: { id: user.id } });
+    if (!userData) req.session.destroy();
+  }
   return {
     props: { user: user ? user : null },
   };

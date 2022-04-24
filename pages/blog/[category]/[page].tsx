@@ -9,6 +9,7 @@ import useSWR from "swr";
 import { categoryToNumber, dateToString } from "@libs/client/commonFunction";
 import { useEffect, useState } from "react";
 import Pagination from "react-js-pagination";
+import client from "@libs/server/client";
 
 interface PostsResponse {
   result: boolean;
@@ -81,6 +82,11 @@ export const getServerSideProps = withSsrSession(async function ({
   req,
 }: NextPageContext) {
   const user = req?.session.user;
+  if (user) {
+    const userData = await client?.user.findUnique({ where: { id: user.id } });
+    if (!userData) req.session.destroy();
+    console.log(userData);
+  }
   return {
     props: { user: user ? user : null },
   };

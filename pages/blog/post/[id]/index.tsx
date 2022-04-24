@@ -16,6 +16,7 @@ import Lottie from "react-lottie-player";
 import ring from "@resource/lottie/ring.json";
 import fetchDelete from "@libs/client/fetchDelete";
 import Response from "@utils/types/response";
+import client from "@libs/server/client";
 
 interface PostProps {
   user: SessionUserData | null;
@@ -784,6 +785,10 @@ export const getServerSideProps = withSsrSession(async function ({
   req,
 }: NextPageContext) {
   const user = req?.session.user;
+  if (user) {
+    const userData = await client?.user.findUnique({ where: { id: user.id } });
+    if (!userData) req.session.destroy();
+  }
   return {
     props: {
       user: user ? user : null,

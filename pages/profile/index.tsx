@@ -13,6 +13,7 @@ import fetchDelete from "@libs/client/fetchDelete";
 import ConfirmModal from "@components/modal/confirm-modal";
 import NicknameChangeModal from "@components/modal/nickname-change-modal";
 import { formattingImageURL } from "@libs/client/commonFunction";
+import client from "@libs/server/client";
 
 interface ProfileImageForm {
   profileImage: FileList;
@@ -247,6 +248,10 @@ export const getServerSideProps = withSsrSession(async function ({
   req,
 }: NextPageContext) {
   const user = req?.session.user;
+  if (user) {
+    const userData = await client?.user.findUnique({ where: { id: user.id } });
+    if (!userData) req.session.destroy();
+  }
   return {
     props: { user: user ? user : null },
   };
