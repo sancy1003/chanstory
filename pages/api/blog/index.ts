@@ -8,6 +8,66 @@ async function handler(
   res: NextApiResponse<ResponseType>
 ) {
   if (req.method === "GET") {
+    const newPosts = await client.post.findMany({
+      where: { isHide: false },
+      select: {
+        id: true,
+        title: true,
+        createdAt: true,
+        thumbnailURL: true,
+        _count: {
+          select: {
+            comments: true,
+            recomments: true,
+          },
+        },
+      },
+      take: 4,
+      orderBy: { createdAt: "desc" },
+    });
+    const hotPosts = await client.post.findMany({
+      where: { isHide: false },
+      select: {
+        id: true,
+        title: true,
+        createdAt: true,
+        thumbnailURL: true,
+        _count: {
+          select: {
+            comments: true,
+            recomments: true,
+          },
+        },
+      },
+      take: 4,
+      orderBy: [
+        {
+          comments: {
+            _count: "desc",
+          },
+        },
+        {
+          recomments: {
+            _count: "desc",
+          },
+        },
+      ],
+    });
+    return res.json({
+      result: true,
+      newPosts: newPosts.map((post) => {
+        return {
+          ...post,
+          commentCount: post._count.comments + post._count.recomments,
+        };
+      }),
+      hotPosts: hotPosts.map((post) => {
+        return {
+          ...post,
+          commentCount: post._count.comments + post._count.recomments,
+        };
+      }),
+    });
   }
   if (req.method === "POST") {
     const { user } = req.session;

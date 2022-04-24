@@ -1,3 +1,4 @@
+import { loadProfileURL } from "@libs/client/commonFunction";
 import styles from "@styles/blog.module.css";
 import { FaRegCommentDots } from "react-icons/fa";
 
@@ -19,7 +20,11 @@ export default function PostItem({
       <div className={styles.postImageWrap}>
         <img
           className={styles.postImage}
-          src={imageURL ? imageURL : "/images/logo/default_thumbnail.png"}
+          src={
+            imageURL
+              ? loadProfileURL(imageURL)
+              : "/images/logo/default_thumbnail.png"
+          }
         />
       </div>
       <div title={title} className={styles.postTitle}>

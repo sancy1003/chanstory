@@ -288,6 +288,7 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
     registRecomment({
       content: commentForm.comment,
       tagedUserId: recomment?.tagedUserId,
+      postId: router.query.id,
     });
   };
   useEffect(() => {

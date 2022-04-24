@@ -10,7 +10,7 @@ async function handler(
   if (req.method === "POST") {
     const { id: commentId } = req.query;
     const { user } = req.session;
-    const { content, recommentId, tagedUserId } = req.body;
+    const { content, recommentId, tagedUserId, postId } = req.body;
     if (!user) {
       return res.json({
         result: false,
@@ -28,6 +28,11 @@ async function handler(
           tagUser: {
             connect: {
               id: tagedUserId,
+            },
+          },
+          post: {
+            connect: {
+              id: +postId,
             },
           },
           comment: {

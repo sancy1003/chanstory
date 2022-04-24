@@ -4,8 +4,28 @@ import type { NextPage, NextPageContext } from "next";
 import styles from "@styles/blog.module.css";
 import PostItem from "@components/blog/post-item";
 import { SessionUserData, withSsrSession } from "@libs/server/withSession";
+import useSWR from "swr";
+import { dateToString } from "@libs/client/commonFunction";
+
+interface PostsResponse {
+  result: boolean;
+  newPosts: PostsType[];
+  hotPosts: PostsType[];
+}
+interface PostsType {
+  id: number;
+  title: string;
+  commentCount: number;
+  createdAt: string;
+  thumbnailURL: string | null;
+  _count: {
+    comments: number;
+    recomments: number;
+  };
+}
 
 const Blog: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
+  const { data } = useSWR<PostsResponse>(`/api/blog/`);
   return (
     <Layout user={user}>
       <div className={styles.container}>
@@ -13,14 +33,14 @@ const Blog: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
         <div className={styles.section} style={{ marginBottom: "70px" }}>
           <div className={styles.sectionTitle}>인기 포스팅</div>
           <div className={styles.postContainer}>
-            {[1, 1, 1, 1].map((item, idx) => {
+            {data?.hotPosts?.map((post, idx) => {
               return (
                 <PostItem
-                  key={idx}
-                  commentNum={5}
-                  registTime="2022-04-15"
-                  title="NextJS Framework 구성과 기본 사용방법 포스팅"
-                  imageURL={null}
+                  key={`hot_${idx}`}
+                  commentNum={post.commentCount}
+                  registTime={dateToString(post.createdAt)}
+                  title={post.title}
+                  imageURL={post.thumbnailURL}
                 />
               );
             })}
@@ -29,14 +49,14 @@ const Blog: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
         <div className={styles.section}>
           <div className={styles.sectionTitle}>최근 포스팅</div>
           <div className={styles.postContainer}>
-            {[1, 1, 1, 1].map((item, idx) => {
+            {data?.newPosts?.map((post, idx) => {
               return (
                 <PostItem
-                  key={idx}
-                  commentNum={5}
-                  registTime="2022-04-15"
-                  title="NextJS Framework 구성과 기본 사용방법 포스팅"
-                  imageURL={null}
+                  key={`new_${idx}`}
+                  commentNum={post.commentCount}
+                  registTime={dateToString(post.createdAt)}
+                  title={post.title}
+                  imageURL={post.thumbnailURL}
                 />
               );
             })}

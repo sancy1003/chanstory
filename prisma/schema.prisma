@@ -28,16 +28,17 @@ model User {
 }
 
 model Post {
-  id           Int       @id @default(autoincrement())
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  isHide       Boolean   @default(false)
-  thumbnailURL String?   @db.MediumText
-  title        String    @db.MediumText
-  content      String    @db.LongText
-  tags         String?   @db.MediumText
+  id           Int         @id @default(autoincrement())
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  isHide       Boolean     @default(false)
+  thumbnailURL String?     @db.MediumText
+  title        String      @db.MediumText
+  content      String      @db.LongText
+  tags         String?     @db.MediumText
   category     Int
   comments     Comment[]
+  recomments   Recomment[]
 }
 
 model Comment {
@@ -63,6 +64,8 @@ model Recomment {
   commentId Int
   tagUser   User?    @relation(name: "TagUser", fields: [taguserId], references: [id])
   taguserId Int?
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int
   content   String   @db.MediumText
   status    Int      @default(1)
 }
