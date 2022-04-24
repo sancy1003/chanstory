@@ -139,22 +139,22 @@ const Edit: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
   );
 };
 
-// export const getServerSideProps = withSsrSession(async function ({
-//   req,
-// }: NextPageContext) {
-//   const user = req?.session.user;
-//   if (user?.role !== "ADMIN") {
-//     return {
-//       redirect: {
-//         permanent: false,
-//         destination: "/blog",
-//       },
-//       props: {},
-//     };
-//   }
-//   return {
-//     props: { user: user ? user : null },
-//   };
-// });
+export const getServerSideProps = withSsrSession(async function ({
+  req,
+}: NextPageContext) {
+  const user = req?.session.user;
+  if (user?.role !== "ADMIN") {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/blog",
+      },
+      props: {},
+    };
+  }
+  return {
+    props: { user: user ? user : null },
+  };
+});
 
 export default Edit;
