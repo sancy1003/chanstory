@@ -785,10 +785,10 @@ export const getServerSideProps = withSsrSession(async function ({
   req,
 }: NextPageContext) {
   const user = req?.session.user;
-  // if (user) {
-  //   const userData = await client?.user.findUnique({ where: { id: user.id } });
-  //   if (!userData) req.session.destroy();
-  // }
+  if (user) {
+    const userData = await client?.user.findUnique({ where: { id: user.id } });
+    if (!userData) req.session.destroy();
+  }
   return {
     props: {
       user: user ? user : null,
