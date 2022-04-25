@@ -78,18 +78,18 @@ const Blog: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
   );
 };
 
-// export const getServerSideProps = withSsrSession(async function ({
-//   req,
-// }: NextPageContext) {
-//   const user = req?.session.user;
-//   if (user) {
-//     const userData = await client?.user.findUnique({ where: { id: user.id } });
-//     if (!userData) req.session.destroy();
-//     console.log(userData);
-//   }
-//   return {
-//     props: { user: user ? user : null },
-//   };
-// });
+export const getServerSideProps = withSsrSession(async function ({
+  req,
+}: NextPageContext) {
+  const user = req?.session.user;
+  if (user) {
+    const userData = await client?.user.findUnique({ where: { id: user.id } });
+    if (!userData) req.session.destroy();
+    console.log(userData);
+  }
+  return {
+    props: { user: user ? user : null },
+  };
+});
 
 export default Blog;
