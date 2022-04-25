@@ -30,13 +30,13 @@ interface PostsType {
 
 const Blog: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
   const router = useRouter();
-  // const { data } = useSWR<PostsResponse>(
-  //   router?.query?.category
-  //     ? `/api/blog/category?category=${categoryToNumber({
-  //         query: router?.query?.category + "",
-  //       })}&page=${router?.query?.page}`
-  //     : `/api/blog/category`
-  // );
+  const { data } = useSWR<PostsResponse>(
+    router?.query?.category
+      ? `/api/blog/category?category=${categoryToNumber({
+          query: router?.query?.category + "",
+        })}&page=${router?.query?.page}`
+      : `/api/blog/category`
+  );
 
   return (
     <Layout user={user}>
@@ -44,7 +44,7 @@ const Blog: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
         <Category />
         <div className={styles.section}>
           <div className={styles.postContainer}>
-            {/* {data?.posts?.map((post, idx) => {
+            {data?.posts?.map((post, idx) => {
               return (
                 <PostItem
                   key={idx}
@@ -55,9 +55,9 @@ const Blog: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
                   postId={post.id}
                 />
               );
-            })} */}
+            })}
           </div>
-          {/* {data && data.postCount > 8 ? (
+          {data && data.postCount > 8 ? (
             <Pagination
               activePage={router?.query?.page ? +router?.query?.page : 1}
               itemsCountPerPage={8}
@@ -71,25 +71,25 @@ const Blog: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
             />
           ) : (
             ""
-          )} */}
+          )}
         </div>
       </div>
     </Layout>
   );
 };
 
-export const getServerSideProps = withSsrSession(async function ({
-  req,
-}: NextPageContext) {
-  const user = req?.session.user;
-  if (user) {
-    const userData = await client?.user.findUnique({ where: { id: user.id } });
-    if (!userData) req.session.destroy();
-    console.log(userData);
-  }
-  return {
-    props: { user: user ? user : null },
-  };
-});
+// export const getServerSideProps = withSsrSession(async function ({
+//   req,
+// }: NextPageContext) {
+//   const user = req?.session.user;
+//   if (user) {
+//     const userData = await client?.user.findUnique({ where: { id: user.id } });
+//     if (!userData) req.session.destroy();
+//     console.log(userData);
+//   }
+//   return {
+//     props: { user: user ? user : null },
+//   };
+// });
 
 export default Blog;
