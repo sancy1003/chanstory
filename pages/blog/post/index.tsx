@@ -7,17 +7,11 @@ import useMutation from "@libs/client/useMutation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
+import { APIResponse } from "types/response";
+import { PostRegistForm } from "types/post";
 
-interface PostResult {
-  result: boolean;
+interface PostResponse extends APIResponse {
   id: number;
-  error?: string;
-}
-interface Form {
-  title: string;
-  tags: string;
-  category: string;
-  thumbnailImage: FileList;
 }
 
 const PostEditor = dynamic(() => import("@components/editor"), { ssr: false });
@@ -25,10 +19,11 @@ const PostEditor = dynamic(() => import("@components/editor"), { ssr: false });
 const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
   const router = useRouter();
   const [isHide, setIsHide] = useState(false);
-  const [post, { loading, data, error }] = useMutation<PostResult>("/api/blog");
-  const { register, handleSubmit } = useForm<Form>();
+  const [post, { loading, data, error }] =
+    useMutation<PostResponse>("/api/blog");
+  const { register, handleSubmit } = useForm<PostRegistForm>();
   const [content, setContent] = useState("내용을 입력해주세요.");
-  const onPost = async (formData: Form) => {
+  const onPost = async (formData: PostRegistForm) => {
     if (loading) return;
     let Imageurl = null;
     if (formData.thumbnailImage && formData.thumbnailImage.length > 0) {

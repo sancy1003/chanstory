@@ -9,47 +9,26 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import { Post, Recomment, User } from "@prisma/client";
+import { PostRegistForm } from "types/post";
+import { APIResponse, PostDetailResponse } from "types/response";
 
-interface CommentWithAuthor extends Comment {
-  author: User;
-  recomments: RecommentWithAuthor[];
-}
-interface RecommentWithAuthor extends Recomment {
-  author: User;
-  tagUser: User;
-}
-interface PostWithComments extends Post {
-  comments: CommentWithAuthor[];
-}
-interface PostResponse {
-  result: boolean;
-  error?: string;
-  post: PostWithComments;
-}
-interface PostResult {
-  result: boolean;
+interface PostResponse extends APIResponse {
   id: number;
-  error?: string;
-}
-interface Form {
-  title: string;
-  tags: string;
-  category: string;
-  thumbnailImage: FileList;
 }
 
 const PostEditor = dynamic(() => import("@components/editor"), { ssr: false });
 
 const Edit: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
   const router = useRouter();
-  const { data: prevData, mutate } = useSWR<PostResponse>(
+  const { data: prevData, mutate } = useSWR<PostDetailResponse>(
     router?.query?.id ? `/api/blog/${router.query.id}` : null
   );
   const [isHide, setIsHide] = useState(false);
-  const [post, { loading, data, error }] = useMutation<PostResult>("/api/blog");
-  const { register, handleSubmit, setValue } = useForm<Form>();
+  const [post, { loading, data, error }] =
+    useMutation<PostResponse>("/api/blog");
+  const { register, handleSubmit, setValue } = useForm<PostRegistForm>();
   const [content, setContent] = useState<string | null>(null);
-  const onPost = async (formData: Form) => {
+  const onPost = async (formData: PostRegistForm) => {
     if (loading) return;
     let Imageurl = null;
     if (formData.thumbnailImage && formData.thumbnailImage.length > 0) {

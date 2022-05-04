@@ -5,17 +5,8 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import useMutation from "@libs/client/useMutation";
 import { useEffect } from "react";
-
-interface SignupForm {
-  account: string;
-  password: string;
-  passwordConfirm: string;
-  nickname: string;
-}
-interface SignupResult {
-  result: boolean;
-  error: string;
-}
+import { APIResponse } from "types/response";
+import { SignupForm } from "types/auth";
 
 const Signup: NextPage = () => {
   const router = useRouter();
@@ -28,7 +19,7 @@ const Signup: NextPage = () => {
     formState: { errors },
   } = useForm<SignupForm>();
   const [signup, { data: signupResult, loading }] =
-    useMutation<SignupResult>(`/api/user/signup`);
+    useMutation<APIResponse>(`/api/user/signup`);
   const onSubmit = (data: SignupForm) => {
     if (loading) return;
     clearErrors(["account", "nickname"]);

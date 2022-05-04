@@ -14,14 +14,13 @@ import ConfirmModal from "@components/modal/confirm-modal";
 import NicknameChangeModal from "@components/modal/nickname-change-modal";
 import { formattingImageURL } from "@libs/client/commonFunction";
 import client from "@libs/server/client";
+import { APIResponse } from "types/response";
 
 interface ProfileImageForm {
   profileImage: FileList;
 }
-interface Respone {
-  result: boolean;
+interface ProfileEditResponse extends APIResponse {
   nickname: string;
-  error?: string;
 }
 
 const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
@@ -43,7 +42,7 @@ const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
   const [userProfile, setUserProfile] = useState<SessionUserData | null>(user);
   const [profileURL, setProfileURL] = useState<string | null>(null);
   const [loading, setLoading] = useState<Boolean>(false);
-  const [editProfileImage, { data }] = useMutation<Respone>(
+  const [editProfileImage, { data }] = useMutation<ProfileEditResponse>(
     `/api/user/profileImage`
   );
   const { watch, register } = useForm<ProfileImageForm>();
@@ -103,7 +102,7 @@ const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
   const [
     onChangeNickname,
     { data: changeNicknameData, loading: changeNicknameLoading },
-  ] = useMutation<Respone>(`/api/user/`);
+  ] = useMutation<ProfileEditResponse>(`/api/user/`);
   useEffect(() => {
     if (changeNicknameData && changeNicknameData.result && userProfile) {
       setNicknameChangeModal(false);

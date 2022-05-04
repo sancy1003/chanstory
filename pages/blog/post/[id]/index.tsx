@@ -17,53 +17,26 @@ import ring from "@resource/lottie/ring.json";
 import fetchDelete from "@libs/client/fetchDelete";
 import Response from "@utils/types/response";
 import client from "@libs/server/client";
+import {
+  APIResponse,
+  CommentRegistResponse,
+  PostDetailResponse,
+  RecommentRegistResponse,
+} from "types/response";
+import {
+  CommentForm,
+  CommentState,
+  CommentWithAuthor,
+  RecommentState,
+  RecommentWithAuthor,
+} from "types/comment";
 
 interface PostProps {
   user: SessionUserData | null;
 }
-interface CommentResponse {
-  result: boolean;
-  comment: CommentWithAuthor;
-  error?: string;
-}
-interface RecommentResponse {
-  result: boolean;
-  recomment: RecommentWithAuthor;
-  error?: string;
-}
-interface CommentForm {
-  comment: string;
-}
-interface CommentWithAuthor extends Comment {
-  author: User;
-  recomments: RecommentWithAuthor[];
-}
-interface RecommentWithAuthor extends Recomment {
-  author: User;
-  tagUser: User;
-}
-interface PostWithComments extends Post {
-  comments: CommentWithAuthor[];
-}
-interface PostResponse {
-  result: boolean;
-  error?: string;
-  post: PostWithComments;
-}
 interface MoreBtn {
   type: string;
   id: number;
-}
-interface CommentState {
-  type: string;
-  id: number;
-  content: string;
-  basicCommentId?: number;
-}
-interface RecommentState {
-  id: number;
-  nickname: string;
-  tagedUserId: number;
 }
 
 const Viewer = dynamic(() => import("@components/viewer"), { ssr: false });
@@ -89,11 +62,13 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
       window.removeEventListener("click", modalCloseHandler);
     };
   });
-  const { data, mutate } = useSWR<PostResponse>(
+  const { data, mutate } = useSWR<PostDetailResponse>(
     router?.query?.id ? `/api/blog/${router.query.id}` : null
   );
   const [regist, { loading, data: commentData, error }] =
-    useMutation<CommentResponse>(`/api/blog/comment/${router?.query?.id}`);
+    useMutation<CommentRegistResponse>(
+      `/api/blog/comment/${router?.query?.id}`
+    );
   useEffect(() => {
     if (commentData && commentData.result) {
       reset();
@@ -283,7 +258,9 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
   const [
     registRecomment,
     { loading: registRecommentLoading, data: registRecommentData },
-  ] = useMutation<RecommentResponse>(`/api/blog/recomment/${recomment?.id}`);
+  ] = useMutation<RecommentRegistResponse>(
+    `/api/blog/recomment/${recomment?.id}`
+  );
   const onRegisterRecomment = (commentForm: CommentForm) => {
     if (registRecommentLoading) return;
     registRecomment({

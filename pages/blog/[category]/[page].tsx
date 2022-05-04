@@ -10,27 +10,11 @@ import { categoryToNumber, dateToString } from "@libs/client/commonFunction";
 import { useEffect, useState } from "react";
 import Pagination from "react-js-pagination";
 import client from "@libs/server/client";
-
-interface PostsResponse {
-  result: boolean;
-  posts: PostsType[];
-  postCount: number;
-}
-interface PostsType {
-  id: number;
-  title: string;
-  commentCount: number;
-  createdAt: string;
-  thumbnailURL: string | null;
-  _count: {
-    comments: number;
-    recomments: number;
-  };
-}
+import { PostListByCategoryResponse } from "types/response";
 
 const Blog: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
   const router = useRouter();
-  const { data } = useSWR<PostsResponse>(
+  const { data } = useSWR<PostListByCategoryResponse>(
     router?.query?.category
       ? `/api/blog/category?category=${categoryToNumber({
           query: router?.query?.category + "",

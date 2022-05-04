@@ -102,16 +102,16 @@ section {
 }
 body {
   line-height: 1.3;
-  /* font-family: "Nanum Barun Gothic", sans-serif; */
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: "Nanum Barun Gothic", sans-serif;
+  /* font-family: "Noto Sans KR", sans-serif; */
   color: var(--black_100);
   padding-top: 50px;
 }
 input,
 textarea {
   line-height: 1.3;
-  /* font-family: "Nanum Barun Gothic", sans-serif; */
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: "Nanum Barun Gothic", sans-serif;
+  /* font-family: "Noto Sans KR", sans-serif; */
   color: var(--black_100);
 }
 input:focus,

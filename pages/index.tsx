@@ -7,26 +7,10 @@ import { SessionUserData, withSsrSession } from "@libs/server/withSession";
 import { dateToString } from "@libs/client/commonFunction";
 import useSWR from "swr";
 import client from "@libs/server/client";
-
-interface PostsResponse {
-  result: boolean;
-  newPosts: PostsType[];
-  hotPosts: PostsType[];
-}
-interface PostsType {
-  id: number;
-  title: string;
-  commentCount: number;
-  createdAt: string;
-  thumbnailURL: string | null;
-  _count: {
-    comments: number;
-    recomments: number;
-  };
-}
+import { PostListResponse } from "types/response";
 
 const Home: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
-  const { data } = useSWR<PostsResponse>(`/api/blog/`);
+  const { data } = useSWR<PostListResponse>(`/api/blog/`);
   return (
     <Layout user={user}>
       <div className={styles.container}>
