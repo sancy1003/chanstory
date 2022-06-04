@@ -73,7 +73,7 @@ const Signup: NextPage = () => {
               maxLength={20}
               required
               type="account"
-              placeholder={"6 ~ 20자"}
+              placeholder={"4 ~ 20자"}
               className={styles.formInput}
             />
             <div className={styles.formInputWarn}>
@@ -131,7 +131,7 @@ const Signup: NextPage = () => {
                 required: "사용하실 닉네임을 입력해주세요.",
                 minLength: {
                   value: 2,
-                  message: "닉네임이 너무 짧아요. (4 ~ 16자)",
+                  message: "닉네임이 너무 짧아요. (2 ~ 16자)",
                 },
                 maxLength: {
                   value: 16,

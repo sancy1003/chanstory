@@ -33,6 +33,7 @@ import {
 
 interface PostProps {
   user: SessionUserData | null;
+  postTitle: string;
 }
 interface MoreBtn {
   type: string;
@@ -53,7 +54,7 @@ const Viewer = dynamic(() => import("@components/viewer"), {
   ),
 });
 
-const PostDetail: NextPage<PostProps> = ({ user }) => {
+const PostDetail: NextPage<PostProps> = ({ user, postTitle }) => {
   const router = useRouter();
   const [editComment, setEditComment] = useState<CommentState | null>(null);
   const [moreBtnView, setMoreBtnView] = useState<MoreBtn | null>(null);
@@ -335,7 +336,7 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
     );
   }
   return (
-    <Layout user={user}>
+    <Layout user={user} title={postTitle}>
       <div className={styles.container}>
         <div className={styles.postingHeader}>
           <div className={styles.postingTitleWrap}>
@@ -779,15 +780,25 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
 
 export const getServerSideProps = withSsrSession(async function ({
   req,
+  query,
 }: NextPageContext) {
   const user = req?.session.user;
   if (user) {
     const userData = await client?.user.findUnique({ where: { id: user.id } });
     if (!userData) req.session.destroy();
   }
+
+  const id = Number(query.id);
+
+  const postTitle = await client.post.findUnique({
+    where: { id: +id },
+    select: { title: true },
+  });
+
   return {
     props: {
       user: user ? user : null,
+      postTitle: postTitle?.title,
     },
   };
 });
