@@ -39,7 +39,19 @@ interface MoreBtn {
   id: number;
 }
 
-const Viewer = dynamic(() => import("@components/viewer"), { ssr: false });
+const Viewer = dynamic(() => import("@components/viewer"), {
+  ssr: false,
+  loading: () => (
+    <div style={{ width: "100%", height: "100vh", paddingTop: "100px" }}>
+      <Lottie
+        loop
+        animationData={ring}
+        play
+        style={{ width: 150, height: 150, margin: "0 auto" }}
+      />
+    </div>
+  ),
+});
 
 const PostDetail: NextPage<PostProps> = ({ user }) => {
   const router = useRouter();
@@ -315,6 +327,13 @@ const PostDetail: NextPage<PostProps> = ({ user }) => {
     editReset();
   };
   const tags = data?.post?.tags?.split(", ");
+  if (!data) {
+    return (
+      <Layout user={user}>
+        <div />
+      </Layout>
+    );
+  }
   return (
     <Layout user={user}>
       <div className={styles.container}>
