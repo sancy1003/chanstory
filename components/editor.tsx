@@ -18,7 +18,6 @@ export default function PostEditor({
     fn(editorRef.current.getInstance().getMarkdown());
   };
   const uploadImage = async (image: File) => {
-    console.log(image);
     let Imageurl = null;
     const { uploadURL } = await (await fetch(`/api/uploadImage`)).json();
     const form = new FormData();

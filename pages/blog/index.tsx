@@ -8,6 +8,7 @@ import useSWR from "swr";
 import client from "@libs/server/client";
 import { dateToString } from "@libs/client/commonFunction";
 import { PostListResponse } from "types/response";
+import PostItemSkeleton from "@components/blog/post-item-skeleton";
 
 const Blog: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
   const { data } = useSWR<PostListResponse>(`/api/blog/`);
@@ -18,35 +19,39 @@ const Blog: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
         <div className={styles.section} style={{ marginBottom: "70px" }}>
           <div className={styles.sectionTitle}>인기 포스팅</div>
           <div className={styles.postContainer}>
-            {data?.hotPosts?.map((post, idx) => {
-              return (
-                <PostItem
-                  key={`hot_${idx}`}
-                  commentNum={post.commentCount}
-                  registTime={dateToString(post.createdAt)}
-                  title={post.title}
-                  imageURL={post.thumbnailURL}
-                  postId={post.id}
-                />
-              );
-            })}
+            {data
+              ? data.hotPosts?.map((post, idx) => {
+                  return (
+                    <PostItem
+                      key={`hot_${idx}`}
+                      commentNum={post.commentCount}
+                      registTime={dateToString(post.createdAt)}
+                      title={post.title}
+                      imageURL={post.thumbnailURL}
+                      postId={post.id}
+                    />
+                  );
+                })
+              : [1, 2, 3, 4].map((item) => <PostItemSkeleton key={item} />)}
           </div>
         </div>
         <div className={styles.section}>
           <div className={styles.sectionTitle}>최근 포스팅</div>
           <div className={styles.postContainer}>
-            {data?.newPosts?.map((post, idx) => {
-              return (
-                <PostItem
-                  key={`new_${idx}`}
-                  commentNum={post.commentCount}
-                  registTime={dateToString(post.createdAt)}
-                  title={post.title}
-                  imageURL={post.thumbnailURL}
-                  postId={post.id}
-                />
-              );
-            })}
+            {data
+              ? data.newPosts?.map((post, idx) => {
+                  return (
+                    <PostItem
+                      key={`new_${idx}`}
+                      commentNum={post.commentCount}
+                      registTime={dateToString(post.createdAt)}
+                      title={post.title}
+                      imageURL={post.thumbnailURL}
+                      postId={post.id}
+                    />
+                  );
+                })
+              : [1, 2, 3, 4].map((item) => <PostItemSkeleton key={item} />)}
           </div>
         </div>
       </div>
