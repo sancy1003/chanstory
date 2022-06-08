@@ -218,3 +218,6 @@ ul.pagination li a.active {
   max-width: 100% !important;
   margin: 40px auto !important;
 }
+.toastui-editor-contents pre {
+  font-size: 15px !important;
+}

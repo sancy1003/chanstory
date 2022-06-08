@@ -148,6 +148,13 @@
   "resolved" "https://registry.npmjs.org/@rushstack/eslint-patch/-/eslint-patch-1.0.8.tgz"
   "version" "1.0.8"
 
+"@toast-ui/editor-plugin-code-syntax-highlight@^3.0.0":
+  "integrity" "sha512-62XB3IcFgvRxVZzj2kTeQao0xACotv/mD6jScSDkWac2V0jkCsTh0kZRG4TSW5bGdKvx4xz3YjFm7gWgw1I/Aw=="
+  "resolved" "https://registry.npmjs.org/@toast-ui/editor-plugin-code-syntax-highlight/-/editor-plugin-code-syntax-highlight-3.0.0.tgz"
+  "version" "3.0.0"
+  dependencies:
+    "prismjs" "^1.23.0"
+
 "@toast-ui/editor-plugin-color-syntax@^3.0.3":
   "integrity" "sha512-5R7OOjN3voMjeKC09wSxLqnK/GYaCNLiWVxscMPqideYzWK+asEcNEyHH2HBPheVC/1YKqIEle1AxWFHTwDpnw=="
   "resolved" "https://registry.npmjs.org/@toast-ui/editor-plugin-color-syntax/-/editor-plugin-color-syntax-3.0.3.tgz"
@@ -1546,6 +1553,11 @@
   "version" "3.12.0"
   dependencies:
     "@prisma/engines" "3.12.0-37.22b822189f46ef0dc5c5b503368d1bee01213980"
+
+"prismjs@^1.23.0", "prismjs@^1.28.0":
+  "integrity" "sha512-8aaXdYvl1F7iC7Xm1spqSaY/OJBpYW3v+KJ+F17iYxvdc8sfjW194COK5wVhMZX45tGteiBQgdvD/nhxcRwylw=="
+  "resolved" "https://registry.npmjs.org/prismjs/-/prismjs-1.28.0.tgz"
+  "version" "1.28.0"
 
 "prop-types@^15.6.2", "prop-types@^15.8.1", "prop-types@15.x.x - 16.x.x":
   "integrity" "sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg=="

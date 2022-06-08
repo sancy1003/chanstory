@@ -1,5 +1,9 @@
 import { Viewer } from "@toast-ui/react-editor";
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
+import "prismjs/themes/prism.css";
+import "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css";
+import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight";
+import Prism from "prismjs";
 
 export default function PostVeiwer({
   content,
@@ -8,7 +12,10 @@ export default function PostVeiwer({
 }): JSX.Element {
   return (
     <>
-      <Viewer initialValue={content} />
+      <Viewer
+        initialValue={content}
+        plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
+      />
     </>
   );
 }
