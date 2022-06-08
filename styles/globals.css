@@ -211,5 +211,10 @@ ul.pagination li a.active {
   color: #337ab7;
 }
 .toastui-editor-contents {
-  font-size: 16px !important;
+  font-size: 19px !important;
+}
+.toastui-editor-contents img {
+  display: block !important;
+  max-width: 100% !important;
+  margin: 40px auto !important;
 }

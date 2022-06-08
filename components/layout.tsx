@@ -23,24 +23,26 @@ export default function Layout({ title, children, user }: LayoutProps) {
         <title>{title ? `${title} - chanstory` : `chanstory`}</title>
       </Head>
       <div className={styles.header}>
-        <Link href={"/"}>
-          <a className={styles.logo}>
-            <img src={"/images/logo/logo.svg"} />
-          </a>
-        </Link>
-        {user ? (
-          <div className={styles.userWrap} onClick={onClickProfile}>
-            <img
-              src={formattingImageURL(user?.profileURL, "avatar")}
-              className={styles.userProfileImage}
-            />
-            <div className={styles.userNickname}>{user.nickname}</div>
-          </div>
-        ) : (
-          <Link href={"/login"}>
-            <a className={styles.login}>로그인</a>
+        <div className={styles.headerWrap}>
+          <Link href={"/"}>
+            <a className={styles.logo}>
+              <img src={"/images/logo/logo.svg"} />
+            </a>
           </Link>
-        )}
+          {user ? (
+            <div className={styles.userWrap} onClick={onClickProfile}>
+              <img
+                src={formattingImageURL(user?.profileURL, "avatar")}
+                className={styles.userProfileImage}
+              />
+              <div className={styles.userNickname}>{user.nickname}</div>
+            </div>
+          ) : (
+            <Link href={"/login"}>
+              <a className={styles.login}>로그인</a>
+            </Link>
+          )}
+        </div>
       </div>
       {children}
     </div>

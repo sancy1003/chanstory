@@ -2,16 +2,21 @@
   width: 100%;
   position: fixed;
   background-color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   box-sizing: border-box;
-  padding: 0 50px;
   top: 0;
   left: 0;
   height: 60px;
   box-shadow: 0px 5px 7px rgba(0, 0, 0, 0.03);
   z-index: 99;
+}
+.headerWrap {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1160px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
 }
 .logo {
   display: flex;

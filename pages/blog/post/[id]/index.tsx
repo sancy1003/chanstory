@@ -337,7 +337,7 @@ const PostDetail: NextPage<PostProps> = ({ user, postTitle }) => {
   }
   return (
     <Layout user={user} title={postTitle}>
-      <div className={styles.container}>
+      <div className={styles.postContentContainer}>
         <div className={styles.postingHeader}>
           <div className={styles.postingTitleWrap}>
             <FaChevronLeft onClick={() => router.back()} />

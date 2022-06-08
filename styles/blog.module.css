@@ -5,6 +5,13 @@
   margin: 0 auto;
   box-sizing: border-box;
 }
+.postContentContainer {
+  padding: 50px 20px;
+  width: 100%;
+  max-width: 840px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
 .section {
   width: 100%;
   margin-bottom: 100px;
@@ -14,7 +21,6 @@
 }
 .sectionTitle {
   margin-bottom: 30px;
-  font-weight: 500;
   font-size: 18px;
   font-weight: bold;
 }
@@ -121,7 +127,7 @@
   display: flex;
   align-items: center;
   padding-right: 30px;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
 }
 .postingTitleWrap svg {
@@ -183,10 +189,11 @@
   resize: none;
   flex: 1;
   height: 105px;
-  font-size: 16px;
+  font-size: 17px;
   border-radius: 6px;
   border: 1px solid var(--black_40);
   padding: 10px;
+  line-height: 1.5;
   box-sizing: border-box;
 }
 .btnWriteComment {
@@ -242,15 +249,17 @@
 }
 .commentWriterInfo .nickname {
   margin-right: 15px;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: bold;
 }
 .commentWriterInfo .registTime {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--black_60);
 }
 .commentContent {
   white-space: pre-line;
+  line-height: 1.5;
+  font-size: 17px;
   color: var(--black_90);
 }
 .commentContent span {
