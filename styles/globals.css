@@ -102,7 +102,7 @@ section {
 }
 body {
   line-height: 1.3;
-  font-family: "Nanum Barun Gothic", sans-serif;
+  font-family: "NanumBarunGothic", sans-serif, "TossFaceFontMac";
   /* font-family: "Noto Sans KR", sans-serif; */
   color: var(--black_100);
   padding-top: 50px;
@@ -110,7 +110,7 @@ body {
 input,
 textarea {
   line-height: 1.3;
-  font-family: "Nanum Barun Gothic", sans-serif;
+  font-family: "NanumBarunGothic", sans-serif, "TossFaceFontMac";
   /* font-family: "Noto Sans KR", sans-serif; */
   color: var(--black_100);
 }
@@ -212,6 +212,7 @@ ul.pagination li a.active {
 }
 .toastui-editor-contents {
   font-size: 19px !important;
+  font-family: "NanumBarunGothic", sans-serif, "TossFaceFontMac" !important;
 }
 .toastui-editor-contents img {
   display: block !important;
@@ -220,4 +221,9 @@ ul.pagination li a.active {
 }
 .toastui-editor-contents pre {
   font-size: 15px !important;
+}
+
+@font-face {
+  font-family: "TossFaceFontMac";
+  src: url("../resource/fonts/TossFaceFontMac.ttf");
 }

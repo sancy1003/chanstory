@@ -5,11 +5,13 @@ import "tui-color-picker/dist/tui-color-picker.css";
 import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
 import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
 import { formattingImageURL } from "@libs/client/commonFunction";
-import "prismjs/themes/prism.css";
 import "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css";
 import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight";
-// @ts-ignore
 import Prism from "prismjs";
+import "prismjs/components/prism-typescript.min";
+import "prismjs/components/prism-jsx.min";
+import "prismjs/components/prism-tsx.min";
+import "prismjs/themes/prism.css";
 
 export default function PostEditor({
   content,
