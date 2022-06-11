@@ -15,7 +15,6 @@ import { useEffect, useRef, useState } from "react";
 import Lottie from "react-lottie-player";
 import ring from "@resource/lottie/ring.json";
 import fetchDelete from "@libs/client/fetchDelete";
-import Response from "@utils/types/response";
 import client from "@libs/server/client";
 import {
   APIResponse,
@@ -161,11 +160,11 @@ const PostDetail: NextPage<PostProps> = ({ user, postTitle }) => {
   } = useForm<CommentForm>();
   const [recomment, setRecomment] = useState<RecommentState | null>(null);
   const [eidt, { loading: editLoading, data: editCommentData }] =
-    useMutation<Response>(`/api/blog/comment/${router?.query?.id}`);
+    useMutation<APIResponse>(`/api/blog/comment/${router?.query?.id}`);
   const [
     eidtRecomment,
     { loading: editRecommentLoading, data: editRecommentCommentData },
-  ] = useMutation<Response>(
+  ] = useMutation<APIResponse>(
     `/api/blog/recomment/${editComment?.basicCommentId}`
   );
   const onEditComment = (commentForm: CommentForm) => {

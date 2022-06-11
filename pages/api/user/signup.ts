@@ -1,3 +1,4 @@
+import { encryptPassword } from "@libs/server/bcrypt";
 import client from "@libs/server/client";
 import withHandler, { ResponseType } from "@libs/server/withHandler";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -29,10 +30,11 @@ async function handler(
       error: "이미 사용중인 닉네임이 있어요.",
     });
   }
+  const encryptedPassword = await encryptPassword(password);
   const user = await client.user.create({
     data: {
       account,
-      password,
+      password: encryptedPassword,
       nickname,
     },
   });

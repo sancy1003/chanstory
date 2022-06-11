@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import withHandler, { ResponseType } from "@libs/server/withHandler";
 import client from "@libs/server/client";
 import { withApiSession } from "@libs/server/withSession";
+import { comparePassword } from "@libs/server/bcrypt";
 
 async function handler(
   req: NextApiRequest,
@@ -19,7 +20,11 @@ async function handler(
       error: "아이디 혹은 비밀번호가 일치하지 않습니다.",
     });
   }
-  if (password !== foundUser.password) {
+  const isVailid = await comparePassword({
+    password: foundUser.password,
+    inputPassword: password,
+  });
+  if (!isVailid) {
     return res.json({
       result: false,
       error: "아이디 혹은 비밀번호가 일치하지 않습니다.",
