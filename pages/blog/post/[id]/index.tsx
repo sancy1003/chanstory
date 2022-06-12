@@ -336,7 +336,15 @@ const PostDetail: NextPage<PostProps> = ({ user, postSeoInfo }) => {
   const tags = data?.post?.tags?.split(", ");
   if (!data) {
     return (
-      <Layout user={user}>
+      <Layout
+        user={user}
+        title={postSeoInfo?.title}
+        thumbnailURL={
+          postSeoInfo ? formattingImageURL(postSeoInfo.thumbnailURL) : null
+        }
+        keywords={postSeoInfo?.tags}
+        url={postSeoInfo?.url}
+      >
         <div />
       </Layout>
     );

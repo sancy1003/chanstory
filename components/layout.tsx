@@ -12,7 +12,7 @@ interface LayoutProps {
   user?: SessionUserData | null;
   thumbnailURL?: string | null;
   keywords?: string | null;
-  url?: string | null;
+  url?: string;
 }
 
 export default function Layout({
