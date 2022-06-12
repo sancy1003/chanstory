@@ -37,7 +37,10 @@ export default function Layout({
         />
         <meta
           property="og:image"
-          content={thumbnailURL || "images/logo/default_thumbnail.png"}
+          content={
+            thumbnailURL ||
+            "https://chanstory.dev/images/logo/default_thumbnail.png"
+          }
         />
         {url && (
           <meta property="og:url" content={`https://www.chanstory.dev${url}`} />
