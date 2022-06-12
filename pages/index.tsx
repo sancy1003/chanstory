@@ -17,7 +17,7 @@ const Home: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
       <div className={styles.container}>
         <Category isHome />
         <div className={styles.section} style={{ marginBottom: "70px" }}>
-          <div className={styles.sectionTitle}>인기 포스팅</div>
+          <div className={styles.sectionTitle}>🔥&nbsp;&nbsp;인기 포스팅</div>
           <div className={styles.postContainer}>
             {data
               ? data.hotPosts?.map((post, idx) => {
@@ -36,7 +36,7 @@ const Home: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
           </div>
         </div>
         <div className={styles.section}>
-          <div className={styles.sectionTitle}>최근 포스팅</div>
+          <div className={styles.sectionTitle}>✨&nbsp;&nbsp;최근 포스팅</div>
           <div className={styles.postContainer}>
             {data
               ? data.newPosts?.map((post, idx) => {

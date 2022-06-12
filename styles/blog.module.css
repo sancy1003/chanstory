@@ -21,19 +21,19 @@
 }
 .sectionTitle {
   margin-bottom: 30px;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
 }
 .category {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  gap: 20px 8px;
 }
 .category li {
-  padding: 8px 30px;
-  border: 1px solid var(--black_60);
   border-radius: 100px;
-  font-size: 14px;
+  font-size: 18px;
   margin-right: 25px;
   cursor: pointer;
   min-width: 50px;
@@ -41,15 +41,12 @@
   justify-content: center;
   color: var(--black_70);
   background-color: #fff;
-  margin-bottom: 14px;
-}
-.category li:nth-last-child(1) {
-  margin-right: 0;
+  padding: 10px 16px;
 }
 .category li.active {
-  border-color: var(--brandColor);
-  background-color: var(--brandColor);
-  color: #fff;
+  background-color: var(--brandColor_weak);
+  color: var(--brandColor);
+  padding: 10px 16px;
 }
 .postContainer {
   width: 100%;
@@ -74,7 +71,7 @@
 .postTitle {
   font-size: 16px;
   margin-bottom: 10px;
-  line-height: 130%;
+  font-weight: bold;
 }
 .postInfo {
   width: 100%;
@@ -82,7 +79,7 @@
   align-items: center;
   justify-content: space-between;
   color: var(--black_70);
-  font-size: 12px;
+  font-size: 14px;
 }
 .postCommentWrap {
   display: flex;
@@ -193,7 +190,7 @@
   border-radius: 6px;
   border: 1px solid var(--black_40);
   padding: 10px;
-  line-height: 1.5;
+  line-height: 150%;
   box-sizing: border-box;
 }
 .btnWriteComment {
@@ -258,7 +255,7 @@
 }
 .commentContent {
   white-space: pre-line;
-  line-height: 1.5;
+  line-height: 150%;
   font-size: 17px;
   color: var(--black_90);
 }

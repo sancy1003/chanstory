@@ -18,7 +18,7 @@ export default function Category({ isHome }: CategoryProps) {
   };
 
   return (
-    <div className={styles.section} style={{ marginBottom: "86px" }}>
+    <div className={styles.section}>
       <div className={styles.sectionTitle}>카테고리</div>
       <ul className={styles.category}>
         {CATEGORY.map((item, idx) => {
@@ -28,7 +28,7 @@ export default function Category({ isHome }: CategoryProps) {
               className={currentCategory === item.query ? styles.active : ""}
               key={idx}
             >
-              {item.title}
+              {item.title}&nbsp;&nbsp;{item.emoji}
             </li>
           );
         })}
