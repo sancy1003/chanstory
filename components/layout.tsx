@@ -10,9 +10,17 @@ interface LayoutProps {
   children: React.ReactNode;
   title?: string;
   user?: SessionUserData | null;
+  thumbnailURL?: string | null;
+  keywords?: string | null;
 }
 
-export default function Layout({ title, children, user }: LayoutProps) {
+export default function Layout({
+  title,
+  children,
+  user,
+  thumbnailURL,
+  keywords,
+}: LayoutProps) {
   const router = useRouter();
   const onClickProfile = () => {
     router.push("/profile");
@@ -20,7 +28,16 @@ export default function Layout({ title, children, user }: LayoutProps) {
   return (
     <div>
       <Head>
-        <title>{title ? `${title} - chanstory` : `chanstory`}</title>
+        <title>{title ? `${title} | chanstory` : `chanstory`}</title>
+        <meta
+          property="og:title"
+          content={title ? `${title} | chanstory` : `chanstory`}
+        />
+        <meta
+          property="og:image"
+          content={thumbnailURL || "images/logo/default_thumbnail.png"}
+        />
+        {keywords && <meta name="keywords" content={keywords} />}
       </Head>
       <div className={styles.header}>
         <div className={styles.headerWrap}>

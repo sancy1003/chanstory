@@ -30,9 +30,15 @@ import {
   RecommentWithAuthor,
 } from "types/comment";
 
+interface PostSeoInfo {
+  title: string;
+  thumbnailURL: string;
+  tags: string;
+}
+
 interface PostProps {
   user: SessionUserData | null;
-  postTitle: string;
+  postSeoInfo: PostSeoInfo;
 }
 interface MoreBtn {
   type: string;
@@ -53,7 +59,7 @@ const Viewer = dynamic(() => import("@components/viewer"), {
   ),
 });
 
-const PostDetail: NextPage<PostProps> = ({ user, postTitle }) => {
+const PostDetail: NextPage<PostProps> = ({ user, postSeoInfo }) => {
   const router = useRouter();
   const [editComment, setEditComment] = useState<CommentState | null>(null);
   const [moreBtnView, setMoreBtnView] = useState<MoreBtn | null>(null);
@@ -335,7 +341,14 @@ const PostDetail: NextPage<PostProps> = ({ user, postTitle }) => {
     );
   }
   return (
-    <Layout user={user} title={postTitle}>
+    <Layout
+      user={user}
+      title={postSeoInfo?.title}
+      thumbnailURL={
+        postSeoInfo ? formattingImageURL(postSeoInfo.thumbnailURL) : null
+      }
+      keywords={postSeoInfo?.tags}
+    >
       <div className={styles.postContentContainer}>
         <div className={styles.postingHeader}>
           <div className={styles.postingTitleWrap}>
@@ -789,15 +802,19 @@ export const getServerSideProps = withSsrSession(async function ({
 
   const id = Number(query.id);
 
-  const postTitle = await client.post.findUnique({
+  const post = await client.post.findUnique({
     where: { id: +id },
-    select: { title: true },
+    select: { title: true, thumbnailURL: true, tags: true },
   });
 
   return {
     props: {
       user: user ? user : null,
-      postTitle: postTitle?.title,
+      postSeoInfo: {
+        title: post?.title,
+        thumbnailURL: post?.thumbnailURL,
+        tags: post?.tags,
+      },
     },
   };
 });
