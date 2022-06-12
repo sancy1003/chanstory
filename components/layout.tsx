@@ -12,6 +12,7 @@ interface LayoutProps {
   user?: SessionUserData | null;
   thumbnailURL?: string | null;
   keywords?: string | null;
+  url?: string | null;
 }
 
 export default function Layout({
@@ -20,6 +21,7 @@ export default function Layout({
   user,
   thumbnailURL,
   keywords,
+  url,
 }: LayoutProps) {
   const router = useRouter();
   const onClickProfile = () => {
@@ -37,6 +39,9 @@ export default function Layout({
           property="og:image"
           content={thumbnailURL || "images/logo/default_thumbnail.png"}
         />
+        {url && (
+          <meta property="og:url" content={`https://www.chanstory.dev${url}`} />
+        )}
         {keywords && <meta name="keywords" content={keywords} />}
       </Head>
       <div className={styles.header}>

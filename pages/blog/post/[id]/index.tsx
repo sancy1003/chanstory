@@ -32,8 +32,9 @@ import {
 
 interface PostSeoInfo {
   title: string;
-  thumbnailURL: string;
-  tags: string;
+  thumbnailURL: string | null;
+  tags: string | null;
+  url: string;
 }
 
 interface PostProps {
@@ -348,6 +349,7 @@ const PostDetail: NextPage<PostProps> = ({ user, postSeoInfo }) => {
         postSeoInfo ? formattingImageURL(postSeoInfo.thumbnailURL) : null
       }
       keywords={postSeoInfo?.tags}
+      url={postSeoInfo?.url}
     >
       <div className={styles.postContentContainer}>
         <div className={styles.postingHeader}>
@@ -814,6 +816,7 @@ export const getServerSideProps = withSsrSession(async function ({
         title: post?.title,
         thumbnailURL: post?.thumbnailURL,
         tags: post?.tags,
+        url: req?.url,
       },
     },
   };
