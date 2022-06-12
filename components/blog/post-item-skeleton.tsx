@@ -1,7 +1,4 @@
-import { formattingImageURL } from "@libs/client/commonFunction";
 import styles from "@styles/blog.module.css";
-import { useRouter } from "next/router";
-import { FaRegCommentDots } from "react-icons/fa";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 

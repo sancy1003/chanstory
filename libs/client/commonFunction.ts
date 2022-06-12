@@ -11,7 +11,18 @@ export const formattingImageURL = (url?: string | null, type?: string) => {
   if (url) {
     return `https://imagedelivery.net/R2WiK4wfRK3oBXTwjgzQfA/${url}/${imageType}`;
   } else {
-    return "/images/defaultProfile.svg";
+    return "";
+  }
+};
+export const formattingUserProfileURL = (
+  url?: string | null,
+  type?: string
+) => {
+  let imageType = type ? type : "public";
+  if (url) {
+    return `https://imagedelivery.net/R2WiK4wfRK3oBXTwjgzQfA/${url}/${imageType}`;
+  } else {
+    return "/images/profile/defaultProfile.svg";
   }
 };
 export const categoryToNumber = ({

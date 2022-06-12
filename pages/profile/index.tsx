@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import fetchDelete from "@libs/client/fetchDelete";
 import ConfirmModal from "@components/modal/confirm-modal";
 import NicknameChangeModal from "@components/modal/nickname-change-modal";
-import { formattingImageURL } from "@libs/client/commonFunction";
+import { formattingUserProfileURL } from "@libs/client/commonFunction";
 import client from "@libs/server/client";
 import { APIResponse } from "types/response";
 
@@ -186,7 +186,10 @@ const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
                   </div>
                   <img
                     className={styles.profileImage}
-                    src={formattingImageURL(userProfile?.profileURL, "avatar")}
+                    src={formattingUserProfileURL(
+                      userProfile?.profileURL,
+                      "avatar"
+                    )}
                   />
                 </div>
               ) : (
@@ -206,7 +209,7 @@ const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
                   </div>
                   <img
                     className={styles.profileImage}
-                    src={formattingImageURL(user?.profileURL, "avatar")}
+                    src={formattingUserProfileURL(user?.profileURL, "avatar")}
                   />
                 </div>
               )}

@@ -4,7 +4,7 @@ import Head from "next/head";
 import styles from "@styles/Layout.module.css";
 import { SessionUserData } from "@libs/server/withSession";
 import { useRouter } from "next/router";
-import { formattingImageURL } from "@libs/client/commonFunction";
+import { formattingUserProfileURL } from "@libs/client/commonFunction";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -37,10 +37,7 @@ export default function Layout({
         />
         <meta
           property="og:image"
-          content={
-            thumbnailURL ||
-            "https://chanstory.dev/images/logo/default_thumbnail.png"
-          }
+          content={thumbnailURL || "/images/thumbnail/default_thumbnail.png"}
         />
         {url && (
           <meta property="og:url" content={`https://www.chanstory.dev${url}`} />
@@ -57,7 +54,7 @@ export default function Layout({
           {user ? (
             <div className={styles.userWrap} onClick={onClickProfile}>
               <img
-                src={formattingImageURL(user?.profileURL, "avatar")}
+                src={formattingUserProfileURL(user?.profileURL, "avatar")}
                 className={styles.userProfileImage}
               />
               <div className={styles.userNickname}>{user.nickname}</div>

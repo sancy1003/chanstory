@@ -30,7 +30,7 @@ export default function PostItem({
           src={
             imageURL
               ? formattingImageURL(imageURL)
-              : "/images/logo/default_thumbnail.png"
+              : "/images/thumbnail/default_thumbnail.png"
           }
         />
       </div>

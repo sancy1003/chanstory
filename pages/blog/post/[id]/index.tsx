@@ -4,7 +4,11 @@ import Layout from "@components/layout";
 import PostItem from "@components/blog/post-item";
 import { FaChevronLeft, FaEllipsisH } from "react-icons/fa";
 import { SessionUserData, withSsrSession } from "@libs/server/withSession";
-import { dateToString, formattingImageURL } from "@libs/client/commonFunction";
+import {
+  dateToString,
+  formattingImageURL,
+  formattingUserProfileURL,
+} from "@libs/client/commonFunction";
 import dynamic from "next/dynamic";
 import useSWR from "swr";
 import { useRouter } from "next/router";
@@ -393,7 +397,7 @@ const PostDetail: NextPage<PostProps> = ({ user, postSeoInfo }) => {
                 >
                   <img
                     className={styles.profileImage}
-                    src={formattingImageURL(
+                    src={formattingUserProfileURL(
                       comment.author.profileURL,
                       "avatar"
                     )}
@@ -526,7 +530,7 @@ const PostDetail: NextPage<PostProps> = ({ user, postSeoInfo }) => {
                           >
                             <img
                               className={styles.profileImage}
-                              src={formattingImageURL(
+                              src={formattingUserProfileURL(
                                 recomment.author.profileURL,
                                 "avatar"
                               )}
@@ -719,7 +723,7 @@ const PostDetail: NextPage<PostProps> = ({ user, postSeoInfo }) => {
             <div className={styles.commentBox} style={{ marginBottom: 10 }}>
               <img
                 className={styles.profileImage}
-                src={formattingImageURL(user?.profileURL, "avatar")}
+                src={formattingUserProfileURL(user?.profileURL, "avatar")}
               />
               <textarea
                 {...register("comment", {
