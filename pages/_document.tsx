@@ -1,17 +1,15 @@
 import Document, { Head, Html, Main, NextScript } from "next/document";
-import Script from "next/script";
 
 class CustomDocument extends Document {
   render(): JSX.Element {
     return (
       <Html lang="ko">
         <Head>
-          <Script
+          <script
             async
             src={`https://www.googletagmanager.com/gtag/js?${process.env.GOOGLE_ANALYTICS_ID}`}
-          ></Script>
-          <Script
-            strategy="afterInteractive"
+          ></script>
+          <script
             dangerouslySetInnerHTML={{
               __html: `
             window.dataLayer = window.dataLayer || [];
