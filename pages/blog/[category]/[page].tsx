@@ -19,16 +19,17 @@ import useUser from "@libs/client/useUser";
 
 interface Props {
   data: PostListByCategoryResponse;
+  category: string;
 }
 
-const Blog: NextPage<Props> = ({ data }) => {
+const Blog: NextPage<Props> = ({ data, category }) => {
   const router = useRouter();
   const { user, isLoading } = useUser();
 
   return (
     <Layout user={user}>
       <div className={styles.container}>
-        <Category />
+        <Category active={category} />
         <div className={styles.section}>
           <div className={styles.postContainer}>
             {data
@@ -131,6 +132,7 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
 
   return {
     props: {
+      category: params?.category,
       data: {
         postCount,
         posts: posts.map((post) => ({

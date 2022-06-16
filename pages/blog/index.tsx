@@ -18,7 +18,7 @@ const Blog: NextPage<Props> = ({ data }) => {
   return (
     <Layout user={user}>
       <div className={styles.container}>
-        <Category isHome />
+        <Category active="home" />
         <div className={styles.section} style={{ marginBottom: "70px" }}>
           <div className={styles.sectionTitle}>🔥&nbsp;&nbsp;인기 포스팅</div>
           <div className={styles.postContainer}>

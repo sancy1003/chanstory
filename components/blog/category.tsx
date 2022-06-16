@@ -3,12 +3,12 @@ import { CATEGORY } from "@utils/define/category";
 import { useRouter } from "next/router";
 
 interface CategoryProps {
-  isHome?: boolean;
+  active: string;
 }
 
-export default function Category({ isHome }: CategoryProps) {
+export default function Category({ active }: CategoryProps) {
   const router = useRouter();
-  const currentCategory = isHome ? "home" : router.query.category;
+  const currentCategory = active;
   const onClickCategory = (link: string) => {
     if (link === "home") {
       router.push(`/blog`);
