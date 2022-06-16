@@ -1,17 +1,20 @@
 import Category from "@components/blog/category";
 import Layout from "@components/layout";
-import type { NextPage, NextPageContext } from "next";
+import type { GetStaticProps, GetStaticPropsContext, NextPage } from "next";
 import styles from "@styles/blog.module.css";
 import PostItem from "@components/blog/post-item";
-import { SessionUserData, withSsrSession } from "@libs/server/withSession";
-import useSWR from "swr";
 import client from "@libs/server/client";
-import { dateToString } from "@libs/client/commonFunction";
+import { dateToString, formattingDate } from "@libs/client/commonFunction";
 import { PostListResponse } from "types/response";
 import PostItemSkeleton from "@components/blog/post-item-skeleton";
+import useUser from "@libs/client/useUser";
 
-const Blog: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
-  const { data } = useSWR<PostListResponse>(`/api/blog/`);
+interface Props {
+  data: PostListResponse;
+}
+
+const Blog: NextPage<Props> = ({ data }) => {
+  const { user, isLoading } = useUser();
   return (
     <Layout user={user}>
       <div className={styles.container}>
@@ -59,17 +62,70 @@ const Blog: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
   );
 };
 
-export const getServerSideProps = withSsrSession(async function ({
-  req,
-}: NextPageContext) {
-  const user = req?.session.user;
-  if (user) {
-    const userData = await client?.user.findUnique({ where: { id: user.id } });
-    if (!userData) req.session.destroy();
-  }
+export const getStaticProps: GetStaticProps = async function (
+  context: GetStaticPropsContext
+) {
+  const newPosts = await client.post.findMany({
+    where: { isHide: false },
+    select: {
+      id: true,
+      title: true,
+      createdAt: true,
+      thumbnailURL: true,
+      _count: {
+        select: {
+          comments: true,
+          recomments: true,
+        },
+      },
+    },
+    take: 4,
+    orderBy: { createdAt: "desc" },
+  });
+  const hotPosts = await client.post.findMany({
+    where: { isHide: false },
+    select: {
+      id: true,
+      title: true,
+      createdAt: true,
+      thumbnailURL: true,
+      _count: {
+        select: {
+          comments: true,
+          recomments: true,
+        },
+      },
+    },
+    take: 4,
+    orderBy: [
+      {
+        comments: {
+          _count: "desc",
+        },
+      },
+      {
+        recomments: {
+          _count: "desc",
+        },
+      },
+    ],
+  });
   return {
-    props: { user: user ? user : null },
+    props: {
+      data: {
+        newPosts: newPosts.map((post) => ({
+          ...post,
+          createdAt: formattingDate(post.createdAt),
+          commentCount: post._count.comments + post._count.recomments,
+        })),
+        hotPosts: hotPosts.map((post) => ({
+          ...post,
+          createdAt: formattingDate(post.createdAt),
+          commentCount: post._count.comments + post._count.recomments,
+        })),
+      },
+    },
   };
-});
+};
 
 export default Blog;

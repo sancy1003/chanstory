@@ -6,6 +6,7 @@ export const dateToString = (date: Date | string) => {
     init.getMonth() + 1
   }-${init.getDate() < 10 ? "0" : ""}${init.getDate()}`;
 };
+
 export const formattingImageURL = (url?: string | null, type?: string) => {
   let imageType = type ? type : "public";
   if (url) {
@@ -14,6 +15,7 @@ export const formattingImageURL = (url?: string | null, type?: string) => {
     return "";
   }
 };
+
 export const formattingUserProfileURL = (
   url?: string | null,
   type?: string
@@ -25,6 +27,7 @@ export const formattingUserProfileURL = (
     return "/images/profile/defaultProfile.svg";
   }
 };
+
 export const categoryToNumber = ({
   query,
   title,
@@ -38,4 +41,23 @@ export const categoryToNumber = ({
   if (title) {
     return CATEGORY.find((item) => item.title === title)?.idx;
   }
+};
+
+export const categoryToString = ({
+  index,
+  type,
+}: {
+  index: number;
+  type: "query" | "title";
+}) => {
+  if (type === "query") {
+    return CATEGORY.find((item) => item.idx === index)?.query;
+  }
+  if (type === "title") {
+    return CATEGORY.find((item) => item.idx === index)?.title;
+  }
+};
+
+export const formattingDate = (date: Date): Date => {
+  return JSON.parse(JSON.stringify(date));
 };

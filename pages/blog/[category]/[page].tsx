@@ -1,28 +1,29 @@
 import { useRouter } from "next/router";
 import Layout from "@components/layout";
-import type { NextPage, NextPageContext } from "next";
+import type { GetStaticPropsContext, NextPage, NextPageContext } from "next";
 import styles from "@styles/blog.module.css";
 import PostItem from "@components/blog/post-item";
 import Category from "@components/blog/category";
-import { SessionUserData, withSsrSession } from "@libs/server/withSession";
-import useSWR from "swr";
-import { categoryToNumber, dateToString } from "@libs/client/commonFunction";
+import {
+  categoryToNumber,
+  categoryToString,
+  dateToString,
+  formattingDate,
+} from "@libs/client/commonFunction";
 import Pagination from "react-js-pagination";
 import client from "@libs/server/client";
 import { PostListByCategoryResponse } from "types/response";
 import PostItemSkeleton from "@components/blog/post-item-skeleton";
 import PaginationSkeleton from "@components/paginationSkeleton";
-import { CATEGORY } from "@utils/define/category";
+import useUser from "@libs/client/useUser";
 
-const Blog: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
+interface Props {
+  data: PostListByCategoryResponse;
+}
+
+const Blog: NextPage<Props> = ({ data }) => {
   const router = useRouter();
-  const { data } = useSWR<PostListByCategoryResponse>(
-    router?.query?.category
-      ? `/api/blog/category?category=${categoryToNumber({
-          query: router?.query?.category + "",
-        })}&page=${router?.query?.page}`
-      : `/api/blog/category`
-  );
+  const { user, isLoading } = useUser();
 
   return (
     <Layout user={user}>
@@ -70,30 +71,76 @@ const Blog: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
   );
 };
 
-export const getServerSideProps = withSsrSession(async function ({
-  req,
-  query,
-}: NextPageContext) {
-  const categoryList = CATEGORY.map((item) => item.query);
-  if (
-    +query.page! === 0 ||
-    (query?.category && !categoryList.includes(String(query.category)))
-  ) {
-    return {
-      redirect: {
-        destination: "/blog",
+export async function getStaticPaths() {
+  const paths = [];
+  const categoryData = [];
+  for (let i = 1; i <= 4; i++) {
+    const postCount = await client.post.count({
+      where: {
+        isHide: false,
+        category: i,
       },
-    };
+    });
+    categoryData.push({
+      category: categoryToString({ index: i, type: "query" }),
+      maxPage: Math.ceil(postCount / 8),
+    });
   }
 
-  const user = req?.session.user;
-  if (user) {
-    const userData = await client?.user.findUnique({ where: { id: user.id } });
-    if (!userData) req.session.destroy();
+  for (const data of categoryData) {
+    if (data.maxPage <= 1) {
+      paths.push({ params: { category: data.category, page: "1" } });
+    } else {
+      for (let i = 1; i <= data.maxPage; i++) {
+        paths.push({ params: { category: data.category, page: i.toString() } });
+      }
+    }
   }
+
+  return { paths, fallback: false };
+}
+
+export async function getStaticProps({ params }: GetStaticPropsContext) {
+  const postCount = await client.post.count({
+    where: {
+      isHide: false,
+      category: categoryToNumber({ query: params?.category?.toString() }),
+    },
+  });
+  const posts = await client.post.findMany({
+    where: {
+      isHide: false,
+      category: categoryToNumber({ query: params?.category?.toString() }),
+    },
+    select: {
+      id: true,
+      title: true,
+      createdAt: true,
+      thumbnailURL: true,
+      _count: {
+        select: {
+          comments: true,
+          recomments: true,
+        },
+      },
+    },
+    take: 8,
+    skip: 8 * (+params?.page! - 1),
+    orderBy: { createdAt: "desc" },
+  });
+
   return {
-    props: { user: user ? user : null },
+    props: {
+      data: {
+        postCount,
+        posts: posts.map((post) => ({
+          ...post,
+          createdAt: formattingDate(post.createdAt),
+          commentCount: post._count.comments + post._count.recomments,
+        })),
+      },
+    },
   };
-});
+}
 
 export default Blog;
