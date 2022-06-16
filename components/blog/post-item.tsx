@@ -5,7 +5,7 @@ import { FaRegCommentDots } from "react-icons/fa";
 
 interface PostItemProps {
   commentNum: number;
-  registTime: string;
+  createdAt: string;
   title: string;
   imageURL: string | null;
   postId: number;
@@ -13,7 +13,7 @@ interface PostItemProps {
 
 export default function PostItem({
   commentNum,
-  registTime,
+  createdAt,
   title,
   imageURL,
   postId,
@@ -42,7 +42,7 @@ export default function PostItem({
           <FaRegCommentDots />
           <div>{commentNum}</div>
         </div>
-        <div>{registTime}</div>
+        <div>{createdAt}</div>
       </div>
     </div>
   );

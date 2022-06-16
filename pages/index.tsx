@@ -26,7 +26,7 @@ const Home: NextPage<Props> = ({ data }) => {
                 <PostItem
                   key={post.id}
                   commentNum={post.commentCount}
-                  registTime={dateToString(post.createdAt)}
+                  createdAt={post.createdAt}
                   title={post.title}
                   imageURL={post.thumbnailURL}
                   postId={post.id}
@@ -43,7 +43,7 @@ const Home: NextPage<Props> = ({ data }) => {
                 <PostItem
                   key={post.id}
                   commentNum={post.commentCount}
-                  registTime={dateToString(post.createdAt)}
+                  createdAt={post.createdAt}
                   title={post.title}
                   imageURL={post.thumbnailURL}
                   postId={post.id}

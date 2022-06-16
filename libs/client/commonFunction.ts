@@ -58,6 +58,6 @@ export const categoryToString = ({
   }
 };
 
-export const formattingDate = (date: Date): Date => {
-  return JSON.parse(JSON.stringify(date));
+export const formattingDate = (date: Date): string => {
+  return dateToString(JSON.parse(JSON.stringify(date)));
 };
