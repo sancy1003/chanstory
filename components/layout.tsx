@@ -5,6 +5,8 @@ import styles from "@styles/Layout.module.css";
 import { SessionUserData } from "@libs/server/withSession";
 import { useRouter } from "next/router";
 import { formattingUserProfileURL } from "@libs/client/commonFunction";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -13,6 +15,7 @@ interface LayoutProps {
   thumbnailURL?: string | null;
   keywords?: string | null;
   url?: string;
+  userLoading?: boolean;
 }
 
 export default function Layout({
@@ -22,6 +25,7 @@ export default function Layout({
   thumbnailURL,
   keywords,
   url,
+  userLoading,
 }: LayoutProps) {
   const router = useRouter();
   const onClickProfile = () => {
@@ -51,17 +55,32 @@ export default function Layout({
               <img src={"/images/logo/logo.svg"} />
             </a>
           </Link>
-          {user ? (
+          {userLoading ? (
+            <div className={styles.userWrap}>
+              <Skeleton
+                width={"35px"}
+                height={"35px"}
+                style={{ marginRight: 14 }}
+              />
+              <Skeleton width={"45px"} height={"24px"} />
+            </div>
+          ) : user ? (
             <div className={styles.userWrap} onClick={onClickProfile}>
               <img
                 src={formattingUserProfileURL(user?.profileURL, "avatar")}
                 className={styles.userProfileImage}
               />
-              <div className={styles.userNickname}>{user.nickname}</div>
+              <div className={styles.userNickname}>{user!.nickname}</div>
             </div>
           ) : (
             <Link href={"/login"}>
-              <a className={styles.login}>로그인</a>
+              <div className={styles.userWrap}>
+                <img
+                  src="/images/user/default_profile.svg"
+                  className={styles.userProfileImage}
+                />
+                <a className={styles.login}>로그인</a>
+              </div>
             </Link>
           )}
         </div>

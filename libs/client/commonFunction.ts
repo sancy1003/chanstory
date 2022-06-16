@@ -24,7 +24,7 @@ export const formattingUserProfileURL = (
   if (url) {
     return `https://imagedelivery.net/R2WiK4wfRK3oBXTwjgzQfA/${url}/${imageType}`;
   } else {
-    return "/images/profile/defaultProfile.svg";
+    return "/images/user/default_profile.svg";
   }
 };
 
