@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import Layout from "@components/layout";
-import type { GetStaticPropsContext, NextPage, NextPageContext } from "next";
+import type { GetStaticPropsContext, NextPage } from "next";
 import styles from "@styles/blog.module.css";
 import PostItem from "@components/blog/post-item";
 import Category from "@components/blog/category";
@@ -13,8 +13,6 @@ import {
 import Pagination from "react-js-pagination";
 import client from "@libs/server/client";
 import { PostListByCategoryResponse } from "types/response";
-import PostItemSkeleton from "@components/blog/post-item-skeleton";
-import PaginationSkeleton from "@components/paginationSkeleton";
 import useUser from "@libs/client/useUser";
 
 interface Props {
@@ -32,39 +30,31 @@ const Blog: NextPage<Props> = ({ data, category }) => {
         <Category active={category} />
         <div className={styles.section}>
           <div className={styles.postContainer}>
-            {data
-              ? data?.posts?.map((post, idx) => {
-                  return (
-                    <PostItem
-                      key={idx}
-                      commentNum={post.commentCount}
-                      registTime={dateToString(post.createdAt)}
-                      title={post.title}
-                      imageURL={post.thumbnailURL}
-                      postId={post.id}
-                    />
-                  );
-                })
-              : [1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
-                  <PostItemSkeleton key={item} />
-                ))}
+            {data.posts.map((post, idx) => {
+              return (
+                <PostItem
+                  key={post.id}
+                  commentNum={post.commentCount}
+                  registTime={dateToString(post.createdAt)}
+                  title={post.title}
+                  imageURL={post.thumbnailURL}
+                  postId={post.id}
+                />
+              );
+            })}
           </div>
-          {data ? (
-            data.postCount > 8 && (
-              <Pagination
-                activePage={router?.query?.page ? +router?.query?.page : 1}
-                itemsCountPerPage={8}
-                totalItemsCount={data ? data.postCount : 0}
-                pageRangeDisplayed={5}
-                prevPageText={"‹"}
-                nextPageText={"›"}
-                onChange={(page) => {
-                  router.replace(`/blog/${router.query.category}/${page}`);
-                }}
-              />
-            )
-          ) : (
-            <PaginationSkeleton width={200} marginTop={30} height={30} />
+          {data.postCount > 8 && (
+            <Pagination
+              activePage={router?.query?.page ? +router?.query?.page : 1}
+              itemsCountPerPage={8}
+              totalItemsCount={data ? data.postCount : 0}
+              pageRangeDisplayed={5}
+              prevPageText={"‹"}
+              nextPageText={"›"}
+              onChange={(page) => {
+                router.replace(`/blog/${router.query.category}/${page}`);
+              }}
+            />
           )}
         </div>
       </div>
