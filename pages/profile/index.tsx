@@ -92,7 +92,9 @@ const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
     }
   }, [data]);
   const onLogout = async () => {
-    const response = await (await fetch(`/api/user/logout`)).json();
+    const response = await (
+      await fetch(`/api/user/logout`, { method: "post" })
+    ).json();
     if (response.result) router.push("/");
   };
   const onDelete = async () => {

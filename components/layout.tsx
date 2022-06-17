@@ -60,7 +60,7 @@ export default function Layout({
               <Skeleton
                 width={"35px"}
                 height={"35px"}
-                style={{ marginRight: 14 }}
+                style={{ marginRight: 14, borderRadius: "100px" }}
               />
               <Skeleton width={"45px"} height={"24px"} />
             </div>
