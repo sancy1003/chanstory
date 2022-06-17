@@ -7,7 +7,7 @@ async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
-  req.session.destroy();
+  await req.session.destroy();
   res.json({ result: true });
 }
 
