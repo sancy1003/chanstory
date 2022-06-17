@@ -121,7 +121,7 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
   });
 
   return {
-    revalidate: 60,
+    revalidate: 600,
     props: {
       category: params?.category,
       data: {

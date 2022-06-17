@@ -106,6 +106,7 @@ export const getStaticProps: GetStaticProps = async function (
     ],
   });
   return {
+    revalidate: 600,
     props: {
       data: {
         newPosts: newPosts.map((post) => ({
