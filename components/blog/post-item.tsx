@@ -1,6 +1,6 @@
 import { formattingImageURL } from "@libs/client/commonFunction";
 import styles from "@styles/blog.module.css";
-import { useRouter } from "next/router";
+import Link from "next/link";
 import { FaRegCommentDots } from "react-icons/fa";
 
 interface PostItemProps {
@@ -18,32 +18,30 @@ export default function PostItem({
   imageURL,
   postId,
 }: PostItemProps) {
-  const router = useRouter();
-  const onClickPost = () => {
-    router.push(`/blog/post/${postId}`);
-  };
   return (
-    <div className={styles.postItem} onClick={onClickPost}>
-      <div className={styles.postImageWrap}>
-        <img
-          className={styles.postImage}
-          src={
-            imageURL
-              ? formattingImageURL(imageURL)
-              : "/images/thumbnail/default_thumbnail.png"
-          }
-        />
-      </div>
-      <div title={title} className={styles.postTitle}>
-        {title}
-      </div>
-      <div className={styles.postInfo}>
-        <div className={styles.postCommentWrap}>
-          <FaRegCommentDots />
-          <div>{commentNum}</div>
+    <Link href={`/blog/post/${postId}`}>
+      <a className={styles.postItem}>
+        <div className={styles.postImageWrap}>
+          <img
+            className={styles.postImage}
+            src={
+              imageURL
+                ? formattingImageURL(imageURL)
+                : "/images/thumbnail/default_thumbnail.png"
+            }
+          />
         </div>
-        <div>{createdAt}</div>
-      </div>
-    </div>
+        <div title={title} className={styles.postTitle}>
+          {title}
+        </div>
+        <div className={styles.postInfo}>
+          <div className={styles.postCommentWrap}>
+            <FaRegCommentDots />
+            <div>{commentNum}</div>
+          </div>
+          <div>{createdAt}</div>
+        </div>
+      </a>
+    </Link>
   );
 }

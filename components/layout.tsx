@@ -3,7 +3,6 @@ import Link from "next/link";
 import Head from "next/head";
 import styles from "@styles/Layout.module.css";
 import { SessionUserData } from "@libs/server/withSession";
-import { useRouter } from "next/router";
 import { formattingUserProfileURL } from "@libs/client/commonFunction";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -27,10 +26,6 @@ export default function Layout({
   url,
   userLoading,
 }: LayoutProps) {
-  const router = useRouter();
-  const onClickProfile = () => {
-    router.push("/profile");
-  };
   return (
     <div>
       <Head>
@@ -65,13 +60,15 @@ export default function Layout({
               <Skeleton width={"45px"} height={"24px"} />
             </div>
           ) : user ? (
-            <div className={styles.userWrap} onClick={onClickProfile}>
-              <img
-                src={formattingUserProfileURL(user?.profileURL, "avatar")}
-                className={styles.userProfileImage}
-              />
-              <div className={styles.userNickname}>{user!.nickname}</div>
-            </div>
+            <Link href="/profile">
+              <a className={styles.userWrap}>
+                <img
+                  src={formattingUserProfileURL(user?.profileURL, "avatar")}
+                  className={styles.userProfileImage}
+                />
+                <div className={styles.userNickname}>{user!.nickname}</div>
+              </a>
+            </Link>
           ) : (
             <Link href={"/login"}>
               <div className={styles.userWrap}>

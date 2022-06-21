@@ -142,11 +142,13 @@ table {
   border-spacing: 0;
 }
 a {
+  color: initial;
   text-decoration: none;
   outline: none;
 }
 a:hover,
 a:active {
+  color: initial;
   text-decoration: none;
 }
 :root {
