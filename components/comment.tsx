@@ -14,6 +14,7 @@ import { CommentForm, CommentResponse, CommentWithAuthor } from "types/comment";
 import { APIResponse } from "types/response";
 import ring from "@resource/lottie/ring.json";
 import { SessionUserData } from "@libs/server/withSession";
+import useDelete from "@libs/client/useDelete";
 
 interface Props {
   type: "blog" | "gallery";
@@ -123,6 +124,11 @@ export default function Comment({ type, id, user }: Props) {
     }
   };
 
+  const [deleteComment, deleteCommentLoading, deleteCommentResponse] =
+    useDelete("/api/comment");
+  const [deleteRecomment, deleteRecommentLoading, deleteRecommentResponse] =
+    useDelete("/api/recomment");
+
   useEffect(() => {
     window.addEventListener("click", modalCloseHandler);
     return () => {
@@ -133,7 +139,10 @@ export default function Comment({ type, id, user }: Props) {
   useEffect(() => {
     mutate();
     if (registCommentData?.result) commentReset();
-    if (registRecommentData?.result) recommentReset();
+    if (registRecommentData?.result) {
+      recommentReset();
+      setRecommentState(null);
+    }
     if (editCommentData?.result) {
       setEditCommentState(null);
       editReset();
@@ -147,6 +156,8 @@ export default function Comment({ type, id, user }: Props) {
     registRecommentData,
     editCommentData,
     editRecommentData,
+    deleteCommentResponse,
+    deleteRecommentResponse,
   ]);
 
   return (
@@ -225,6 +236,8 @@ export default function Comment({ type, id, user }: Props) {
                             <li
                               onClick={() => {
                                 setMoreBtnView(null);
+                                if (deleteCommentLoading) return;
+                                deleteComment(`id=${comment.id}`);
                               }}
                             >
                               삭제
@@ -351,6 +364,8 @@ export default function Comment({ type, id, user }: Props) {
                                       <li
                                         onClick={() => {
                                           setMoreBtnView(null);
+                                          if (deleteRecommentLoading) return;
+                                          deleteRecomment(`id=${recomment.id}`);
                                         }}
                                       >
                                         삭제
