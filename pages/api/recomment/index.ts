@@ -59,7 +59,7 @@ async function handler(
   }
   if (req.method === "DELETE") {
     const { id: commentId } = req.query;
-    await client.comment.delete({
+    await client.recomment.delete({
       where: {
         id: +commentId,
       },

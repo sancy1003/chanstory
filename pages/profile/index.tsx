@@ -221,7 +221,10 @@ const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
                   </div>
                   <img
                     className={styles.profileImage}
-                    src={formattingUserProfileURL(user?.profileURL, "avatar")}
+                    src={formattingUserProfileURL(
+                      userProfile?.profileURL,
+                      "avatar"
+                    )}
                   />
                 </div>
               )}
