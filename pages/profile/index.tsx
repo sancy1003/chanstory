@@ -9,7 +9,7 @@ import Lottie from "react-lottie-player";
 import ring from "@resource/lottie/ring.json";
 import { FaEllipsisV } from "react-icons/fa";
 import { useRouter } from "next/router";
-import fetchDelete from "@libs/client/fetchDelete";
+import useDelete from "@libs/client/useDelete";
 import ConfirmModal from "@components/modal/confirm-modal";
 import NicknameChangeModal from "@components/modal/nickname-change-modal";
 import { formattingUserProfileURL } from "@libs/client/commonFunction";
@@ -46,15 +46,20 @@ const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
     `/api/user/profileImage`
   );
   const { watch, register } = useForm<ProfileImageForm>();
-  const deleteImage = async () => {
-    if (loading) return;
-    setLoading(true);
-    const response = await fetchDelete("/api/user/profileImage");
-    if (response && response.result && userProfile) {
+  const [
+    deleteProfileImage,
+    deleteProfileImageLoading,
+    deleteProfileImageResponse,
+  ] = useDelete("/api/user/profileImage");
+  const deleteImage = () => {
+    if (deleteProfileImageLoading) return;
+    deleteProfileImage();
+  };
+  useEffect(() => {
+    if (deleteProfileImageResponse?.result && userProfile) {
       setUserProfile({ ...userProfile, profileURL: null });
     }
-    setLoading(false);
-  };
+  }, [deleteProfileImageResponse]);
   const profileImage = watch("profileImage");
   const ProfileImageForm = async (image: FileList) => {
     if (loading) return;
@@ -97,10 +102,15 @@ const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
     ).json();
     if (response.result) router.push("/");
   };
-  const onDelete = async () => {
-    const response = await fetchDelete("/api/user");
-    if (response && response.result) router.push("/");
+  const [deleteAccount, deleteAccountLoading, deleteAccountResponse] =
+    useDelete("/api/user");
+  const onDelete = () => {
+    if (deleteAccountLoading) return false;
+    deleteAccount();
   };
+  useEffect(() => {
+    if (deleteAccountResponse?.result) router.push("/");
+  }, [deleteAccountResponse]);
   const [
     onChangeNickname,
     { data: changeNicknameData, loading: changeNicknameLoading },
@@ -152,7 +162,7 @@ const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
               </span>
             </div>
             <div className={styles.profileBox}>
-              {loading ? (
+              {loading || deleteProfileImageLoading ? (
                 <div className={styles.profileImageWrap}>
                   <div
                     style={{ display: "flex", backgroundColor: "#fff" }}
