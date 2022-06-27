@@ -8,6 +8,10 @@ export interface RecommentWithAuthor extends Recomment {
   author: User;
   tagUser: User;
 }
+export interface CommentResponse {
+  comments: CommentWithAuthor[];
+  result: boolean;
+}
 export interface CommentForm {
   comment: string;
 }

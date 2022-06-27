@@ -11,26 +11,11 @@ async function handler(
     const { id } = req.query;
     const post = await client.post.findUnique({
       where: { id: +id },
-      include: {
-        comments: {
-          include: {
-            author: true,
-            recomments: {
-              include: {
-                author: true,
-                tagUser: true,
-              },
-            },
-          },
-        },
-      },
     });
     res.json({
       result: true,
       post,
     });
-  }
-  if (req.method === "POST") {
   }
   if (req.method === "DELETE") {
     const { id } = req.query;
@@ -48,7 +33,7 @@ async function handler(
 
 export default withApiSession(
   withHandler({
-    methods: ["GET", "POST", "DELETE"],
+    methods: ["GET", "DELETE"],
     handler,
   })
 );
