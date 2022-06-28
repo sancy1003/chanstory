@@ -7,7 +7,7 @@ import Category from "@components/blog/category";
 import {
   categoryToNumber,
   categoryToString,
-  dateToString,
+  dateToStringFromServer,
 } from "@libs/client/commonFunction";
 import Pagination from "react-js-pagination";
 import client from "@libs/server/client";
@@ -127,7 +127,7 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
         postCount,
         posts: posts.map((post) => ({
           ...post,
-          createdAt: dateToString(post.createdAt),
+          createdAt: dateToStringFromServer(post.createdAt),
           commentCount: post._count.comments + post._count.recomments,
         })),
       },

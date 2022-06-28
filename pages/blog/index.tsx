@@ -4,7 +4,7 @@ import type { GetStaticProps, GetStaticPropsContext, NextPage } from "next";
 import styles from "@styles/blog.module.css";
 import PostItem from "@components/blog/post-item";
 import client from "@libs/server/client";
-import { dateToString } from "@libs/client/commonFunction";
+import { dateToStringFromServer } from "@libs/client/commonFunction";
 import { PostListResponse } from "types/response";
 import useUser from "@libs/client/useUser";
 
@@ -111,12 +111,12 @@ export const getStaticProps: GetStaticProps = async function (
       data: {
         newPosts: newPosts.map((post) => ({
           ...post,
-          createdAt: dateToString(post.createdAt),
+          createdAt: dateToStringFromServer(post.createdAt),
           commentCount: post._count.comments + post._count.recomments,
         })),
         hotPosts: hotPosts.map((post) => ({
           ...post,
-          createdAt: dateToString(post.createdAt),
+          createdAt: dateToStringFromServer(post.createdAt),
           commentCount: post._count.comments + post._count.recomments,
         })),
       },
