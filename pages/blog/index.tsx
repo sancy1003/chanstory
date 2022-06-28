@@ -111,12 +111,12 @@ export const getStaticProps: GetStaticProps = async function (
       data: {
         newPosts: newPosts.map((post) => ({
           ...post,
-          createdAt: formattingDate(post.createdAt),
+          createdAt: dateToString(post.createdAt),
           commentCount: post._count.comments + post._count.recomments,
         })),
         hotPosts: hotPosts.map((post) => ({
           ...post,
-          createdAt: formattingDate(post.createdAt),
+          createdAt: dateToString(post.createdAt),
           commentCount: post._count.comments + post._count.recomments,
         })),
       },
