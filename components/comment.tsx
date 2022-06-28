@@ -162,7 +162,7 @@ export default function Comment({ type, id, user }: Props) {
 
   return (
     <div className={styles.commentWrap} style={{ borderBottom: 0 }}>
-      {data?.comments.map((comment, idx) => {
+      {data?.comments?.map((comment, idx) => {
         return (
           <div className={styles.commentBox} key={comment.id}>
             <img
