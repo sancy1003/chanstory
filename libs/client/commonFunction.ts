@@ -1,6 +1,6 @@
 import { CATEGORY } from "@utils/define/category";
 
-export const dateToString = (date: Date | string) => {
+export const dateToString = (date: Date) => {
   const init = new Date(date);
   return `${init.getFullYear()}-${init.getMonth() + 1 < 10 ? "0" : ""}${
     init.getMonth() + 1
@@ -56,8 +56,4 @@ export const categoryToString = ({
   if (type === "title") {
     return CATEGORY.find((item) => item.idx === index)?.title;
   }
-};
-
-export const formattingDate = (date: Date): string => {
-  return dateToString(JSON.parse(JSON.stringify(date)));
 };

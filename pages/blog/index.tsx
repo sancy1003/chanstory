@@ -4,7 +4,7 @@ import type { GetStaticProps, GetStaticPropsContext, NextPage } from "next";
 import styles from "@styles/blog.module.css";
 import PostItem from "@components/blog/post-item";
 import client from "@libs/server/client";
-import { dateToString, formattingDate } from "@libs/client/commonFunction";
+import { dateToString } from "@libs/client/commonFunction";
 import { PostListResponse } from "types/response";
 import useUser from "@libs/client/useUser";
 
