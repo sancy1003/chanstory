@@ -237,7 +237,9 @@ export default function Comment({ type, id, user }: Props) {
                               onClick={() => {
                                 setMoreBtnView(null);
                                 if (deleteCommentLoading) return;
-                                deleteComment(`id=${comment.id}`);
+                                deleteComment({
+                                  id: comment.id,
+                                });
                               }}
                             >
                               삭제
@@ -365,7 +367,7 @@ export default function Comment({ type, id, user }: Props) {
                                         onClick={() => {
                                           setMoreBtnView(null);
                                           if (deleteRecommentLoading) return;
-                                          deleteRecomment(`id=${recomment.id}`);
+                                          deleteRecomment({ id: recomment.id });
                                         }}
                                       >
                                         삭제
