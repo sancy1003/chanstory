@@ -8,30 +8,17 @@ async function handler(
   res: NextApiResponse<ResponseType>
 ) {
   if (req.method === "GET") {
-    const newPosts = await client.post.findMany({
-      where: { isHide: false, type: "POST" },
-      select: {
-        id: true,
-        title: true,
-        createdAt: true,
-        thumbnailURL: true,
-        _count: {
-          select: {
-            comments: true,
-            recomments: true,
-          },
-        },
-      },
-      take: 4,
-      orderBy: { createdAt: "desc" },
+    const { page } = req.query;
+    const postCount = await client.post.count({
+      where: { isHide: false, type: "GALLERY" },
     });
-    const hotPosts = await client.post.findMany({
-      where: { isHide: false, type: "POST" },
+    const galleryPosts = await client.post.findMany({
+      where: { isHide: false, type: "GALLERY" },
       select: {
         id: true,
         title: true,
         createdAt: true,
-        thumbnailURL: true,
+        imageURLs: true,
         _count: {
           select: {
             comments: true,
@@ -39,29 +26,14 @@ async function handler(
           },
         },
       },
-      take: 4,
-      orderBy: [
-        {
-          comments: {
-            _count: "desc",
-          },
-        },
-        {
-          recomments: {
-            _count: "desc",
-          },
-        },
-      ],
+      take: 8,
+      skip: 8 * (+page - 1),
+      orderBy: { createdAt: "desc" },
     });
     return res.json({
       result: true,
-      newPosts: newPosts.map((post) => {
-        return {
-          ...post,
-          commentCount: post._count.comments + post._count.recomments,
-        };
-      }),
-      hotPosts: hotPosts.map((post) => {
+      postCount,
+      galleryPosts: galleryPosts.map((post) => {
         return {
           ...post,
           commentCount: post._count.comments + post._count.recomments,
@@ -77,18 +49,18 @@ async function handler(
       });
     }
     const {
-      body: { content, tags, category, title, thumbnailURL, isHide, postId },
+      body: { content, tags, title, isHide, postId, createdAt, imageURLs },
     } = req;
     if (!postId) {
       const post = await client.post.create({
         data: {
-          content,
+          createdAt,
+          content: content ? content : null,
           tags: tags ? tags : null,
-          category,
           title,
-          thumbnailURL: thumbnailURL ? thumbnailURL : null,
+          imageURLs,
           isHide: isHide ? isHide : false,
-          type: "POST",
+          type: "GALLERY",
         },
       });
       return res.json({
@@ -101,11 +73,11 @@ async function handler(
           id: postId,
         },
         data: {
-          content,
+          content: content ? content : null,
           tags: tags ? tags : null,
-          category,
           title,
-          thumbnailURL: thumbnailURL ? thumbnailURL : null,
+          createdAt,
+          imageURLs,
           isHide: isHide ? isHide : false,
         },
       });

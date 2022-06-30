@@ -2,7 +2,6 @@ import { CATEGORY } from "@utils/define/category";
 
 export const dateToString = (date: Date | string) => {
   const init = new Date(date);
-  console.log(init);
   return `${init.getFullYear()}-${init.getMonth() + 1 < 10 ? "0" : ""}${
     init.getMonth() + 1
   }-${init.getDate() < 10 ? "0" : ""}${init.getDate()}`;
@@ -11,7 +10,6 @@ export const dateToString = (date: Date | string) => {
 export const dateToStringFromServer = (date: Date) => {
   const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
   const init = new Date(new Date(date).getTime() + KR_TIME_DIFF);
-  console.log(init);
   return `${init.getFullYear()}-${init.getMonth() + 1 < 10 ? "0" : ""}${
     init.getMonth() + 1
   }-${init.getDate() < 10 ? "0" : ""}${init.getDate()}`;
