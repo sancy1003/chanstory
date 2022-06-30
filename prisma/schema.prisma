@@ -34,9 +34,11 @@ model Post {
   isHide       Boolean     @default(false)
   thumbnailURL String?     @db.MediumText
   title        String      @db.MediumText
-  content      String      @db.LongText
+  content      String?     @db.LongText
+  imageURLs    String?     @db.MediumText
   tags         String?     @db.MediumText
-  category     Int
+  category     Int?
+  type         PostType    @default(POST)
   comments     Comment[]
   recomments   Recomment[]
 }
@@ -77,4 +79,9 @@ model Recomment {
 enum Role {
   USER
   ADMIN
+}
+
+enum PostType {
+  POST
+  GALLERY
 }
