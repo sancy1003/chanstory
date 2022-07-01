@@ -1,0 +1,73 @@
+.galleryContainer {
+  padding: 50px 20px;
+  width: 100%;
+  max-width: 840px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+.galleryList {
+  column-gap: 30px;
+  column-count: 2;
+}
+.galleryListItem {
+  display: inline-block;
+  margin-bottom: 50px;
+}
+.postItem {
+  width: 100%;
+}
+.postTitle {
+  font-size: 16px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+.postInfo {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--black_70);
+  font-size: 14px;
+}
+.postCommentWrap {
+  display: flex;
+  align-items: center;
+}
+.postCommentWrap svg {
+  font-size: 16px;
+  margin-right: 6px;
+}
+.postImageWrap {
+  width: 100%;
+  position: relative;
+  margin-bottom: 16px;
+}
+.postImageWrap img {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: cover;
+  object-position: center;
+  min-height: 300px;
+}
+
+@media screen and (max-width: 800px) {
+  .galleryList {
+    column-gap: 20px;
+    column-count: 2;
+  }
+  .postImageWrap img {
+    width: 100%;
+    height: auto;
+    max-height: 350px;
+    object-fit: cover;
+    object-position: center;
+    min-height: 300px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .galleryList {
+    column-count: 1;
+  }
+}

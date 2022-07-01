@@ -61,7 +61,7 @@ export const getStaticProps: GetStaticProps = async function (
   context: GetStaticPropsContext
 ) {
   const newPosts = await client.post.findMany({
-    where: { isHide: false },
+    where: { isHide: false, type: "POST" },
     select: {
       id: true,
       title: true,
@@ -78,7 +78,7 @@ export const getStaticProps: GetStaticProps = async function (
     orderBy: { createdAt: "desc" },
   });
   const hotPosts = await client.post.findMany({
-    where: { isHide: false },
+    where: { isHide: false, type: "POST" },
     select: {
       id: true,
       title: true,

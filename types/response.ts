@@ -9,7 +9,7 @@ export interface PostListResponse extends APIResponse {
   newPosts: PostsList[];
   hotPosts: PostsList[];
 }
-export interface PostListByCategoryResponse extends APIResponse {
+export interface PostListWithCountResponse extends APIResponse {
   posts: PostsList[];
   postCount: number;
 }

@@ -11,11 +11,11 @@ import {
 } from "@libs/client/commonFunction";
 import Pagination from "react-js-pagination";
 import client from "@libs/server/client";
-import { PostListByCategoryResponse } from "types/response";
+import { PostListWithCountResponse } from "types/response";
 import useUser from "@libs/client/useUser";
 
 interface Props {
-  data: PostListByCategoryResponse;
+  data: PostListWithCountResponse;
   category: string;
 }
 
@@ -68,6 +68,7 @@ export async function getStaticPaths() {
     const postCount = await client.post.count({
       where: {
         isHide: false,
+        type: "POST",
         category: i,
       },
     });
@@ -94,12 +95,14 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
   const postCount = await client.post.count({
     where: {
       isHide: false,
+      type: "POST",
       category: categoryToNumber({ query: params?.category?.toString() }),
     },
   });
   const posts = await client.post.findMany({
     where: {
       isHide: false,
+      type: "POST",
       category: categoryToNumber({ query: params?.category?.toString() }),
     },
     select: {
