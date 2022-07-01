@@ -5,7 +5,13 @@
   margin: 0 auto;
   box-sizing: border-box;
 }
-.postContentContainer,
+.postContentContainer {
+  padding: 50px 20px;
+  width: 100%;
+  max-width: 840px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
 .section {
   width: 100%;
   margin-bottom: 100px;

@@ -5,13 +5,20 @@
   margin: 0 auto;
   box-sizing: border-box;
 }
+.galleryTopBox {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
 .galleryList {
-  column-gap: 30px;
-  column-count: 2;
+  display: grid;
+  column-gap: 20px;
+  grid-auto-rows: 70px;
+  grid-template-columns: repeat(2, 1fr);
 }
 .galleryListItem {
-  display: inline-block;
-  margin-bottom: 50px;
+  width: 100%;
+  height: fit-content;
 }
 .postItem {
   width: 100%;
@@ -45,7 +52,7 @@
 .postImageWrap img {
   width: 100%;
   height: auto;
-  max-height: 400px;
+  max-height: 360px;
   object-fit: cover;
   object-position: center;
   min-height: 300px;
@@ -68,6 +75,6 @@
 
 @media screen and (max-width: 500px) {
   .galleryList {
-    column-count: 1;
+    grid-template-columns: repeat(1, 1fr);
   }
 }
