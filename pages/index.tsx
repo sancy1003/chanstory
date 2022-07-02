@@ -15,7 +15,7 @@ interface Props {
 const Home: NextPage<Props> = ({ data }) => {
   const { user, isLoading } = useUser();
   return (
-    <Layout user={user} userLoading={isLoading}>
+    <Layout user={user} userLoading={isLoading} activeMenu={"BLOG"}>
       <div className={styles.container}>
         <Category active="home" />
         <div className={styles.section} style={{ marginBottom: "70px" }}>

@@ -15,6 +15,7 @@ interface LayoutProps {
   keywords?: string | null;
   url?: string;
   userLoading?: boolean;
+  activeMenu: "BLOG" | "GALLEY" | "NONE";
 }
 
 export default function Layout({
@@ -25,6 +26,7 @@ export default function Layout({
   keywords,
   url,
   userLoading,
+  activeMenu,
 }: LayoutProps) {
   return (
     <div>
@@ -50,6 +52,22 @@ export default function Layout({
               <img src={"/images/logo/logo.svg"} />
             </a>
           </Link>
+          <ul className={styles.menu}>
+            <li>
+              <Link href={"/blog"}>
+                <a className={activeMenu === "BLOG" ? styles.active : ""}>
+                  blog
+                </a>
+              </Link>
+            </li>
+            <li>
+              <Link href={"/gallery"}>
+                <a className={activeMenu === "GALLEY" ? styles.active : ""}>
+                  gallery
+                </a>
+              </Link>
+            </li>
+          </ul>
           {userLoading ? (
             <div className={styles.userWrap}>
               <Skeleton

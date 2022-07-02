@@ -13,6 +13,8 @@ import ring from "@resource/lottie/ring.json";
 
 const Gallery: NextPage = () => {
   const { user, isLoading } = useUser();
+  const [leftPosts, setLeftPost] = useState<PostsList[]>([]);
+  const [rightPosts, setRightPosts] = useState<PostsList[]>([]);
   const [posts, setPosts] = useState<PostsList[]>([]);
   const [scrollLoading, setScrollLoading] = useState<boolean>(false);
   const maxPage = useRef(0);
@@ -20,14 +22,6 @@ const Gallery: NextPage = () => {
   const { data, error, mutate } = useSWR<PostListWithCountResponse>(
     `/api/gallery?page=${page.current}`
   );
-
-  function masonryLayout() {
-    document.querySelectorAll("#masonryItem").forEach((elt: any) => {
-      elt.style.gridRowEnd = `span ${Math.ceil(
-        elt.scrollHeight / 70 + 20 / 70
-      )}`;
-    });
-  }
 
   const observer = useRef<any>(null);
 
@@ -39,8 +33,6 @@ const Gallery: NextPage = () => {
           if (maxPage.current > 0 && page.current < maxPage.current) {
             setScrollLoading(true);
             if (page.current < maxPage.current) page.current += 1;
-          } else {
-            masonryLayout();
           }
         }
       });
@@ -54,44 +46,87 @@ const Gallery: NextPage = () => {
 
   useEffect(() => {
     if (data && data.result) {
+      let left: PostsList[] = [];
+      let right: PostsList[] = [];
+      data.posts.forEach((post, idx) => {
+        if (idx % 2 === 0) left.push(post);
+        else right.push(post);
+      });
+      setLeftPost([...leftPosts, ...left]);
+      setRightPosts([...rightPosts, ...right]);
       setPosts([...posts, ...data.posts]);
       maxPage.current = Math.ceil(data.postCount / 8);
       setScrollLoading(false);
     }
   }, [data]);
 
-  useEffect(() => {
-    masonryLayout();
-    window.addEventListener("resize", masonryLayout);
-    return () => {
-      window.removeEventListener("resize", masonryLayout);
-    };
-  }, [posts, page.current, scrollLoading]);
-
   return (
-    <Layout user={user} userLoading={isLoading}>
+    <Layout user={user} userLoading={isLoading} activeMenu={"GALLEY"}>
       <div className={styles.galleryContainer}>
-        <ul id="masonryContainer" className={styles.galleryList}>
-          {posts.map((post) => {
-            return (
-              <li
-                id="masonryItem"
-                key={post.id}
-                className={styles.galleryListItem}
-              >
-                <GalleryItem
-                  commentNum={post.commentCount}
-                  createdAt={dateToString(post.createdAt)}
-                  imageURL={post.thumbnailURL}
-                  postId={post.id}
-                  title={post.title}
-                />
-              </li>
-            );
-          })}
-        </ul>
+        <div className={styles.galleryListWrap}>
+          <ul className={styles.galleryList}>
+            {leftPosts.map((post) => {
+              return (
+                <li
+                  id="masonryItem"
+                  key={post.id}
+                  className={styles.galleryListItem}
+                >
+                  <GalleryItem
+                    commentNum={post.commentCount}
+                    createdAt={dateToString(post.createdAt)}
+                    imageURL={post.thumbnailURL}
+                    postId={post.id}
+                    title={post.title}
+                  />
+                </li>
+              );
+            })}
+          </ul>
+          <ul className={styles.galleryList}>
+            {rightPosts.map((post) => {
+              return (
+                <li
+                  id="masonryItem"
+                  key={post.id}
+                  className={styles.galleryListItem}
+                >
+                  <GalleryItem
+                    commentNum={post.commentCount}
+                    createdAt={dateToString(post.createdAt)}
+                    imageURL={post.thumbnailURL}
+                    postId={post.id}
+                    title={post.title}
+                  />
+                </li>
+              );
+            })}
+          </ul>
+          <ul className={styles.galleryListM}>
+            {posts.map((post) => {
+              return (
+                <li
+                  id="masonryItem"
+                  key={post.id}
+                  className={styles.galleryListItem}
+                >
+                  <GalleryItem
+                    commentNum={post.commentCount}
+                    createdAt={dateToString(post.createdAt)}
+                    imageURL={post.thumbnailURL}
+                    postId={post.id}
+                    title={post.title}
+                  />
+                </li>
+              );
+            })}
+          </ul>
+        </div>
         {posts && (
-          <div ref={lastPostElementRef}>
+          <div
+            style={{ height: 100, display: "flex", alignItems: "flex-start" }}
+            ref={lastPostElementRef}
+          >
             {scrollLoading && (
               <div style={{ width: "100%", marginBottom: "50px" }}>
                 <Lottie

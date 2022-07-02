@@ -26,6 +26,21 @@
   width: 100px;
   height: auto;
 }
+.menu {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  margin-left: 132px;
+  column-gap: 64px;
+}
+.menu a {
+  color: var(--black_60);
+  cursor: pointer;
+}
+.menu a.active {
+  color: var(--brandColor);
+  font-weight: bold;
+}
 .login {
   color: var(--black_100);
 }
@@ -49,5 +64,18 @@
 @media screen and (max-width: 1200px) {
   .header {
     padding: 0 20px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .menu {
+    margin-left: 10vw;
+    column-gap: 32px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .menu {
+    display: none;
   }
 }

@@ -19,7 +19,7 @@ export default function GalleryItem({
   postId,
 }: GalleryItemProps) {
   return (
-    <Link href={`/blog/post/${postId}`}>
+    <Link href={`/gallery/post/${postId}`}>
       <a className={styles.postItem}>
         <div className={styles.postImageWrap}>
           <img

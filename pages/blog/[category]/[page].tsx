@@ -24,7 +24,7 @@ const Blog: NextPage<Props> = ({ data, category }) => {
   const { user, isLoading } = useUser();
 
   return (
-    <Layout user={user} userLoading={isLoading}>
+    <Layout user={user} userLoading={isLoading} activeMenu={"BLOG"}>
       <div className={styles.container}>
         <Category active={category} />
         <div className={styles.section}>

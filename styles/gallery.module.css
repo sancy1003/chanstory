@@ -10,15 +10,21 @@
   justify-content: flex-end;
   margin-bottom: 20px;
 }
+.galleryListWrap {
+  width: 100%;
+  display: flex;
+  column-gap: 24px;
+}
+.galleryListM {
+  display: none;
+}
 .galleryList {
-  display: grid;
-  column-gap: 20px;
-  grid-auto-rows: 70px;
-  grid-template-columns: repeat(2, 1fr);
+  flex: 1;
 }
 .galleryListItem {
   width: 100%;
   height: fit-content;
+  margin-bottom: 50px;
 }
 .postItem {
   width: 100%;
@@ -59,10 +65,6 @@
 }
 
 @media screen and (max-width: 800px) {
-  .galleryList {
-    column-gap: 20px;
-    column-count: 2;
-  }
   .postImageWrap img {
     width: 100%;
     height: auto;
@@ -75,6 +77,9 @@
 
 @media screen and (max-width: 500px) {
   .galleryList {
-    grid-template-columns: repeat(1, 1fr);
+    display: none;
+  }
+  .galleryListM {
+    display: block;
   }
 }
