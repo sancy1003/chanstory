@@ -11,6 +11,9 @@ import useMutation from "@libs/client/useMutation";
 import { useForm } from "react-hook-form";
 import { FileUploader } from "react-drag-drop-files";
 import TagEditor from "@components/post/tag-editor";
+import uploadImageToStorage from "@libs/client/uploadImageToStorage";
+import Lottie from "react-lottie-player";
+import ring from "@resource/lottie/ring.json";
 
 interface PostResponse extends APIResponse {
   id: number;
@@ -26,29 +29,46 @@ const fileTypes = ["JPG", "PNG", "GIF"];
 
 const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
   const router = useRouter();
+  const [imageUploadLoading, setImageUploadLoading] = useState<boolean>(false);
   const [isHide, setIsHide] = useState(false);
   const [isDrag, setIsDrag] = useState(false);
   const [tags, setTags] = useState<string[]>([]);
-  const [imageList, setImageList] = useState<{ url: string }[]>([]);
+  const [imageList, setImageList] = useState<File[]>([]);
   const [post, { loading, data, error }] =
     useMutation<PostResponse>("/api/gallery");
   const { register, handleSubmit, setValue } = useForm<RegistForm>();
   const onPost = async (formData: RegistForm) => {
-    return;
-    post({
-      createdAt: new Date(formData.date).toUTCString(),
-      imageURLs: "",
-      title: formData.title,
-      content: formData.date,
-      isHide,
-      tags: tags.join(", "),
-    });
+    if (loading || imageUploadLoading) return;
+    setImageUploadLoading(true);
+    let imageURLs = [];
+    for (let i = 0; i < imageList.length; i++) {
+      let imageFile = new File([imageList[i]], "image");
+      let imageURL = await uploadImageToStorage(
+        imageFile,
+        `gallery_${formData.title}_${i}`
+      );
+      imageURLs.push(imageURL);
+    }
+    let now = new Date();
+    let utc = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
+
+    if (imageURLs) {
+      setImageUploadLoading(false);
+      post({
+        createdAt: utc,
+        imageURLs: imageURLs.join(", "),
+        title: formData.title,
+        content: formData.content,
+        isHide,
+        tags: tags.join(", "),
+      });
+    }
   };
 
   const imageRegistHandler = (files: File[]) => {
     let tempImagelist = [...imageList];
     for (let i = 0; i < files.length; i++) {
-      tempImagelist.push({ url: URL.createObjectURL(files[i]) });
+      tempImagelist.push(files[i]);
     }
     setImageList(tempImagelist);
   };
@@ -59,7 +79,7 @@ const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
 
   useEffect(() => {
     if (data && data.result) {
-      router.push(`/gallery/post/${data.id}`);
+      router.push(`/gallery`);
     } else if (data?.error) {
       alert(data.error);
     }
@@ -74,78 +94,110 @@ const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
   }, [setValue]);
 
   return (
-    <Layout user={user} activeMenu="GALLERY">
-      <div className={styles.galleryContainer}>
-        <form onSubmit={handleSubmit(onPost)}>
-          <div style={{ display: "flex", gap: 24 }}>
-            <input
-              placeholder="제목을 입력해 주세요."
-              {...register("title")}
-              className={styles.postTitleInput}
-            />
-            <input {...register("date")} className={styles.postDateInput} />
-          </div>
-          <div className={styles.imageEditWrap}>
-            {imageList.length === 0 ? (
-              <div className={styles.imageNoneBox}>이미지를 추가해 주세요.</div>
-            ) : (
-              <div className={styles.imagePrevBox}>
-                <SimpleImageSlider
-                  style={{
-                    backgroundSize: "contain",
-                    backgroundRepeat: "none",
-                  }}
-                  width={"100%"}
-                  height={"100%"}
-                  images={imageList}
-                  showBullets={true}
-                  showNavs={true}
-                  bgColor="#E1DFE9"
-                />
-              </div>
-            )}
-            <ul className={styles.imageRegistWrap}>
-              {imageList.map((image, index) => {
-                return (
-                  <li key={index} className={styles.imageRegistItem}>
-                    <div className={styles.imageRegistItemCover}>
-                      <MdClose onClick={() => imageDeleteHandler(index)} />
-                    </div>
-                    <img alt="갤러리 이미지" src={image.url} />
-                  </li>
-                );
-              })}
-              <FileUploader
-                handleChange={imageRegistHandler}
-                name="file"
-                types={fileTypes}
-                multiple={true}
-                hoverTitle="놓으세요!"
-                onDraggingStateChange={(dragging: boolean) =>
-                  setIsDrag(dragging)
-                }
-              >
-                <button type="button" className={styles.BtnImageRegist}>
-                  {!isDrag && <MdUploadFile />}
-                </button>
-              </FileUploader>
-            </ul>
-          </div>
-          <div className={styles.sectionTitle}>내용</div>
-          <textarea
-            placeholder="내용을 입력해 주세요."
-            className={styles.postContetInput}
+    <>
+      {(loading || imageUploadLoading) && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "cenyer",
+            position: "fixed",
+            left: 0,
+            top: 0,
+            bottom: 0,
+            right: 0,
+            backgroundColor: "rgba(0, 0, 0, .7)",
+            zIndex: 999,
+          }}
+        >
+          <Lottie
+            loop
+            animationData={ring}
+            play
+            style={{ width: 200, height: 200, margin: "0 auto" }}
           />
-          <div className={styles.sectionTitle}>태그</div>
-          <div style={{ marginBottom: 50 }}>
-            <TagEditor tags={tags} setTags={setTags} />
-          </div>
-          <div className={styles.btnPostingBox}>
-            <button className={styles.btnPosting}>포스팅</button>
-          </div>
-        </form>
-      </div>
-    </Layout>
+        </div>
+      )}
+      <Layout user={user} activeMenu="GALLERY">
+        <div className={styles.galleryContainer}>
+          <form onSubmit={handleSubmit(onPost)}>
+            <div style={{ display: "flex", gap: 24 }}>
+              <input
+                placeholder="제목을 입력해 주세요."
+                {...register("title")}
+                className={styles.postTitleInput}
+              />
+              <input {...register("date")} className={styles.postDateInput} />
+            </div>
+            <div className={styles.imageEditWrap}>
+              {imageList.length === 0 ? (
+                <div className={styles.imageNoneBox}>
+                  이미지를 추가해 주세요.
+                </div>
+              ) : (
+                <div className={styles.imagePrevBox}>
+                  <SimpleImageSlider
+                    style={{
+                      backgroundSize: "contain",
+                      backgroundRepeat: "none",
+                    }}
+                    width={"100%"}
+                    height={"100%"}
+                    images={imageList.map((item) => {
+                      return { url: URL.createObjectURL(item) };
+                    })}
+                    showBullets={true}
+                    showNavs={true}
+                    bgColor="#E1DFE9"
+                  />
+                </div>
+              )}
+              <ul className={styles.imageRegistWrap}>
+                {imageList.map((image, index) => {
+                  return (
+                    <li key={index} className={styles.imageRegistItem}>
+                      <div className={styles.imageRegistItemCover}>
+                        <MdClose onClick={() => imageDeleteHandler(index)} />
+                      </div>
+                      <img
+                        alt="갤러리 이미지"
+                        src={URL.createObjectURL(image)}
+                      />
+                    </li>
+                  );
+                })}
+                <FileUploader
+                  handleChange={imageRegistHandler}
+                  name="file"
+                  types={fileTypes}
+                  multiple={true}
+                  hoverTitle="놓으세요!"
+                  onDraggingStateChange={(dragging: boolean) =>
+                    setIsDrag(dragging)
+                  }
+                >
+                  <button type="button" className={styles.BtnImageRegist}>
+                    {!isDrag && <MdUploadFile />}
+                  </button>
+                </FileUploader>
+              </ul>
+            </div>
+            <div className={styles.sectionTitle}>내용</div>
+            <textarea
+              placeholder="내용을 입력해 주세요."
+              className={styles.postContetInput}
+            />
+            <div className={styles.sectionTitle}>태그</div>
+            <div style={{ marginBottom: 50 }}>
+              <TagEditor tags={tags} setTags={setTags} />
+            </div>
+            <div className={styles.btnPostingBox}>
+              <button className={styles.btnPosting}>포스팅</button>
+            </div>
+          </form>
+        </div>
+      </Layout>
+    </>
   );
 };
 

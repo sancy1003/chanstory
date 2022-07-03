@@ -120,6 +120,9 @@
   overflow: hidden;
   position: relative;
 }
+.imageRegistWrap input {
+  display: none;
+}
 
 .imageRegistItem:hover .imageRegistItemCover {
   display: block;

@@ -31,7 +31,10 @@ export default function TagEditor({ tags, setTags }: Props) {
         <div className={styles.inputWrap}>
           <input
             onKeyDown={(e) => {
-              if (e.key === "Enter") addTag();
+              if (e.key === "Enter") {
+                e.preventDefault();
+                addTag();
+              }
             }}
             type="text"
             value={text}
