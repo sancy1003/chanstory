@@ -10,6 +10,7 @@ import { MdUploadFile, MdClose } from "react-icons/md";
 import useMutation from "@libs/client/useMutation";
 import { useForm } from "react-hook-form";
 import { FileUploader } from "react-drag-drop-files";
+import TagEditor from "@components/post/tag-editor";
 
 interface PostResponse extends APIResponse {
   id: number;
@@ -17,7 +18,6 @@ interface PostResponse extends APIResponse {
 
 interface RegistForm {
   title: string;
-  tags: string;
   date: string;
   content: string;
 }
@@ -28,6 +28,7 @@ const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
   const router = useRouter();
   const [isHide, setIsHide] = useState(false);
   const [isDrag, setIsDrag] = useState(false);
+  const [tags, setTags] = useState<string[]>([]);
   const [imageList, setImageList] = useState<{ url: string }[]>([]);
   const [post, { loading, data, error }] =
     useMutation<PostResponse>("/api/gallery");
@@ -35,10 +36,12 @@ const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
   const onPost = async (formData: RegistForm) => {
     return;
     post({
+      createdAt: new Date(formData.date).toUTCString(),
+      imageURLs: "",
       title: formData.title,
       content: formData.date,
       isHide,
-      tags: formData.tags,
+      tags: tags.join(", "),
     });
   };
 
@@ -134,6 +137,9 @@ const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
             className={styles.postContetInput}
           />
           <div className={styles.sectionTitle}>태그</div>
+          <div style={{ marginBottom: 50 }}>
+            <TagEditor tags={tags} setTags={setTags} />
+          </div>
           <div className={styles.btnPostingBox}>
             <button className={styles.btnPosting}>포스팅</button>
           </div>

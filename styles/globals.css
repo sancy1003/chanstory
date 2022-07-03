@@ -108,6 +108,7 @@ body {
   padding-top: 50px;
 }
 input,
+button,
 textarea {
   line-height: 130%;
   font-family: "NanumBarunGothic", sans-serif, "TossFaceFontMac";
