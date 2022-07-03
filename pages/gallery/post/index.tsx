@@ -1,7 +1,7 @@
 import Layout from "@components/layout";
 import type { NextPage, NextPageContext } from "next";
 import styles from "@styles/gallery.module.css";
-import { dateToString } from "@libs/client/commonFunction";
+import SimpleImageSlider from "react-simple-image-slider/dist";
 import React, { useEffect, useState } from "react";
 import { APIResponse } from "types/response";
 import { SessionUserData, withSsrSession } from "@libs/server/withSession";
@@ -28,7 +28,7 @@ const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
   const router = useRouter();
   const [isHide, setIsHide] = useState(false);
   const [isDrag, setIsDrag] = useState(false);
-  const [imageList, setImageList] = useState<string[]>([]);
+  const [imageList, setImageList] = useState<{ url: string }[]>([]);
   const [post, { loading, data, error }] =
     useMutation<PostResponse>("/api/gallery");
   const { register, handleSubmit, setValue } = useForm<RegistForm>();
@@ -45,7 +45,7 @@ const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
   const imageRegistHandler = (files: File[]) => {
     let tempImagelist = [...imageList];
     for (let i = 0; i < files.length; i++) {
-      tempImagelist.push(URL.createObjectURL(files[i]));
+      tempImagelist.push({ url: URL.createObjectURL(files[i]) });
     }
     setImageList(tempImagelist);
   };
@@ -83,7 +83,24 @@ const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
             <input {...register("date")} className={styles.postDateInput} />
           </div>
           <div className={styles.imageEditWrap}>
-            <div className={styles.imageNoneBox}>이미지를 추가해 주세요.</div>
+            {imageList.length === 0 ? (
+              <div className={styles.imageNoneBox}>이미지를 추가해 주세요.</div>
+            ) : (
+              <div className={styles.imagePrevBox}>
+                <SimpleImageSlider
+                  style={{
+                    backgroundSize: "contain",
+                    backgroundRepeat: "none",
+                  }}
+                  width={"100%"}
+                  height={"100%"}
+                  images={imageList}
+                  showBullets={true}
+                  showNavs={true}
+                  bgColor="#E1DFE9"
+                />
+              </div>
+            )}
             <ul className={styles.imageRegistWrap}>
               {imageList.map((image, index) => {
                 return (
@@ -91,7 +108,7 @@ const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
                     <div className={styles.imageRegistItemCover}>
                       <MdClose onClick={() => imageDeleteHandler(index)} />
                     </div>
-                    <img alt="갤러리 이미지" src={image} />
+                    <img alt="갤러리 이미지" src={image.url} />
                   </li>
                 );
               })}

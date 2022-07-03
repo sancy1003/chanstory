@@ -83,12 +83,29 @@
 .imageNoneBox {
   display: flex;
   width: 100%;
-  height: 500px;
+  height: 533px;
   background: var(--black_20);
   color: var(--black_70);
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
+}
+.imagePrevBox {
+  display: flex;
+  width: 100%;
+  height: 533px;
+  background: var(--black_20);
+  margin-bottom: 20px;
+  position: relative;
+}
+.imagePrevBox button {
+  box-shadow: none !important;
+  opacity: 70% !important;
+}
+.imagePrevBox div {
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
 }
 .imageRegistWrap {
   display: flex;
