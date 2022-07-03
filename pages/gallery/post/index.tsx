@@ -6,9 +6,10 @@ import React, { useEffect, useState } from "react";
 import { APIResponse } from "types/response";
 import { SessionUserData, withSsrSession } from "@libs/server/withSession";
 import { useRouter } from "next/router";
-import { MdUploadFile } from "react-icons/md";
+import { MdUploadFile, MdClose } from "react-icons/md";
 import useMutation from "@libs/client/useMutation";
 import { useForm } from "react-hook-form";
+import { FileUploader } from "react-drag-drop-files";
 
 interface PostResponse extends APIResponse {
   id: number;
@@ -21,9 +22,13 @@ interface RegistForm {
   content: string;
 }
 
+const fileTypes = ["JPG", "PNG", "GIF"];
+
 const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
   const router = useRouter();
   const [isHide, setIsHide] = useState(false);
+  const [isDrag, setIsDrag] = useState(false);
+  const [imageList, setImageList] = useState<string[]>([]);
   const [post, { loading, data, error }] =
     useMutation<PostResponse>("/api/gallery");
   const { register, handleSubmit, setValue } = useForm<RegistForm>();
@@ -36,6 +41,19 @@ const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
       tags: formData.tags,
     });
   };
+
+  const imageRegistHandler = (files: File[]) => {
+    let tempImagelist = [...imageList];
+    for (let i = 0; i < files.length; i++) {
+      tempImagelist.push(URL.createObjectURL(files[i]));
+    }
+    setImageList(tempImagelist);
+  };
+
+  const imageDeleteHandler = (index: number) => {
+    setImageList([...imageList].filter((item, idx) => idx !== index));
+  };
+
   useEffect(() => {
     if (data && data.result) {
       router.push(`/gallery/post/${data.id}`);
@@ -67,10 +85,30 @@ const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
           <div className={styles.imageEditWrap}>
             <div className={styles.imageNoneBox}>이미지를 추가해 주세요.</div>
             <ul className={styles.imageRegistWrap}>
-              <li className={styles.imageRegistItem}></li>
-              <button type="button" className={styles.BtnImageRegist}>
-                <MdUploadFile />
-              </button>
+              {imageList.map((image, index) => {
+                return (
+                  <li key={index} className={styles.imageRegistItem}>
+                    <div className={styles.imageRegistItemCover}>
+                      <MdClose onClick={() => imageDeleteHandler(index)} />
+                    </div>
+                    <img alt="갤러리 이미지" src={image} />
+                  </li>
+                );
+              })}
+              <FileUploader
+                handleChange={imageRegistHandler}
+                name="file"
+                types={fileTypes}
+                multiple={true}
+                hoverTitle="놓으세요!"
+                onDraggingStateChange={(dragging: boolean) =>
+                  setIsDrag(dragging)
+                }
+              >
+                <button type="button" className={styles.BtnImageRegist}>
+                  {!isDrag && <MdUploadFile />}
+                </button>
+              </FileUploader>
             </ul>
           </div>
           <div className={styles.sectionTitle}>내용</div>
