@@ -48,6 +48,7 @@ const PostDetail: NextPage<PostProps> = ({ user, postSeoInfo }) => {
   if (!data) {
     return (
       <Layout
+        activeMenu="BLOG"
         user={user}
         title={postSeoInfo?.title}
         thumbnailURL={
@@ -62,6 +63,7 @@ const PostDetail: NextPage<PostProps> = ({ user, postSeoInfo }) => {
   }
   return (
     <Layout
+      activeMenu="BLOG"
       user={user}
       title={postSeoInfo?.title}
       thumbnailURL={

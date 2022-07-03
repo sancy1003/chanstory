@@ -15,7 +15,7 @@ interface LayoutProps {
   keywords?: string | null;
   url?: string;
   userLoading?: boolean;
-  activeMenu: "BLOG" | "GALLEY" | "NONE";
+  activeMenu: "BLOG" | "GALLERY" | "NONE";
 }
 
 export default function Layout({
@@ -62,7 +62,7 @@ export default function Layout({
             </li>
             <li>
               <Link href={"/gallery"}>
-                <a className={activeMenu === "GALLEY" ? styles.active : ""}>
+                <a className={activeMenu === "GALLERY" ? styles.active : ""}>
                   gallery
                 </a>
               </Link>

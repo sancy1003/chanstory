@@ -61,7 +61,7 @@ const Gallery: NextPage = () => {
   }, [data]);
 
   return (
-    <Layout user={user} userLoading={isLoading} activeMenu={"GALLEY"}>
+    <Layout user={user} userLoading={isLoading} activeMenu={"GALLERY"}>
       <div className={styles.galleryContainer}>
         <div className={styles.galleryListWrap}>
           <ul className={styles.galleryList}>
