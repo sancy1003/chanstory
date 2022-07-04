@@ -6,6 +6,7 @@ export default async function uploadImageToStorage(
   if (image) {
     const { uploadURL } = await (await fetch(`/api/uploadImage`)).json();
     const form = new FormData();
+
     form.append("file", image, name);
     const {
       result: { id },

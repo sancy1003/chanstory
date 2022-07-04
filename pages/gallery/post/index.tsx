@@ -56,6 +56,7 @@ const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
       setImageUploadLoading(false);
       post({
         createdAt: utc,
+        thumbnailURL: imageURLs[0],
         imageURLs: imageURLs.join(", "),
         title: formData.title,
         content: formData.content,
@@ -79,7 +80,7 @@ const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
 
   useEffect(() => {
     if (data && data.result) {
-      router.push(`/gallery`);
+      router.push(`/gallery/post/${data.id}`);
     } else if (data?.error) {
       alert(data.error);
     }
@@ -184,6 +185,7 @@ const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
             </div>
             <div className={styles.sectionTitle}>내용</div>
             <textarea
+              {...register("content")}
               placeholder="내용을 입력해 주세요."
               className={styles.postContetInput}
             />

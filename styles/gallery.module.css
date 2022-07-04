@@ -58,7 +58,7 @@
 .postImageWrap img {
   width: 100%;
   height: auto;
-  max-height: 360px;
+  max-height: 500px;
   object-fit: cover;
   object-position: center;
   min-height: 300px;
@@ -194,6 +194,59 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+.postingHeader {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--black_40);
+  padding-bottom: 30px;
+  margin-bottom: 30px;
+}
+.postingTitleWrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding-right: 30px;
+  font-size: 20px;
+  font-weight: bold;
+}
+.postingTitleWrap svg {
+  color: var(--brandColor);
+  margin-right: 40px;
+  cursor: pointer;
+}
+.postingRegistTime {
+  font-size: 14px;
+  color: var(--black_70);
+}
+.postingContentWrap {
+  width: 100%;
+  border-bottom: 1px solid var(--black_40);
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+.postingContent {
+  width: 100%;
+}
+.postContent {
+  font-size: 19px !important;
+  line-height: 160%;
+}
+.postingTag {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 80px;
+  column-gap: 20px;
+  row-gap: 10px;
+}
+.postingTag li {
+  background-color: var(--black_20);
+  color: var(--black_70);
+  padding: 10px 24px;
+  font-size: 14px;
 }
 
 @media screen and (max-width: 800px) {
