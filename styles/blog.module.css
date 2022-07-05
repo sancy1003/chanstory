@@ -150,17 +150,14 @@
   display: flex;
   flex-wrap: wrap;
   margin-top: 80px;
+  column-gap: 20px;
+  row-gap: 10px;
 }
 .postingTag li {
-  margin-right: 20px;
   background-color: var(--black_20);
   color: var(--black_70);
   padding: 10px 24px;
   font-size: 14px;
-  margin-bottom: 10px;
-}
-.postingTag li:nth-last-child(1) {
-  margin-right: 0;
 }
 .commentWrap {
   width: 100%;
@@ -323,7 +320,7 @@
 }
 .postTitleInput {
   width: 100%;
-  padding: 10px 8px;
+  padding: 10px 12px;
   margin-bottom: 20px;
   box-sizing: border-box;
   border-radius: 4px;

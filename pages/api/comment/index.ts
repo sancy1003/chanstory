@@ -8,31 +8,26 @@ async function handler(
   res: NextApiResponse<ResponseType>
 ) {
   if (req.method === "GET") {
-    const { type, id } = req.query;
-    let comments;
-    if (type === "blog") {
-      comments = await client.comment.findMany({
-        where: { postId: +id },
-        include: {
-          author: true,
-          recomments: {
-            include: {
-              author: true,
-              tagUser: true,
-            },
+    const { id } = req.query;
+    let comments = await client.comment.findMany({
+      where: { postId: +id },
+      include: {
+        author: true,
+        recomments: {
+          include: {
+            author: true,
+            tagUser: true,
           },
         },
-      });
-    }
-    if (type === "gallery") {
-    }
+      },
+    });
     res.json({
       result: true,
       comments,
     });
   }
   if (req.method === "POST") {
-    const { id, type } = req.query;
+    const { id } = req.query;
     const { user } = req.session;
     const { comment: content, commentId } = req.body;
     if (!user) {

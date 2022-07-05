@@ -19,5 +19,6 @@ export interface PostRegistForm {
   thumbnailImage: FileList;
 }
 export interface PostWithComments extends Post {
+  imageURLs: string;
   comments: CommentWithAuthor[];
 }

@@ -1,15 +1,15 @@
-import { NextPage, NextPageContext } from "next";
-import styles from "@styles/blog.module.css";
 import Layout from "@components/layout";
-import { FaChevronLeft } from "react-icons/fa";
+import type { NextPage, NextPageContext } from "next";
+import styles from "@styles/gallery.module.css";
+import SimpleImageSlider from "react-simple-image-slider/dist";
+import React from "react";
 import { SessionUserData, withSsrSession } from "@libs/server/withSession";
-import { dateToString, formattingImageURL } from "@libs/client/commonFunction";
-import dynamic from "next/dynamic";
-import useSWR from "swr";
-import { useRouter } from "next/router";
-import Lottie from "react-lottie-player";
-import ring from "@resource/lottie/ring.json";
+import { FaChevronLeft } from "react-icons/fa";
+import TagEditor from "@components/post/tag-editor";
 import client from "@libs/server/client";
+import { dateToString, formattingImageURL } from "@libs/client/commonFunction";
+import { useRouter } from "next/router";
+import useSWR from "swr";
 import { PostDetailResponse } from "types/response";
 import Comment from "@components/comment";
 
@@ -25,45 +25,19 @@ interface PostProps {
   postSeoInfo: PostSeoInfo;
 }
 
-const Viewer = dynamic(() => import("@components/viewer"), {
-  ssr: false,
-  loading: () => (
-    <div style={{ width: "100%", height: "100vh", paddingTop: "100px" }}>
-      <Lottie
-        loop
-        animationData={ring}
-        play
-        style={{ width: 150, height: 150, margin: "0 auto" }}
-      />
-    </div>
-  ),
-});
-
 const PostDetail: NextPage<PostProps> = ({ user, postSeoInfo }) => {
   const router = useRouter();
   const { data, mutate } = useSWR<PostDetailResponse>(
-    router?.query?.id ? `/api/blog/${router.query.id}` : null
+    router?.query?.id ? `/api/gallery/${router.query.id}` : null
   );
+  const images = data?.post?.imageURLs?.split(", ");
   const tags = data?.post?.tags?.split(", ");
-  if (!data) {
-    return (
-      <Layout
-        activeMenu="BLOG"
-        user={user}
-        title={postSeoInfo?.title}
-        thumbnailURL={
-          postSeoInfo ? formattingImageURL(postSeoInfo.thumbnailURL) : null
-        }
-        keywords={postSeoInfo?.tags}
-        url={postSeoInfo?.url}
-      >
-        <div />
-      </Layout>
-    );
-  }
+
+  console.log(data, "data");
+
   return (
     <Layout
-      activeMenu="BLOG"
+      activeMenu="GALLERY"
       user={user}
       title={postSeoInfo?.title}
       thumbnailURL={
@@ -72,7 +46,7 @@ const PostDetail: NextPage<PostProps> = ({ user, postSeoInfo }) => {
       keywords={postSeoInfo?.tags}
       url={postSeoInfo?.url}
     >
-      <div className={styles.postContentContainer}>
+      <div className={styles.galleryContainer}>
         <div className={styles.postingHeader}>
           <div className={styles.postingTitleWrap}>
             <FaChevronLeft onClick={() => router.back()} />
@@ -83,9 +57,27 @@ const PostDetail: NextPage<PostProps> = ({ user, postSeoInfo }) => {
           </div>
         </div>
         <div className={styles.postingContentWrap}>
-          <div className={styles.postingCotnet}>
-            {data?.post?.content && <Viewer content={data?.post?.content} />}
+          <div className={styles.imageEditWrap}>
+            <div className={styles.imagePrevBox}>
+              {images && (
+                <SimpleImageSlider
+                  style={{
+                    backgroundSize: "contain",
+                    backgroundRepeat: "none",
+                  }}
+                  width={"100%"}
+                  height={"100%"}
+                  images={images!.map((image) => {
+                    return { url: formattingImageURL(image) };
+                  })}
+                  showBullets={true}
+                  showNavs={true}
+                  bgColor="#E1DFE9"
+                />
+              )}
+            </div>
           </div>
+          <div className={styles.postContent}>{data?.post?.content}</div>
           {tags && tags.length > 0 ? (
             <ul className={styles.postingTag}>
               {tags.map((tag: string, idx: number) => {
@@ -96,7 +88,7 @@ const PostDetail: NextPage<PostProps> = ({ user, postSeoInfo }) => {
             ""
           )}
         </div>
-        <Comment type="blog" id={Number(router?.query?.id)} user={user} />
+        <Comment type="gallery" id={Number(router?.query?.id)} user={user} />
       </div>
     </Layout>
   );

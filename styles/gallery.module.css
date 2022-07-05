@@ -1,0 +1,270 @@
+.galleryContainer {
+  padding: 50px 20px;
+  width: 100%;
+  max-width: 840px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+.galleryTopBox {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+.galleryListWrap {
+  width: 100%;
+  display: flex;
+  column-gap: 24px;
+}
+.galleryListM {
+  display: none;
+}
+.galleryList {
+  flex: 1;
+}
+.galleryListItem {
+  width: 100%;
+  height: fit-content;
+  margin-bottom: 50px;
+}
+.postItem {
+  width: 100%;
+}
+.postTitle {
+  font-size: 16px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+.postInfo {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--black_70);
+  font-size: 14px;
+}
+.postCommentWrap {
+  display: flex;
+  align-items: center;
+}
+.postCommentWrap svg {
+  font-size: 16px;
+  margin-right: 6px;
+}
+.postImageWrap {
+  width: 100%;
+  position: relative;
+  margin-bottom: 16px;
+}
+.postImageWrap img {
+  width: 100%;
+  height: auto;
+  max-height: 500px;
+  object-fit: cover;
+  object-position: center;
+  min-height: 300px;
+}
+.sectionTitle {
+  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: bold;
+}
+.postTitleInput {
+  flex: 1;
+  padding: 10px 12px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: 1px solid var(--black_40);
+  font-size: 16px;
+}
+.imageEditWrap {
+  margin-bottom: 50px;
+}
+.imageNoneBox {
+  display: flex;
+  width: 100%;
+  height: 533px;
+  background: var(--black_20);
+  color: var(--black_70);
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.imagePrevBox {
+  display: flex;
+  width: 100%;
+  height: 533px;
+  background: var(--black_20);
+  margin-bottom: 20px;
+  position: relative;
+}
+.imagePrevBox button {
+  box-shadow: none !important;
+  opacity: 70% !important;
+}
+.imagePrevBox div {
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+}
+.imageRegistWrap {
+  display: flex;
+  column-gap: 10px;
+  row-gap: 10px;
+  flex-wrap: wrap;
+}
+.imageRegistItem {
+  width: 152px;
+  height: 152px;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+.imageRegistWrap input {
+  display: none;
+}
+
+.imageRegistItem:hover .imageRegistItemCover {
+  display: block;
+}
+
+.imageRegistItemCover {
+  display: none;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.6);
+  position: absolute;
+  padding: 10px;
+  text-align: right;
+  box-sizing: border-box;
+}
+.imageRegistItemCover svg {
+  color: var(--black_80);
+  font-size: 32px;
+  cursor: pointer;
+}
+.imageRegistItem img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.BtnImageRegist {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 152px;
+  height: 152px;
+  border: 3px dashed var(--black_40);
+  border-radius: 8px;
+  background-color: #fcfcff;
+  color: var(--black_40);
+  font-size: 64px;
+  cursor: pointer;
+}
+.postDateInput {
+  width: 150px;
+  padding: 10px 12px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: 1px solid var(--black_40);
+  font-size: 16px;
+  text-align: right;
+}
+.postContetInput {
+  width: 100%;
+  height: 160px;
+  padding: 10px 12px;
+  margin-bottom: 50px;
+  resize: none;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: 1px solid var(--black_40);
+  font-size: 16px;
+}
+.btnPostingBox {
+  width: 100%;
+  text-align: right;
+  margin-top: 10px;
+}
+.btnPosting {
+  padding: 14px 40px;
+  background-color: var(--brandColor);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.postingHeader {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--black_40);
+  padding-bottom: 30px;
+  margin-bottom: 30px;
+}
+.postingTitleWrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding-right: 30px;
+  font-size: 20px;
+  font-weight: bold;
+}
+.postingTitleWrap svg {
+  color: var(--brandColor);
+  margin-right: 40px;
+  cursor: pointer;
+}
+.postingRegistTime {
+  font-size: 14px;
+  color: var(--black_70);
+}
+.postingContentWrap {
+  width: 100%;
+  border-bottom: 1px solid var(--black_40);
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+.postingContent {
+  width: 100%;
+}
+.postContent {
+  font-size: 19px !important;
+  line-height: 160%;
+}
+.postingTag {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 80px;
+  column-gap: 20px;
+  row-gap: 10px;
+}
+.postingTag li {
+  background-color: var(--black_20);
+  color: var(--black_70);
+  padding: 10px 24px;
+  font-size: 14px;
+}
+
+@media screen and (max-width: 800px) {
+  .postImageWrap img {
+    width: 100%;
+    height: auto;
+    max-height: 350px;
+    object-fit: cover;
+    object-position: center;
+    min-height: 300px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .galleryList {
+    display: none;
+  }
+  .galleryListM {
+    display: block;
+  }
+}

@@ -33,10 +33,11 @@ async function handler(
     return res.json({
       result: true,
       postCount,
-      galleryPosts: galleryPosts.map((post) => {
+      posts: galleryPosts.map((post) => {
         return {
           ...post,
           commentCount: post._count.comments + post._count.recomments,
+          thumbnailURL: post.imageURLs?.split(", ")[0],
         };
       }),
     });

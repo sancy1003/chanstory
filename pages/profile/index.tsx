@@ -124,7 +124,7 @@ const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
 
   return (
     <>
-      <Layout user={userProfile} title="프로필">
+      <Layout user={userProfile} title="프로필" activeMenu={"NONE"}>
         <div className={styles.container}>
           <div className={styles.section}>
             <div className={styles.sectionTitle}>

@@ -15,7 +15,7 @@ interface Props {
 const Home: NextPage<Props> = ({ data }) => {
   const { user, isLoading } = useUser();
   return (
-    <Layout user={user} userLoading={isLoading}>
+    <Layout user={user} userLoading={isLoading} activeMenu={"BLOG"}>
       <div className={styles.container}>
         <Category active="home" />
         <div className={styles.section} style={{ marginBottom: "70px" }}>
@@ -61,7 +61,7 @@ export const getStaticProps: GetStaticProps = async function (
   context: GetStaticPropsContext
 ) {
   const newPosts = await client.post.findMany({
-    where: { isHide: false },
+    where: { isHide: false, type: "POST" },
     select: {
       id: true,
       title: true,
@@ -78,7 +78,7 @@ export const getStaticProps: GetStaticProps = async function (
     orderBy: { createdAt: "desc" },
   });
   const hotPosts = await client.post.findMany({
-    where: { isHide: false },
+    where: { isHide: false, type: "POST" },
     select: {
       id: true,
       title: true,
