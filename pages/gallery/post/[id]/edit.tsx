@@ -3,7 +3,7 @@ import type { NextPage, NextPageContext } from "next";
 import styles from "@styles/gallery.module.css";
 import SimpleImageSlider from "react-simple-image-slider/dist";
 import React, { useEffect, useState } from "react";
-import { APIResponse } from "types/response";
+import { APIResponse, PostDetailResponse } from "types/response";
 import { SessionUserData, withSsrSession } from "@libs/server/withSession";
 import { useRouter } from "next/router";
 import { MdUploadFile, MdClose } from "react-icons/md";
@@ -14,6 +14,8 @@ import TagEditor from "@components/post/tag-editor";
 import uploadImageToStorage from "@libs/client/uploadImageToStorage";
 import Lottie from "react-lottie-player";
 import ring from "@resource/lottie/ring.json";
+import useSWR from "swr";
+import { formattingImageURL } from "@libs/client/commonFunction";
 
 interface PostResponse extends APIResponse {
   id: number;
@@ -27,13 +29,16 @@ interface RegistForm {
 
 const fileTypes = ["JPG", "PNG", "GIF"];
 
-const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
+const Edit: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
   const router = useRouter();
+  const { data: prevData, mutate } = useSWR<PostDetailResponse>(
+    router?.query?.id ? `/api/gallery/${router.query.id}` : null
+  );
   const [imageUploadLoading, setImageUploadLoading] = useState<boolean>(false);
   const [isHide, setIsHide] = useState(false);
   const [isDrag, setIsDrag] = useState(false);
   const [tags, setTags] = useState<string[]>([]);
-  const [imageList, setImageList] = useState<File[]>([]);
+  const [imageList, setImageList] = useState<File[] | string[]>([]);
   const [post, { loading, data, error }] =
     useMutation<PostResponse>("/api/gallery");
   const { register, handleSubmit, setValue } = useForm<RegistForm>();
@@ -42,17 +47,23 @@ const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
     setImageUploadLoading(true);
     let imageURLs = [];
     for (let i = 0; i < imageList.length; i++) {
-      let imageFile = new File([imageList[i]], "image");
-      let imageURL = await uploadImageToStorage(
-        imageFile,
-        `gallery_${formData.title}_${i}`
-      );
-      imageURLs.push(imageURL);
+      if (typeof imageList[i] === "string") {
+        imageURLs.push(imageList[i]);
+        continue;
+      } else {
+        let imageFile = new File([imageList[i]], "image");
+        let imageURL = await uploadImageToStorage(
+          imageFile,
+          `gallery_${formData.title}_${i}`
+        );
+        imageURLs.push(imageURL);
+      }
     }
 
     if (imageURLs) {
       setImageUploadLoading(false);
       post({
+        postId: +prevData?.post.id!,
         createdAt: new Date(formData.date),
         thumbnailURL: imageURLs[0],
         imageURLs: imageURLs.join(", "),
@@ -69,28 +80,38 @@ const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
     for (let i = 0; i < files.length; i++) {
       tempImagelist.push(files[i]);
     }
-    setImageList(tempImagelist);
+    setImageList(tempImagelist as string[] | File[]);
   };
 
   const imageDeleteHandler = (index: number) => {
-    setImageList([...imageList].filter((item, idx) => idx !== index));
+    setImageList(
+      [...imageList].filter((item, idx) => idx !== index) as string[] | File[]
+    );
   };
 
   useEffect(() => {
     if (data && data.result) {
-      router.push(`/gallery/post/${data.id}`);
+      router.push(`/gallery/post/${prevData?.post?.id}`);
     } else if (data?.error) {
       alert(data.error);
     }
   }, [data, router]);
+
   useEffect(() => {
-    setValue(
-      "date",
-      `${new Date().getFullYear()}-${
-        new Date().getMonth() + 1
-      }-${new Date().getDate()}`
-    );
-  }, [setValue]);
+    if (prevData && prevData.result && prevData.post) {
+      setIsHide(prevData.post.isHide);
+      if (prevData.post.tags) setTags(prevData.post.tags.split(", "));
+      setImageList(prevData.post.imageURLs.split(", "));
+      setValue("content", prevData.post.content ?? "");
+      setValue("title", prevData.post.title);
+      setValue(
+        "date",
+        `${new Date(prevData.post.createdAt).getFullYear()}-${
+          new Date(prevData.post.createdAt).getMonth() + 1
+        }-${new Date(prevData.post.createdAt).getDate()}`
+      );
+    }
+  }, [prevData]);
 
   return (
     <>
@@ -143,7 +164,11 @@ const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
                     width={"100%"}
                     height={"100%"}
                     images={imageList.map((item) => {
-                      return { url: URL.createObjectURL(item) };
+                      if (typeof item === "string") {
+                        return { url: formattingImageURL(item) };
+                      } else {
+                        return { url: URL.createObjectURL(item) };
+                      }
                     })}
                     showBullets={true}
                     showNavs={true}
@@ -160,7 +185,11 @@ const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
                       </div>
                       <img
                         alt="갤러리 이미지"
-                        src={URL.createObjectURL(image)}
+                        src={
+                          typeof image === "string"
+                            ? formattingImageURL(image)
+                            : URL.createObjectURL(image)
+                        }
                       />
                     </li>
                   );
@@ -219,4 +248,4 @@ export const getServerSideProps = withSsrSession(async function ({
   };
 });
 
-export default Write;
+export default Edit;
