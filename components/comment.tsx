@@ -180,7 +180,7 @@ export default function Comment({ type, id, user }: Props) {
                     {comment.author.nickname}
                   </div>
                   <div className={styles.registTime}>
-                    {dateToString(comment.author.createdAt)}
+                    {dateToString(comment.createdAt)}
                   </div>
                 </div>
                 <div
