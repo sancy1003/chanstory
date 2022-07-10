@@ -7,3 +7,4 @@ Host: https://www.chanstory.dev
 
 # Sitemaps
 Sitemap: https://www.chanstory.dev/sitemap.xml
+Sitemap: https://www.chanstory.dev/server-sitemap.xml
