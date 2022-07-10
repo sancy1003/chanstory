@@ -33,8 +33,6 @@ const PostDetail: NextPage<PostProps> = ({ user, postSeoInfo }) => {
   const images = data?.post?.imageURLs?.split(", ");
   const tags = data?.post?.tags?.split(", ");
 
-  console.log(data, "data");
-
   return (
     <Layout
       activeMenu="GALLERY"
@@ -50,7 +48,7 @@ const PostDetail: NextPage<PostProps> = ({ user, postSeoInfo }) => {
         <div className={styles.postingHeader}>
           <div className={styles.postingTitleWrap}>
             <FaChevronLeft onClick={() => router.back()} />
-            <div>{data?.post?.title}</div>
+            <h1>{data?.post?.title}</h1>
           </div>
           <div className={styles.postingRegistTime}>
             {data?.post && dateToString(data.post.createdAt)}

@@ -131,6 +131,7 @@
   color: var(--brandColor);
   margin-right: 40px;
   cursor: pointer;
+  padding-bottom: 3px;
 }
 .postingRegistTime {
   font-size: 14px;
