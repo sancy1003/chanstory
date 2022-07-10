@@ -270,8 +270,6 @@
   color: var(--brandColor);
   font-weight: bold;
 }
-.commentEditBox {
-}
 .editBtnBox {
   margin-top: 6px;
   display: flex;
