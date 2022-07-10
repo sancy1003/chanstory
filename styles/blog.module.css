@@ -131,6 +131,7 @@
   color: var(--brandColor);
   margin-right: 40px;
   cursor: pointer;
+  padding-bottom: 3px;
 }
 .postingRegistTime {
   font-size: 14px;
@@ -268,8 +269,6 @@
   margin-bottom: 10px;
   color: var(--brandColor);
   font-weight: bold;
-}
-.commentEditBox {
 }
 .editBtnBox {
   margin-top: 6px;

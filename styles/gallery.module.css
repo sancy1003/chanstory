@@ -215,6 +215,7 @@
 .postingTitleWrap svg {
   color: var(--brandColor);
   margin-right: 40px;
+  padding-bottom: 3px;
   cursor: pointer;
 }
 .postingRegistTime {
