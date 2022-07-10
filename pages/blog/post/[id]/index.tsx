@@ -16,6 +16,7 @@ import Comment from "@components/comment";
 interface PostSeoInfo {
   title: string;
   thumbnailURL: string | null;
+  content: string;
   tags: string | null;
   url: string;
 }
@@ -65,6 +66,7 @@ const PostDetail: NextPage<PostProps> = ({ user, postSeoInfo }) => {
     <Layout
       activeMenu="BLOG"
       user={user}
+      description={postSeoInfo?.content}
       title={postSeoInfo?.title}
       thumbnailURL={
         postSeoInfo ? formattingImageURL(postSeoInfo.thumbnailURL) : null
@@ -116,8 +118,15 @@ export const getServerSideProps = withSsrSession(async function ({
 
   const post = await client.post.findUnique({
     where: { id: +id },
-    select: { title: true, thumbnailURL: true, tags: true },
+    select: { title: true, thumbnailURL: true, tags: true, content: true },
   });
+
+  let content = "";
+
+  if (post?.content) {
+    if (post.content.length > 150) content = post.content.substring(0, 150);
+    else content = post.content;
+  }
 
   return {
     props: {
@@ -125,6 +134,7 @@ export const getServerSideProps = withSsrSession(async function ({
       postSeoInfo: {
         title: post?.title,
         thumbnailURL: post?.thumbnailURL,
+        content: content,
         tags: post?.tags,
         url: req?.url,
       },

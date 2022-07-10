@@ -19,7 +19,6 @@ class CustomDocument extends Document {
           `,
             }}
           />
-          <meta name="description" content="프론트엔드 개발 이야기" />
           <meta property="og:type" content="blog" />
           <meta
             name="google-site-verification"

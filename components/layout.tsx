@@ -15,6 +15,7 @@ interface LayoutProps {
   keywords?: string | null;
   url?: string;
   userLoading?: boolean;
+  description?: string;
   activeMenu: "BLOG" | "GALLERY" | "NONE";
 }
 
@@ -27,11 +28,20 @@ export default function Layout({
   url,
   userLoading,
   activeMenu,
+  description,
 }: LayoutProps) {
   return (
     <div>
       <Head>
         <title>{title ? `${title} | chanstory` : `chanstory`}</title>
+        <meta
+          property="description"
+          content={
+            description && description.length > 0
+              ? description
+              : "프론트엔드 개발 이야기"
+          }
+        />
         <meta
           property="og:title"
           content={title ? `${title} | chanstory` : `chanstory`}
