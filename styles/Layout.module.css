@@ -19,12 +19,11 @@
   height: 100%;
 }
 .logo {
+  position: relative;
+  height: 60px;
+  width: 100px;
   display: flex;
   align-items: center;
-}
-.logo img {
-  width: 100px;
-  height: auto;
 }
 .menu {
   flex: 1;
@@ -50,6 +49,8 @@
   cursor: pointer;
 }
 .userProfileImage {
+  position: relative;
+  overflow: hidden;
   width: 35px;
   height: 35px;
   border-radius: 99px;
@@ -59,6 +60,14 @@
 }
 .userNickname {
   color: var(--brandColor);
+}
+.autoHeightImageWrap span {
+  position: unset !important;
+}
+.autoImage {
+  object-fit: cover !important;
+  position: relative !important;
+  height: auto !important;
 }
 
 @media screen and (max-width: 1200px) {

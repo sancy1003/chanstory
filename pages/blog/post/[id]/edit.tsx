@@ -16,7 +16,9 @@ interface PostResponse extends APIResponse {
   id: number;
 }
 
-const PostEditor = dynamic(() => import("@components/editor"), { ssr: false });
+const PostEditor = dynamic(() => import("@components/post/editor"), {
+  ssr: false,
+});
 
 const Edit: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
   const router = useRouter();

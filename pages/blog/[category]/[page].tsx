@@ -13,6 +13,12 @@ import Pagination from "react-js-pagination";
 import client from "@libs/server/client";
 import { PostListWithCountResponse } from "types/response";
 import useUser from "@libs/client/useUser";
+import {
+  MdOutlineFirstPage,
+  MdOutlineLastPage,
+  MdOutlineChevronRight,
+  MdOutlineChevronLeft,
+} from "react-icons/md";
 
 interface Props {
   data: PostListWithCountResponse;
@@ -43,17 +49,37 @@ const Blog: NextPage<Props> = ({ data, category }) => {
             })}
           </div>
           {data.postCount > 8 && (
-            <Pagination
-              activePage={router?.query?.page ? +router?.query?.page : 1}
-              itemsCountPerPage={8}
-              totalItemsCount={data ? data.postCount : 0}
-              pageRangeDisplayed={5}
-              prevPageText={"‹"}
-              nextPageText={"›"}
-              onChange={(page) => {
-                router.replace(`/blog/${router.query.category}/${page}`);
-              }}
-            />
+            <div style={{ marginTop: 80 }}>
+              <Pagination
+                activePage={router?.query?.page ? +router?.query?.page : 1}
+                itemsCountPerPage={8}
+                totalItemsCount={data ? data.postCount : 0}
+                pageRangeDisplayed={5}
+                prevPageText={
+                  <div className={styles.pagenationIconBox}>
+                    <MdOutlineChevronLeft />
+                  </div>
+                }
+                nextPageText={
+                  <div className={styles.pagenationIconBox}>
+                    <MdOutlineChevronRight />
+                  </div>
+                }
+                firstPageText={
+                  <div className={styles.pagenationIconBox}>
+                    <MdOutlineFirstPage />
+                  </div>
+                }
+                lastPageText={
+                  <div className={styles.pagenationIconBox}>
+                    <MdOutlineLastPage />
+                  </div>
+                }
+                onChange={(page) => {
+                  router.push(`/blog/${router.query.category}/${page}`);
+                }}
+              />
+            </div>
           )}
         </div>
       </div>

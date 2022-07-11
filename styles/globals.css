@@ -229,5 +229,5 @@ ul.pagination li a.active {
 
 @font-face {
   font-family: "TossFaceFontMac";
-  src: url("../resource/fonts/TossFaceFontMac.ttf");
+  src: url("/fonts/TossFaceFontMac.ttf");
 }

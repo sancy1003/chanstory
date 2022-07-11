@@ -25,6 +25,13 @@ class CustomDocument extends Document {
             content="omwGBkhkv9uHj7JnqbzzlTMMX4Onp_jHpTqqE72E9qo"
           />
           <link
+            rel="preload"
+            href="/fonts/TossFaceFontMac.ttf"
+            as="font"
+            crossOrigin="anonymous"
+            type="font/ttf"
+          />
+          <link
             href="https://hangeul.pstatic.net/hangeul_static/css/nanum-barun-gothic.css"
             rel="stylesheet"
           />

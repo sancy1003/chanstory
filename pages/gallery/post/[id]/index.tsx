@@ -11,7 +11,7 @@ import { dateToString, formattingImageURL } from "@libs/client/commonFunction";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import { PostDetailResponse } from "types/response";
-import Comment from "@components/comment";
+import Comment from "@components/post/comment";
 
 interface PostSeoInfo {
   title: string;
@@ -70,8 +70,8 @@ const PostDetail: NextPage<PostProps> = ({ user, postSeoInfo }) => {
                   images={images!.map((image) => {
                     return { url: formattingImageURL(image) };
                   })}
-                  showBullets={true}
-                  showNavs={true}
+                  showBullets={images && images.length > 1}
+                  showNavs={images && images.length > 1}
                   bgColor="#E1DFE9"
                 />
               )}

@@ -6,6 +6,7 @@ import { SessionUserData } from "@libs/server/withSession";
 import { formattingUserProfileURL } from "@libs/client/commonFunction";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import Image from "next/image";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -59,7 +60,13 @@ export default function Layout({
         <div className={styles.headerWrap}>
           <Link href={"/"}>
             <a className={styles.logo}>
-              <img src={"/images/logo/logo.svg"} />
+              <Image
+                src="/images/logo/logo.svg"
+                layout="fill"
+                objectFit="contain"
+                alt="logo"
+                priority={true}
+              />
             </a>
           </Link>
           <ul className={styles.menu}>
@@ -90,20 +97,26 @@ export default function Layout({
           ) : user ? (
             <Link href="/profile">
               <a className={styles.userWrap}>
-                <img
-                  src={formattingUserProfileURL(user?.profileURL, "avatar")}
-                  className={styles.userProfileImage}
-                />
+                <div className={styles.userProfileImage}>
+                  <Image
+                    alt="avatar"
+                    layout="fill"
+                    src={formattingUserProfileURL(user?.profileURL, "avatar")}
+                  />
+                </div>
                 <div className={styles.userNickname}>{user!.nickname}</div>
               </a>
             </Link>
           ) : (
             <Link href={"/login"}>
               <div className={styles.userWrap}>
-                <img
-                  src="/images/user/default_profile.svg"
-                  className={styles.userProfileImage}
-                />
+                <div className={styles.userProfileImage}>
+                  <Image
+                    alt="avatar"
+                    layout="fill"
+                    src="/images/user/default_profile.svg"
+                  />
+                </div>
                 <a className={styles.login}>로그인</a>
               </div>
             </Link>

@@ -11,7 +11,7 @@ import Lottie from "react-lottie-player";
 import ring from "@resource/lottie/ring.json";
 import client from "@libs/server/client";
 import { PostDetailResponse } from "types/response";
-import Comment from "@components/comment";
+import Comment from "@components/post/comment";
 
 interface PostSeoInfo {
   title: string;

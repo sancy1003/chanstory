@@ -1,5 +1,5 @@
 .container {
-  padding: 50px 20px;
+  padding: 50px 20px 100px 20px;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
@@ -51,12 +51,12 @@
 .postContainer {
   width: 100%;
   display: flex;
+  row-gap: 60px;
   flex-wrap: wrap;
 }
 .postItem {
   width: 23.5%;
   cursor: pointer;
-  margin-bottom: 30px;
   padding: 0 1%;
 }
 .postItem:nth-child(1) {
@@ -217,12 +217,12 @@
   margin-right: 20px;
 }
 .profileImage {
+  position: relative;
+  overflow: hidden;
   width: 55px;
   height: 55px;
   border-radius: 100%;
   margin-right: 20px;
-  object-position: center;
-  object-fit: cover;
 }
 .comment {
   flex: 1;
@@ -377,6 +377,18 @@
 }
 .moreBtnBox li:hover {
   background-color: var(--black_10);
+}
+.pagenationIconBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pagenationIconBox svg {
+  font-size: 24px;
+  color: var(--black_50);
+}
+.pagenationIconBox:hover svg {
+  color: var(--brandColor);
 }
 
 @media screen and (max-width: 800px) {

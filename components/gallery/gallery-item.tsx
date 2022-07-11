@@ -1,5 +1,6 @@
 import { formattingImageURL } from "@libs/client/commonFunction";
 import styles from "@styles/gallery.module.css";
+import Image from "next/image";
 import Link from "next/link";
 import { FaRegCommentDots } from "react-icons/fa";
 
@@ -22,11 +23,18 @@ export default function GalleryItem({
     <Link href={`/gallery/post/${postId}`}>
       <a className={styles.postItem}>
         <div className={styles.postImageWrap}>
-          <img
-            style={{ borderRadius: 8 }}
-            className={styles.postImage}
-            src={formattingImageURL(imageURL)}
-          />
+          <div
+            className={styles.autoHeightImageWrap}
+            style={{ width: "100%", position: "relative" }}
+          >
+            <Image
+              layout="fill"
+              className={styles.autoImage}
+              alt={`${title}-thumbnail`}
+              src={formattingImageURL(imageURL, "galleryThumbnail")}
+              style={{ borderRadius: 8 }}
+            />
+          </div>
         </div>
         <div title={title} className={styles.postTitle}>
           {title}

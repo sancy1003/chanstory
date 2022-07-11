@@ -15,6 +15,7 @@ import { APIResponse } from "types/response";
 import ring from "@resource/lottie/ring.json";
 import { SessionUserData } from "@libs/server/withSession";
 import useDelete from "@libs/client/useDelete";
+import Image from "next/image";
 
 interface Props {
   type: "blog" | "gallery";
@@ -165,14 +166,16 @@ export default function Comment({ type, id, user }: Props) {
       {data?.comments?.map((comment, idx) => {
         return (
           <div className={styles.commentBox} key={comment.id}>
-            <img
-              alt="avatar"
-              className={styles.profileImage}
-              src={formattingUserProfileURL(
-                comment.author.profileURL,
-                "avatar"
-              )}
-            />
+            <div className={styles.profileImage}>
+              <Image
+                alt="avatar"
+                layout="fill"
+                src={formattingUserProfileURL(
+                  comment.author.profileURL,
+                  "avatar"
+                )}
+              />
+            </div>
             <div className={styles.comment}>
               <div className={styles.commentInfo}>
                 <div className={styles.commentWriterInfo}>
@@ -293,14 +296,16 @@ export default function Comment({ type, id, user }: Props) {
                       className={styles.underCommentBox}
                       key={recomment.id}
                     >
-                      <img
-                        alt="avatar"
-                        className={styles.profileImage}
-                        src={formattingUserProfileURL(
-                          recomment.author.profileURL,
-                          "avatar"
-                        )}
-                      />
+                      <div className={styles.profileImage}>
+                        <Image
+                          alt="avatar"
+                          layout="fill"
+                          src={formattingUserProfileURL(
+                            recomment.author.profileURL,
+                            "avatar"
+                          )}
+                        />
+                      </div>
                       <div className={styles.comment}>
                         <div className={styles.commentInfo}>
                           <div className={styles.commentWriterInfo}>
@@ -481,10 +486,13 @@ export default function Comment({ type, id, user }: Props) {
       })}
       <form onSubmit={commentHandleSubmit(registComment)}>
         <div className={styles.commentBox} style={{ marginBottom: 10 }}>
-          <img
-            className={styles.profileImage}
-            src={formattingUserProfileURL(user?.profileURL, "avatar")}
-          />
+          <div className={styles.profileImage}>
+            <Image
+              alt="avatar"
+              layout="fill"
+              src={formattingUserProfileURL(user?.profileURL, "avatar")}
+            />
+          </div>
           <textarea
             {...commentRegister("comment", {
               required: true,
