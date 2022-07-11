@@ -15,6 +15,7 @@ import NicknameChangeModal from "@components/modal/nickname-change-modal";
 import { formattingUserProfileURL } from "@libs/client/commonFunction";
 import client from "@libs/server/client";
 import { APIResponse } from "types/response";
+import Image from "next/image";
 
 interface ProfileImageForm {
   profileImage: FileList;
@@ -196,13 +197,16 @@ const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
                     />
                     <span onClick={() => deleteImage()}>삭제</span>
                   </div>
-                  <img
-                    className={styles.profileImage}
-                    src={formattingUserProfileURL(
-                      userProfile?.profileURL,
-                      "avatar"
-                    )}
-                  />
+                  <div className={styles.profileImage}>
+                    <Image
+                      alt="avatar"
+                      layout="fill"
+                      src={formattingUserProfileURL(
+                        userProfile?.profileURL,
+                        "avatar"
+                      )}
+                    />
+                  </div>
                 </div>
               ) : (
                 <div className={styles.profileImageWrap}>
@@ -219,13 +223,16 @@ const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
                       accept="image/*"
                     />
                   </div>
-                  <img
-                    className={styles.profileImage}
-                    src={formattingUserProfileURL(
-                      userProfile?.profileURL,
-                      "avatar"
-                    )}
-                  />
+                  <div className={styles.profileImage}>
+                    <Image
+                      alt="avatar"
+                      layout="fill"
+                      src={formattingUserProfileURL(
+                        userProfile?.profileURL,
+                        "avatar"
+                      )}
+                    />
+                  </div>
                 </div>
               )}
               <div className={styles.profileInfoBox}>

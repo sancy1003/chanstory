@@ -11,7 +11,7 @@ import { dateToString, formattingImageURL } from "@libs/client/commonFunction";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import { PostDetailResponse } from "types/response";
-import Comment from "@components/comment";
+import Comment from "@components/post/comment";
 
 interface PostSeoInfo {
   title: string;

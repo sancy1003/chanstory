@@ -249,6 +249,16 @@
   padding: 10px 24px;
   font-size: 14px;
 }
+.autoHeightImageWrap span {
+  position: unset !important;
+}
+.autoImage {
+  object-fit: cover !important;
+  position: relative !important;
+  height: auto !important;
+  min-height: 300px !important;
+  max-height: 450px !important;
+}
 
 @media screen and (max-width: 800px) {
   .postImageWrap img {
@@ -267,5 +277,6 @@
   }
   .galleryListM {
     display: block;
+    width: 100%;
   }
 }

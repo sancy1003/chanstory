@@ -67,11 +67,7 @@ const Gallery: NextPage = () => {
           <ul className={styles.galleryList}>
             {leftPosts.map((post) => {
               return (
-                <li
-                  id="masonryItem"
-                  key={post.id}
-                  className={styles.galleryListItem}
-                >
+                <li key={post.id} className={styles.galleryListItem}>
                   <GalleryItem
                     commentNum={post.commentCount}
                     createdAt={dateToString(post.createdAt)}
@@ -86,11 +82,7 @@ const Gallery: NextPage = () => {
           <ul className={styles.galleryList}>
             {rightPosts.map((post) => {
               return (
-                <li
-                  id="masonryItem"
-                  key={post.id}
-                  className={styles.galleryListItem}
-                >
+                <li key={post.id} className={styles.galleryListItem}>
                   <GalleryItem
                     commentNum={post.commentCount}
                     createdAt={dateToString(post.createdAt)}
@@ -105,11 +97,7 @@ const Gallery: NextPage = () => {
           <ul className={styles.galleryListM}>
             {posts.map((post) => {
               return (
-                <li
-                  id="masonryItem"
-                  key={post.id}
-                  className={styles.galleryListItem}
-                >
+                <li key={post.id} className={styles.galleryListItem}>
                   <GalleryItem
                     commentNum={post.commentCount}
                     createdAt={dateToString(post.createdAt)}

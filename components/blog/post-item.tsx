@@ -1,5 +1,6 @@
 import { formattingImageURL } from "@libs/client/commonFunction";
 import styles from "@styles/blog.module.css";
+import Image from "next/image";
 import Link from "next/link";
 import { FaRegCommentDots } from "react-icons/fa";
 
@@ -22,14 +23,18 @@ export default function PostItem({
     <Link href={`/blog/post/${postId}`}>
       <a className={styles.postItem}>
         <div className={styles.postImageWrap}>
-          <img
-            className={styles.postImage}
-            src={
-              imageURL
-                ? formattingImageURL(imageURL)
-                : "/images/thumbnail/default_thumbnail.png"
-            }
-          />
+          <div className={styles.postImage}>
+            <Image
+              alt={`${title}-thumbnail`}
+              layout="fill"
+              objectFit="cover"
+              src={
+                imageURL
+                  ? formattingImageURL(imageURL, "blogThumbnail")
+                  : "/images/thumbnail/default_thumbnail.png"
+              }
+            />
+          </div>
         </div>
         <div title={title} className={styles.postTitle}>
           {title}
