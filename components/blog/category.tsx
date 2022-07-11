@@ -15,35 +15,35 @@ export default function Category({ active }: CategoryProps) {
         <li>
           <Link href="/blog">
             <a className={currentCategory === "home" ? styles.active : ""}>
-              홈&nbsp;&nbsp;🏠
+              🏠&nbsp;&nbsp;홈
             </a>
           </Link>
         </li>
         <li>
           <Link href="/blog/develop/1">
             <a className={currentCategory === "develop" ? styles.active : ""}>
-              개발 일기&nbsp;&nbsp;📕
+              📕&nbsp;&nbsp;개발 일기
             </a>
           </Link>
         </li>
         <li>
           <Link href="/blog/study/1">
             <a className={currentCategory === "study" ? styles.active : ""}>
-              스터디&nbsp;&nbsp;✏
+              ✏&nbsp;&nbsp;스터디
             </a>
           </Link>
         </li>
         <li>
           <Link href="/blog/hobby/1">
             <a className={currentCategory === "hobby" ? styles.active : ""}>
-              취미&nbsp;&nbsp;😎
+              😎&nbsp;&nbsp;취미
             </a>
           </Link>
         </li>
         <li>
           <Link href="/blog/daily/1">
             <a className={currentCategory === "daily" ? styles.active : ""}>
-              일상&nbsp;&nbsp;🥰
+              🥰&nbsp;&nbsp;일상
             </a>
           </Link>
         </li>
