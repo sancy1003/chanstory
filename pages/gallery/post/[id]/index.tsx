@@ -70,8 +70,8 @@ const PostDetail: NextPage<PostProps> = ({ user, postSeoInfo }) => {
                   images={images!.map((image) => {
                     return { url: formattingImageURL(image) };
                   })}
-                  showBullets={true}
-                  showNavs={true}
+                  showBullets={images && images.length > 1}
+                  showNavs={images && images.length > 1}
                   bgColor="#E1DFE9"
                 />
               )}
