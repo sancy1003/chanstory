@@ -3,7 +3,6 @@ import type { GetStaticPropsContext, NextPage, NextPageContext } from "next";
 import styles from "@styles/gallery.module.css";
 import SimpleImageSlider from "react-simple-image-slider/dist";
 import React from "react";
-import { SessionUserData, withSsrSession } from "@libs/server/withSession";
 import { FaChevronLeft } from "react-icons/fa";
 import client from "@libs/server/client";
 import {
@@ -12,8 +11,6 @@ import {
   formattingImageURL,
 } from "@libs/client/commonFunction";
 import { useRouter } from "next/router";
-import useSWR from "swr";
-import { PostDetailResponse } from "types/response";
 import Comment from "@components/post/comment";
 import { Post } from "@prisma/client";
 
@@ -28,26 +25,26 @@ interface PostProps {
 
 const PostDetail: NextPage<PostProps> = ({ post }) => {
   const router = useRouter();
-  const images = post?.imageURLs?.split(", ");
-  const tags = post?.tags?.split(", ");
+  const images = post.imageURLs?.split(", ");
+  const tags = post.tags?.split(", ");
 
   return (
     <Layout
       activeMenu="GALLERY"
-      title={post?.title}
-      description={post?.description}
-      thumbnailURL={post ? formattingImageURL(post?.thumbnailURL) : null}
-      keywords={post?.tags}
-      url={post?.url}
+      title={post.title}
+      description={post.description}
+      thumbnailURL={post ? formattingImageURL(post.thumbnailURL) : null}
+      keywords={post.tags}
+      url={post.url}
     >
       <div className={styles.galleryContainer}>
         <div className={styles.postingHeader}>
           <div className={styles.postingTitleWrap}>
             <FaChevronLeft onClick={() => router.back()} />
-            <h1>{post?.title}</h1>
+            <h1>{post.title}</h1>
           </div>
           <div className={styles.postingRegistTime}>
-            {dateToString(post?.createdAt)}
+            {dateToString(post.createdAt)}
           </div>
         </div>
         <div className={styles.postingContentWrap}>
@@ -71,7 +68,7 @@ const PostDetail: NextPage<PostProps> = ({ post }) => {
               )}
             </div>
           </div>
-          <div className={styles.postContent}>{post?.content}</div>
+          <div className={styles.postContent}>{post.content}</div>
           {tags && tags.length > 0 ? (
             <ul className={styles.postingTag}>
               {tags.map((tag: string, idx: number) => {
@@ -90,7 +87,7 @@ const PostDetail: NextPage<PostProps> = ({ post }) => {
 
 export async function getStaticPaths() {
   const paths = [];
-  const blogPosts = await client.post?.findMany({
+  const galleryPosts = await client.post?.findMany({
     where: {
       isHide: false,
       type: "GALLERY",
@@ -100,7 +97,7 @@ export async function getStaticPaths() {
     },
   });
 
-  for (const data of blogPosts) {
+  for (const data of galleryPosts) {
     paths.push({ params: { id: String(data.id) } });
   }
 
@@ -136,9 +133,8 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
     props: {
       post: {
         ...post,
-        title: "ㅇㅇㅇㅇ",
         description,
-        url: `${process.env.SITE_URL}/blog/post/${post?.id}`,
+        url: `${process.env.SITE_URL}/gallery/post/${post?.id}`,
         createdAt: dateToStringFromServer(post?.createdAt!),
       },
     },
