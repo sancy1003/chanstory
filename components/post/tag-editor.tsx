@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import styles from "@styles/post.module.css";
 import { MdClose } from "react-icons/md";
 

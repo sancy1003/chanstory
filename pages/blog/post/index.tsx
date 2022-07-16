@@ -63,7 +63,7 @@ const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
     }
   }, [data, router]);
   return (
-    <Layout user={user} activeMenu="BLOG">
+    <Layout activeMenu="BLOG">
       <div className={styles.container}>
         <form onSubmit={handleSubmit(onPost)}>
           <input {...register("title")} className={styles.postTitleInput} />

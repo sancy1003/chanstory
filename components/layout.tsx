@@ -2,20 +2,18 @@ import React from "react";
 import Link from "next/link";
 import Head from "next/head";
 import styles from "@styles/Layout.module.css";
-import { SessionUserData } from "@libs/server/withSession";
 import { formattingUserProfileURL } from "@libs/client/commonFunction";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import Image from "next/image";
+import useUser from "@libs/client/useUser";
 
 interface LayoutProps {
   children: React.ReactNode;
   title?: string;
-  user?: SessionUserData | null;
   thumbnailURL?: string | null;
   keywords?: string | null;
   url?: string;
-  userLoading?: boolean;
   description?: string;
   activeMenu: "BLOG" | "GALLERY" | "NONE";
 }
@@ -23,14 +21,13 @@ interface LayoutProps {
 export default function Layout({
   title,
   children,
-  user,
   thumbnailURL,
   keywords,
   url,
-  userLoading,
   activeMenu,
   description,
 }: LayoutProps) {
+  const { user, isLoading } = useUser();
   return (
     <div>
       <Head>
@@ -85,7 +82,7 @@ export default function Layout({
               </Link>
             </li>
           </ul>
-          {userLoading ? (
+          {isLoading ? (
             <div className={styles.userWrap}>
               <Skeleton
                 width={"35px"}
