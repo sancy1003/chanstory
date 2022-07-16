@@ -117,7 +117,7 @@ const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
           />
         </div>
       )}
-      <Layout user={user} activeMenu="GALLERY">
+      <Layout activeMenu="GALLERY">
         <div className={styles.galleryContainer}>
           <form onSubmit={handleSubmit(onPost)}>
             <div style={{ display: "flex", gap: 24 }}>

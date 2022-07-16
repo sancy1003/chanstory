@@ -78,7 +78,7 @@ const Edit: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
     }
   }, [prevData]);
   return (
-    <Layout user={user} activeMenu="BLOG">
+    <Layout activeMenu="BLOG">
       <div className={styles.container}>
         <form onSubmit={handleSubmit(onPost)}>
           <input {...register("title")} className={styles.postTitleInput} />

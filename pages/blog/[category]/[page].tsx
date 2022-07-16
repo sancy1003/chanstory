@@ -27,10 +27,9 @@ interface Props {
 
 const Blog: NextPage<Props> = ({ data, category }) => {
   const router = useRouter();
-  const { user, isLoading } = useUser();
 
   return (
-    <Layout user={user} userLoading={isLoading} activeMenu={"BLOG"}>
+    <Layout activeMenu={"BLOG"}>
       <div className={styles.container}>
         <Category active={category} />
         <div className={styles.section}>

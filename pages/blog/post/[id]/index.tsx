@@ -50,7 +50,6 @@ const PostDetail: NextPage<PostProps> = ({ user, postSeoInfo }) => {
     return (
       <Layout
         activeMenu="BLOG"
-        user={user}
         title={postSeoInfo?.title}
         thumbnailURL={
           postSeoInfo ? formattingImageURL(postSeoInfo.thumbnailURL) : null
@@ -65,7 +64,6 @@ const PostDetail: NextPage<PostProps> = ({ user, postSeoInfo }) => {
   return (
     <Layout
       activeMenu="BLOG"
-      user={user}
       description={postSeoInfo?.content}
       title={postSeoInfo?.title}
       thumbnailURL={

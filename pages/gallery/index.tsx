@@ -12,7 +12,6 @@ import Lottie from "react-lottie-player";
 import ring from "@resource/lottie/ring.json";
 
 const Gallery: NextPage = () => {
-  const { user, isLoading } = useUser();
   const [leftPosts, setLeftPost] = useState<PostsList[]>([]);
   const [rightPosts, setRightPosts] = useState<PostsList[]>([]);
   const [posts, setPosts] = useState<PostsList[]>([]);
@@ -61,7 +60,7 @@ const Gallery: NextPage = () => {
   }, [data]);
 
   return (
-    <Layout user={user} userLoading={isLoading} activeMenu={"GALLERY"}>
+    <Layout activeMenu={"GALLERY"}>
       <div className={styles.galleryContainer}>
         <div className={styles.galleryListWrap}>
           <ul className={styles.galleryList}>

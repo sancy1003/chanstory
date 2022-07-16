@@ -37,7 +37,6 @@ const PostDetail: NextPage<PostProps> = ({ user, postSeoInfo }) => {
   return (
     <Layout
       activeMenu="GALLERY"
-      user={user}
       title={postSeoInfo?.title}
       description={postSeoInfo?.content}
       thumbnailURL={
