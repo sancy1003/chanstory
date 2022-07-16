@@ -1,4 +1,4 @@
-import { createRef, useEffect } from "react";
+import { createRef } from "react";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Editor } from "@toast-ui/react-editor";
 import "tui-color-picker/dist/tui-color-picker.css";

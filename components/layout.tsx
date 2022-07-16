@@ -2,7 +2,6 @@ import React from "react";
 import Link from "next/link";
 import Head from "next/head";
 import styles from "@styles/Layout.module.css";
-import { SessionUserData } from "@libs/server/withSession";
 import { formattingUserProfileURL } from "@libs/client/commonFunction";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";

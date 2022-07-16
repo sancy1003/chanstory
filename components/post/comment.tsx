@@ -10,12 +10,14 @@ import { useForm } from "react-hook-form";
 import { FaEllipsisH } from "react-icons/fa";
 import Lottie from "react-lottie-player";
 import useSWR from "swr";
-import { CommentForm, CommentResponse, CommentWithAuthor } from "types/comment";
+import { CommentForm, CommentResponse } from "types/comment";
 import { APIResponse } from "types/response";
 import ring from "@resource/lottie/ring.json";
 import { SessionUserData } from "@libs/server/withSession";
 import useDelete from "@libs/client/useDelete";
 import Image from "next/image";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 interface Props {
   type: "blog" | "gallery";
@@ -163,327 +165,370 @@ export default function Comment({ type, id, user }: Props) {
 
   return (
     <div className={styles.commentWrap} style={{ borderBottom: 0 }}>
-      {data?.comments?.map((comment, idx) => {
-        return (
-          <div className={styles.commentBox} key={comment.id}>
-            <div className={styles.profileImage}>
-              <Image
-                alt="avatar"
-                layout="fill"
-                src={formattingUserProfileURL(
-                  comment.author.profileURL,
-                  "avatar"
-                )}
-              />
-            </div>
-            <div className={styles.comment}>
-              <div className={styles.commentInfo}>
-                <div className={styles.commentWriterInfo}>
-                  <div className={styles.nickname}>
-                    {comment.author.nickname}
-                  </div>
-                  <div className={styles.registTime}>
-                    {dateToString(comment.createdAt)}
-                  </div>
-                </div>
-                <div
-                  ref={(el) =>
-                    (moreBtnRef.current[moreBtnRef.current.length] = el!)
-                  }
-                  className={styles.commentBtnMoreBox}
-                >
-                  {user ? (
-                    <FaEllipsisH
-                      onClick={() =>
-                        setMoreBtnView({
-                          type: "comment",
-                          id: comment.id,
-                        })
-                      }
-                    />
-                  ) : (
-                    ""
+      {data ? (
+        data.comments?.map((comment, idx) => {
+          return (
+            <div className={styles.commentBox} key={comment.id}>
+              <div className={styles.profileImage}>
+                <Image
+                  alt="avatar"
+                  layout="fill"
+                  src={formattingUserProfileURL(
+                    comment.author.profileURL,
+                    "avatar"
                   )}
-                  {moreBtnView?.type === "comment" &&
-                    moreBtnView.id === comment.id && (
-                      <ul className={styles.moreBtnBox}>
-                        <li
-                          onClick={() => {
-                            setEditCommentState(null);
-                            setRecommentState({
-                              commentId: comment.id,
-                              tagedUserId: comment.author.id,
-                              nickname: comment.author.nickname,
-                            });
-                            setMoreBtnView(null);
-                          }}
-                        >
-                          답글
-                        </li>
-                        {(user?.id === comment.author.id ||
-                          user?.role === "ADMIN") && (
-                          <>
-                            <li
-                              onClick={() => {
-                                setRecommentState(null);
-                                setEditCommentState({
-                                  type: "comment",
-                                  id: comment.id,
-                                });
-                                setEditValue("comment", comment.content);
-                                setMoreBtnView(null);
-                              }}
-                            >
-                              수정
-                            </li>
-                            <li
-                              onClick={() => {
-                                setMoreBtnView(null);
-                                if (deleteCommentLoading) return;
-                                deleteComment({
-                                  id: comment.id,
-                                });
-                              }}
-                            >
-                              삭제
-                            </li>
-                          </>
-                        )}
-                      </ul>
-                    )}
-                </div>
+                />
               </div>
-              {editCommentState?.type === "comment" &&
-              editCommentState?.id === comment.id ? (
-                <form
-                  onSubmit={editHandleSubmit(onEditComment)}
-                  className={styles.commentEditBox}
-                >
-                  <textarea
-                    {...editRegister("comment", {
-                      required: true,
-                      maxLength: 300,
-                    })}
-                    style={{ width: "100%" }}
-                    placeholder="내용을 입력해주세요."
-                    maxLength={300}
-                    className={styles.commentInput}
-                  />
-                  <div className={styles.editBtnBox}>
-                    <div className={styles.commentLength}>
-                      {editWatch("comment") ? editWatch("comment").length : 0} /
-                      300
+              <div className={styles.comment}>
+                <div className={styles.commentInfo}>
+                  <div className={styles.commentWriterInfo}>
+                    <div className={styles.nickname}>
+                      {comment.author.nickname}
                     </div>
-                    <button type="submit" className={styles.btnEdit}>
-                      수정
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setEditCommentState(null)}
-                      className={styles.btnEditCancel}
-                    >
-                      취소
-                    </button>
+                    <div className={styles.registTime}>
+                      {dateToString(comment.createdAt)}
+                    </div>
                   </div>
-                </form>
-              ) : (
-                <div className={styles.commentContent}>{comment.content}</div>
-              )}
-              {comment.recomments?.length > 0
-                ? comment.recomments.map((recomment, idx) => (
-                    <div
-                      style={idx === 0 ? { marginTop: 30 } : {}}
-                      className={styles.underCommentBox}
-                      key={recomment.id}
-                    >
-                      <div className={styles.profileImage}>
-                        <Image
-                          alt="avatar"
-                          layout="fill"
-                          src={formattingUserProfileURL(
-                            recomment.author.profileURL,
-                            "avatar"
-                          )}
-                        />
-                      </div>
-                      <div className={styles.comment}>
-                        <div className={styles.commentInfo}>
-                          <div className={styles.commentWriterInfo}>
-                            <div className={styles.nickname}>
-                              {recomment?.author.nickname}
-                            </div>
-                            <div className={styles.registTime}>
-                              {dateToString(recomment.createdAt)}
-                            </div>
-                          </div>
-                          <div
-                            ref={(el) =>
-                              (moreBtnRef.current[moreBtnRef.current.length] =
-                                el!)
-                            }
-                            className={styles.commentBtnMoreBox}
+                  <div
+                    ref={(el) =>
+                      (moreBtnRef.current[moreBtnRef.current.length] = el!)
+                    }
+                    className={styles.commentBtnMoreBox}
+                  >
+                    {user ? (
+                      <FaEllipsisH
+                        onClick={() =>
+                          setMoreBtnView({
+                            type: "comment",
+                            id: comment.id,
+                          })
+                        }
+                      />
+                    ) : (
+                      ""
+                    )}
+                    {moreBtnView?.type === "comment" &&
+                      moreBtnView.id === comment.id && (
+                        <ul className={styles.moreBtnBox}>
+                          <li
+                            onClick={() => {
+                              setEditCommentState(null);
+                              setRecommentState({
+                                commentId: comment.id,
+                                tagedUserId: comment.author.id,
+                                nickname: comment.author.nickname,
+                              });
+                              setMoreBtnView(null);
+                            }}
                           >
-                            {user && (
-                              <FaEllipsisH
-                                onClick={() =>
-                                  setMoreBtnView({
-                                    type: "recomment",
-                                    id: recomment.id,
-                                  })
-                                }
-                              />
-                            )}
-                            {moreBtnView?.type === "recomment" &&
-                              moreBtnView.id === recomment.id && (
-                                <ul className={styles.moreBtnBox}>
-                                  <li
-                                    onClick={() => {
-                                      setEditCommentState(null);
-                                      setRecommentState({
-                                        commentId: comment.id,
-                                        tagedUserId: recomment.author.id,
-                                        nickname: recomment.author.nickname,
-                                      });
-                                      setMoreBtnView(null);
-                                    }}
-                                  >
-                                    답글
-                                  </li>
-                                  {(user?.id === recomment.author.id ||
-                                    user?.role === "ADMIN") && (
-                                    <>
-                                      <li
-                                        onClick={() => {
-                                          setRecommentState(null);
-                                          setEditCommentState({
-                                            type: "recomment",
-                                            id: recomment.id,
-                                          });
-                                          setEditValue(
-                                            "comment",
-                                            recomment.content
-                                          );
-                                          setMoreBtnView(null);
-                                        }}
-                                      >
-                                        수정
-                                      </li>
-                                      <li
-                                        onClick={() => {
-                                          setMoreBtnView(null);
-                                          if (deleteRecommentLoading) return;
-                                          deleteRecomment({ id: recomment.id });
-                                        }}
-                                      >
-                                        삭제
-                                      </li>
-                                    </>
-                                  )}
-                                </ul>
-                              )}
-                          </div>
-                        </div>
-                        {editCommentState?.type === "recomment" &&
-                        recomment.id === editCommentState.id ? (
-                          <form
-                            onSubmit={editHandleSubmit(onEditComment)}
-                            className={styles.commentEditBox}
-                          >
-                            <textarea
-                              {...editRegister("comment", {
-                                required: true,
-                                maxLength: 300,
-                              })}
-                              placeholder="내용을 입력해주세요."
-                              style={{ width: "100%" }}
-                              maxLength={300}
-                              className={styles.commentInput}
-                            />
-                            <div className={styles.editBtnBox}>
-                              <div className={styles.commentLength}>
-                                {editWatch("comment")
-                                  ? editWatch("comment").length
-                                  : 0}{" "}
-                                / 300
-                              </div>
-                              <button type="submit" className={styles.btnEdit}>
-                                수정
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => setEditCommentState(null)}
-                                className={styles.btnEditCancel}
+                            답글
+                          </li>
+                          {(user?.id === comment.author.id ||
+                            user?.role === "ADMIN") && (
+                            <>
+                              <li
+                                onClick={() => {
+                                  setRecommentState(null);
+                                  setEditCommentState({
+                                    type: "comment",
+                                    id: comment.id,
+                                  });
+                                  setEditValue("comment", comment.content);
+                                  setMoreBtnView(null);
+                                }}
                               >
-                                취소
-                              </button>
-                            </div>
-                          </form>
-                        ) : (
-                          <div className={styles.commentContent}>
-                            {recomment?.tagUser.nickname !==
-                              recomment?.author.nickname && (
-                              <span>@ {recomment?.tagUser.nickname}</span>
+                                수정
+                              </li>
+                              <li
+                                onClick={() => {
+                                  setMoreBtnView(null);
+                                  if (deleteCommentLoading) return;
+                                  deleteComment({
+                                    id: comment.id,
+                                  });
+                                }}
+                              >
+                                삭제
+                              </li>
+                            </>
+                          )}
+                        </ul>
+                      )}
+                  </div>
+                </div>
+                {editCommentState?.type === "comment" &&
+                editCommentState?.id === comment.id ? (
+                  <form
+                    onSubmit={editHandleSubmit(onEditComment)}
+                    className={styles.commentEditBox}
+                  >
+                    <textarea
+                      {...editRegister("comment", {
+                        required: true,
+                        maxLength: 300,
+                      })}
+                      style={{ width: "100%" }}
+                      placeholder="내용을 입력해주세요."
+                      maxLength={300}
+                      className={styles.commentInput}
+                    />
+                    <div className={styles.editBtnBox}>
+                      <div className={styles.commentLength}>
+                        {editWatch("comment") ? editWatch("comment").length : 0}{" "}
+                        / 300
+                      </div>
+                      <button type="submit" className={styles.btnEdit}>
+                        수정
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setEditCommentState(null)}
+                        className={styles.btnEditCancel}
+                      >
+                        취소
+                      </button>
+                    </div>
+                  </form>
+                ) : (
+                  <div className={styles.commentContent}>{comment.content}</div>
+                )}
+                {comment.recomments?.length > 0
+                  ? comment.recomments.map((recomment, idx) => (
+                      <div
+                        style={idx === 0 ? { marginTop: 30 } : {}}
+                        className={styles.underCommentBox}
+                        key={recomment.id}
+                      >
+                        <div className={styles.profileImage}>
+                          <Image
+                            alt="avatar"
+                            layout="fill"
+                            src={formattingUserProfileURL(
+                              recomment.author.profileURL,
+                              "avatar"
                             )}
-                            {recomment.content}
+                          />
+                        </div>
+                        <div className={styles.comment}>
+                          <div className={styles.commentInfo}>
+                            <div className={styles.commentWriterInfo}>
+                              <div className={styles.nickname}>
+                                {recomment?.author.nickname}
+                              </div>
+                              <div className={styles.registTime}>
+                                {dateToString(recomment.createdAt)}
+                              </div>
+                            </div>
+                            <div
+                              ref={(el) =>
+                                (moreBtnRef.current[moreBtnRef.current.length] =
+                                  el!)
+                              }
+                              className={styles.commentBtnMoreBox}
+                            >
+                              {user && (
+                                <FaEllipsisH
+                                  onClick={() =>
+                                    setMoreBtnView({
+                                      type: "recomment",
+                                      id: recomment.id,
+                                    })
+                                  }
+                                />
+                              )}
+                              {moreBtnView?.type === "recomment" &&
+                                moreBtnView.id === recomment.id && (
+                                  <ul className={styles.moreBtnBox}>
+                                    <li
+                                      onClick={() => {
+                                        setEditCommentState(null);
+                                        setRecommentState({
+                                          commentId: comment.id,
+                                          tagedUserId: recomment.author.id,
+                                          nickname: recomment.author.nickname,
+                                        });
+                                        setMoreBtnView(null);
+                                      }}
+                                    >
+                                      답글
+                                    </li>
+                                    {(user?.id === recomment.author.id ||
+                                      user?.role === "ADMIN") && (
+                                      <>
+                                        <li
+                                          onClick={() => {
+                                            setRecommentState(null);
+                                            setEditCommentState({
+                                              type: "recomment",
+                                              id: recomment.id,
+                                            });
+                                            setEditValue(
+                                              "comment",
+                                              recomment.content
+                                            );
+                                            setMoreBtnView(null);
+                                          }}
+                                        >
+                                          수정
+                                        </li>
+                                        <li
+                                          onClick={() => {
+                                            setMoreBtnView(null);
+                                            if (deleteRecommentLoading) return;
+                                            deleteRecomment({
+                                              id: recomment.id,
+                                            });
+                                          }}
+                                        >
+                                          삭제
+                                        </li>
+                                      </>
+                                    )}
+                                  </ul>
+                                )}
+                            </div>
                           </div>
+                          {editCommentState?.type === "recomment" &&
+                          recomment.id === editCommentState.id ? (
+                            <form
+                              onSubmit={editHandleSubmit(onEditComment)}
+                              className={styles.commentEditBox}
+                            >
+                              <textarea
+                                {...editRegister("comment", {
+                                  required: true,
+                                  maxLength: 300,
+                                })}
+                                placeholder="내용을 입력해주세요."
+                                style={{ width: "100%" }}
+                                maxLength={300}
+                                className={styles.commentInput}
+                              />
+                              <div className={styles.editBtnBox}>
+                                <div className={styles.commentLength}>
+                                  {editWatch("comment")
+                                    ? editWatch("comment").length
+                                    : 0}{" "}
+                                  / 300
+                                </div>
+                                <button
+                                  type="submit"
+                                  className={styles.btnEdit}
+                                >
+                                  수정
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => setEditCommentState(null)}
+                                  className={styles.btnEditCancel}
+                                >
+                                  취소
+                                </button>
+                              </div>
+                            </form>
+                          ) : (
+                            <div className={styles.commentContent}>
+                              {recomment?.tagUser.nickname !==
+                                recomment?.author.nickname && (
+                                <span>@ {recomment?.tagUser.nickname}</span>
+                              )}
+                              {recomment.content}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))
+                  : ""}
+                {recommentState?.commentId === comment.id && (
+                  <form
+                    onSubmit={recommentHandleSubmit(onRegisterRecomment)}
+                    className={styles.recommentBox}
+                  >
+                    <div className={styles.recommentTagBox}>
+                      {`@ ${recommentState.nickname}`}
+                    </div>
+                    <textarea
+                      {...recommentRegister("comment", {
+                        required: true,
+                        maxLength: 300,
+                      })}
+                      placeholder="내용을 입력해주세요."
+                      maxLength={300}
+                      style={{ width: "100%" }}
+                      className={styles.commentInput}
+                    />
+                    <div className={styles.editBtnBox}>
+                      <div className={styles.commentLength}>
+                        {recommentWatch("comment")
+                          ? recommentWatch("comment").length
+                          : 0}{" "}
+                        / 300
+                      </div>
+                      <button type="submit" className={styles.btnEdit}>
+                        {registRecommentLoading ? (
+                          <Lottie
+                            loop
+                            animationData={ring}
+                            play
+                            style={{ width: 50, height: 50 }}
+                          />
+                        ) : (
+                          "등록"
                         )}
+                      </button>
+                      <div
+                        onClick={() => {
+                          recommentReset();
+                          setRecommentState(null);
+                        }}
+                        className={styles.btnEditCancel}
+                      >
+                        취소
                       </div>
                     </div>
-                  ))
-                : ""}
-              {recommentState?.commentId === comment.id && (
-                <form
-                  onSubmit={recommentHandleSubmit(onRegisterRecomment)}
-                  className={styles.recommentBox}
-                >
-                  <div className={styles.recommentTagBox}>
-                    {`@ ${recommentState.nickname}`}
-                  </div>
-                  <textarea
-                    {...recommentRegister("comment", {
-                      required: true,
-                      maxLength: 300,
-                    })}
-                    placeholder="내용을 입력해주세요."
-                    maxLength={300}
-                    style={{ width: "100%" }}
-                    className={styles.commentInput}
-                  />
-                  <div className={styles.editBtnBox}>
-                    <div className={styles.commentLength}>
-                      {recommentWatch("comment")
-                        ? recommentWatch("comment").length
-                        : 0}{" "}
-                      / 300
-                    </div>
-                    <button type="submit" className={styles.btnEdit}>
-                      {registRecommentLoading ? (
-                        <Lottie
-                          loop
-                          animationData={ring}
-                          play
-                          style={{ width: 50, height: 50 }}
-                        />
-                      ) : (
-                        "등록"
-                      )}
-                    </button>
-                    <div
-                      onClick={() => {
-                        recommentReset();
-                        setRecommentState(null);
-                      }}
-                      className={styles.btnEditCancel}
-                    >
-                      취소
-                    </div>
-                  </div>
-                </form>
-              )}
+                  </form>
+                )}
+              </div>
+            </div>
+          );
+        })
+      ) : (
+        <div style={{ marginBottom: 30 }}>
+          <div style={{ display: "flex", marginBottom: 10 }}>
+            <Skeleton
+              width={55}
+              height={55}
+              style={{ marginRight: 20, borderRadius: "99px" }}
+            />
+            <div style={{ flex: 1 }}>
+              <Skeleton height={72} style={{ marginBottom: 20 }} />
             </div>
           </div>
-        );
-      })}
+          <div style={{ display: "flex", marginBottom: 10 }}>
+            <Skeleton
+              width={55}
+              height={55}
+              style={{ marginRight: 20, borderRadius: "99px" }}
+            />
+            <div style={{ flex: 1 }}>
+              <Skeleton height={72} style={{ marginBottom: 20 }} />
+              <div style={{ display: "flex", marginBottom: 10 }}>
+                <Skeleton
+                  width={55}
+                  height={55}
+                  style={{ marginRight: 20, borderRadius: "99px" }}
+                />
+                <div style={{ flex: 1 }}>
+                  <Skeleton height={72} style={{ marginBottom: 20 }} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {data && data.comments.length === 0 && (
+        <div className={styles.noComment}>😭 아직 등록된 댓글이 없어요.</div>
+      )}
       <form onSubmit={commentHandleSubmit(registComment)}>
         <div className={styles.commentBox} style={{ marginBottom: 10 }}>
           <div className={styles.profileImage}>
