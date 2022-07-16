@@ -128,8 +128,8 @@ const Login: NextPage = () => {
   useEffect(() => {
     if (user) setUserProfile({ ...user });
   }, [user]);
-  Skeleton;
-  if (isLoading)
+
+  if (isLoading) {
     return (
       <Layout title="프로필" activeMenu={"NONE"}>
         <div className={styles.container}>
@@ -140,6 +140,7 @@ const Login: NextPage = () => {
         </div>
       </Layout>
     );
+  }
 
   return (
     <>
