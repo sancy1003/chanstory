@@ -18,11 +18,11 @@ import useDelete from "@libs/client/useDelete";
 import Image from "next/image";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import useUser from "@libs/client/useUser";
 
 interface Props {
   type: "blog" | "gallery";
   id: number;
-  user: SessionUserData | null;
 }
 interface MoreBtn {
   type: string;
@@ -38,7 +38,8 @@ interface EditCommentState {
   id: number;
 }
 
-export default function Comment({ type, id, user }: Props) {
+export default function Comment({ type, id }: Props) {
+  const { user, isLoading } = useUser();
   const [editCommentState, setEditCommentState] =
     useState<EditCommentState | null>(null);
   const [recommentState, setRecommentState] = useState<RecommentState | null>(
@@ -531,13 +532,21 @@ export default function Comment({ type, id, user }: Props) {
       )}
       <form onSubmit={commentHandleSubmit(registComment)}>
         <div className={styles.commentBox} style={{ marginBottom: 10 }}>
-          <div className={styles.profileImage}>
-            <Image
-              alt="avatar"
-              layout="fill"
-              src={formattingUserProfileURL(user?.profileURL, "avatar")}
+          {isLoading ? (
+            <Skeleton
+              width={55}
+              height={55}
+              style={{ marginRight: 20, borderRadius: 99 }}
             />
-          </div>
+          ) : (
+            <div className={styles.profileImage}>
+              <Image
+                alt="avatar"
+                layout="fill"
+                src={formattingUserProfileURL(user?.profileURL, "avatar")}
+              />
+            </div>
+          )}
           <textarea
             {...commentRegister("comment", {
               required: true,

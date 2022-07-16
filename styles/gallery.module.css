@@ -234,6 +234,7 @@
 .postContent {
   font-size: 19px !important;
   line-height: 160%;
+  white-space: pre-wrap;
 }
 .postingTag {
   width: 100%;

@@ -96,7 +96,7 @@ const PostDetail: NextPage<PostProps> = ({ user, postSeoInfo }) => {
             ""
           )}
         </div>
-        <Comment type="blog" id={Number(router?.query?.id)} user={user} />
+        <Comment type="blog" id={Number(router?.query?.id)} />
       </div>
     </Layout>
   );
