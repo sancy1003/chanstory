@@ -5,7 +5,6 @@ import Link from "next/link";
 import { FaRegCommentDots } from "react-icons/fa";
 
 interface PostItemProps {
-  commentNum: number;
   createdAt: string;
   title: string;
   imageURL: string | null;
@@ -13,7 +12,6 @@ interface PostItemProps {
 }
 
 export default function PostItem({
-  commentNum,
   createdAt,
   title,
   imageURL,
@@ -28,7 +26,13 @@ export default function PostItem({
               alt={`${title}-thumbnail`}
               layout="fill"
               objectFit="cover"
+              placeholder="blur"
               src={
+                imageURL
+                  ? formattingImageURL(imageURL, "blogThumbnail")
+                  : "/images/thumbnail/default_thumbnail.png"
+              }
+              blurDataURL={
                 imageURL
                   ? formattingImageURL(imageURL, "blogThumbnail")
                   : "/images/thumbnail/default_thumbnail.png"
@@ -36,15 +40,13 @@ export default function PostItem({
             />
           </div>
         </div>
-        <div title={title} className={styles.postTitle}>
-          {title}
-        </div>
-        <div className={styles.postInfo}>
-          <div className={styles.postCommentWrap}>
-            <FaRegCommentDots />
-            <div>{commentNum}</div>
+        <div className={styles.postInfoBox}>
+          <div title={title} className={styles.postTitle}>
+            {title}
           </div>
-          <div>{createdAt}</div>
+          <div className={styles.postInfo}>
+            <div>{createdAt}</div>
+          </div>
         </div>
       </a>
     </Link>

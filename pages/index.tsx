@@ -6,7 +6,6 @@ import PostItem from "@components/blog/post-item";
 import { dateToStringFromServer } from "@libs/client/commonFunction";
 import client from "@libs/server/client";
 import { PostListResponse } from "types/response";
-import useUser from "@libs/client/useUser";
 
 interface Props {
   data: PostListResponse;
@@ -24,7 +23,6 @@ const Home: NextPage<Props> = ({ data }) => {
               return (
                 <PostItem
                   key={post.id}
-                  commentNum={post.commentCount}
                   createdAt={post.createdAt}
                   title={post.title}
                   imageURL={post.thumbnailURL}
@@ -41,7 +39,6 @@ const Home: NextPage<Props> = ({ data }) => {
               return (
                 <PostItem
                   key={post.id}
-                  commentNum={post.commentCount}
                   createdAt={post.createdAt}
                   title={post.title}
                   imageURL={post.thumbnailURL}

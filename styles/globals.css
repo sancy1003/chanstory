@@ -207,7 +207,6 @@ ul.pagination li.active {
 }
 ul.pagination li a:hover,
 ul.pagination li a.active {
-  color: blue;
 }
 .page-selection {
   width: 48px;

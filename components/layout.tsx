@@ -82,42 +82,6 @@ export default function Layout({
               </Link>
             </li>
           </ul>
-          {isLoading ? (
-            <div className={styles.userWrap}>
-              <Skeleton
-                width={"35px"}
-                height={"35px"}
-                style={{ marginRight: 14, borderRadius: "100px" }}
-              />
-              <Skeleton width={"45px"} height={"24px"} />
-            </div>
-          ) : user ? (
-            <Link href="/profile">
-              <a className={styles.userWrap}>
-                <div className={styles.userProfileImage}>
-                  <Image
-                    alt="avatar"
-                    layout="fill"
-                    src={formattingUserProfileURL(user?.profileURL, "avatar")}
-                  />
-                </div>
-                <div className={styles.userNickname}>{user!.nickname}</div>
-              </a>
-            </Link>
-          ) : (
-            <Link href={"/login"}>
-              <div className={styles.userWrap}>
-                <div className={styles.userProfileImage}>
-                  <Image
-                    alt="avatar"
-                    layout="fill"
-                    src="/images/user/default_profile.svg"
-                  />
-                </div>
-                <a className={styles.login}>로그인</a>
-              </div>
-            </Link>
-          )}
         </div>
       </div>
       {children}
