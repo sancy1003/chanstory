@@ -12,7 +12,6 @@ import {
 import Pagination from "react-js-pagination";
 import client from "@libs/server/client";
 import { PostListWithCountResponse } from "types/response";
-import useUser from "@libs/client/useUser";
 import {
   MdOutlineFirstPage,
   MdOutlineLastPage,
@@ -38,7 +37,6 @@ const Blog: NextPage<Props> = ({ data, category }) => {
               return (
                 <PostItem
                   key={post.id}
-                  commentNum={post.commentCount}
                   createdAt={post.createdAt}
                   title={post.title}
                   imageURL={post.thumbnailURL}
