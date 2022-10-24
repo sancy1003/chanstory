@@ -13,7 +13,6 @@ export default function Comment() {
     scriptEl.setAttribute("theme", "github-light");
     scriptEl.setAttribute("crossorigin", "anonymous");
     commentsEl.current?.appendChild(scriptEl);
-    console.log(1);
   }, []);
 
   return (

@@ -40,10 +40,6 @@ export default function GalleryItem({
           {title}
         </div>
         <div className={styles.postInfo}>
-          <div className={styles.postCommentWrap}>
-            <FaRegCommentDots />
-            <div>{commentNum}</div>
-          </div>
           <div>{createdAt}</div>
         </div>
       </a>

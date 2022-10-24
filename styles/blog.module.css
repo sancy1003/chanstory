@@ -53,11 +53,18 @@
   display: flex;
   row-gap: 60px;
   flex-wrap: wrap;
+  column-gap: 2%;
 }
 .postItem {
   width: 23.5%;
   cursor: pointer;
-  padding: 0 1%;
+  box-sizing: border-box;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 5px 7px rgba(0, 0, 0, 0.1);
+}
+.postItem:hover .postImage {
+  scale: 110%;
 }
 .postItem:nth-child(1) {
   padding-left: 0;
@@ -68,16 +75,29 @@
 .postItem:nth-child(4n) {
   padding-right: 0;
 }
+.postInfoBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
+}
 .postTitle {
+  height: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   font-size: 16px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   font-weight: bold;
+  color: var(--black_100);
 }
 .postInfo {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   color: var(--black_70);
   font-size: 14px;
 }
@@ -92,7 +112,7 @@
 .postImageWrap {
   width: 100%;
   position: relative;
-  margin-bottom: 16px;
+  overflow: hidden;
 }
 .postImageWrap:before {
   content: "";
@@ -100,6 +120,7 @@
   padding-top: 70%;
 }
 .postImage {
+  transition: 0.5s all;
   position: absolute;
   top: 0;
   left: 0;
@@ -389,23 +410,25 @@
 .moreBtnBox li:hover {
   background-color: var(--black_10);
 }
-.pagenationIconBox {
+.paginationIconBox {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.pagenationIconBox svg {
+.paginationIconBox svg {
   font-size: 24px;
   color: var(--black_50);
 }
-.pagenationIconBox:hover svg {
+.paginationIconBox:hover svg {
   color: var(--brandColor);
 }
 
 @media screen and (max-width: 800px) {
+  .postContainer {
+    column-gap: 4%;
+  }
   .postItem {
     width: 48%;
-    padding: 2%;
   }
   .postItem:nth-child(2n-1) {
     padding-left: 0%;
@@ -416,6 +439,9 @@
 }
 
 @media screen and (max-width: 500px) {
+  .postContainer {
+    column-gap: 0%;
+  }
   .postItem {
     width: 100%;
     padding: 0;

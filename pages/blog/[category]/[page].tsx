@@ -55,22 +55,22 @@ const Blog: NextPage<Props> = ({ data, category }) => {
                 totalItemsCount={data ? data.postCount : 0}
                 pageRangeDisplayed={5}
                 prevPageText={
-                  <div className={styles.pagenationIconBox}>
+                  <div className={styles.paginationIconBox}>
                     <MdOutlineChevronLeft />
                   </div>
                 }
                 nextPageText={
-                  <div className={styles.pagenationIconBox}>
+                  <div className={styles.paginationIconBox}>
                     <MdOutlineChevronRight />
                   </div>
                 }
                 firstPageText={
-                  <div className={styles.pagenationIconBox}>
+                  <div className={styles.paginationIconBox}>
                     <MdOutlineFirstPage />
                   </div>
                 }
                 lastPageText={
-                  <div className={styles.pagenationIconBox}>
+                  <div className={styles.paginationIconBox}>
                     <MdOutlineLastPage />
                   </div>
                 }

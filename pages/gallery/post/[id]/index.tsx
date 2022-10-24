@@ -79,7 +79,7 @@ const PostDetail: NextPage<PostProps> = ({ post }) => {
             ""
           )}
         </div>
-        <Comment type="gallery" id={Number(router?.query?.id)} />
+        <Comment />
       </div>
     </Layout>
   );
