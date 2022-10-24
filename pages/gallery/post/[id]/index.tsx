@@ -1,5 +1,5 @@
 import Layout from "@components/layout";
-import type { GetStaticPropsContext, NextPage, NextPageContext } from "next";
+import type { GetStaticPropsContext, NextPage } from "next";
 import styles from "@styles/gallery.module.css";
 import SimpleImageSlider from "react-simple-image-slider/dist";
 import React from "react";

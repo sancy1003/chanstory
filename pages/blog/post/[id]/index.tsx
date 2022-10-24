@@ -1,20 +1,17 @@
-import { GetStaticPropsContext, NextPage, NextPageContext } from "next";
+import { GetStaticPropsContext, NextPage } from "next";
 import styles from "@styles/blog.module.css";
 import Layout from "@components/layout";
 import { FaChevronLeft } from "react-icons/fa";
-import { SessionUserData, withSsrSession } from "@libs/server/withSession";
 import {
   dateToString,
   dateToStringFromServer,
   formattingImageURL,
 } from "@libs/client/commonFunction";
 import dynamic from "next/dynamic";
-import useSWR from "swr";
 import { useRouter } from "next/router";
 import Lottie from "react-lottie-player";
 import ring from "@resource/lottie/ring.json";
 import client from "@libs/server/client";
-import { PostDetailResponse } from "types/response";
 import Comment from "@components/post/comment";
 import { Post } from "@prisma/client";
 
@@ -77,7 +74,7 @@ const PostDetail: NextPage<PostProps> = ({ post }) => {
             ""
           )}
         </div>
-        <Comment type="blog" id={Number(router?.query?.id)} />
+        <Comment />
       </div>
     </Layout>
   );
