@@ -105,7 +105,6 @@ body {
   font-family: "NanumBarunGothic", sans-serif, "TossFaceFontMac";
   /* font-family: "Noto Sans KR", sans-serif; */
   color: var(--black_100);
-  padding-top: 50px;
 }
 input,
 button,

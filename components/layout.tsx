@@ -2,11 +2,10 @@ import React from "react";
 import Link from "next/link";
 import Head from "next/head";
 import styles from "@styles/Layout.module.css";
-import { formattingUserProfileURL } from "@libs/client/commonFunction";
-import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import Image from "next/image";
 import useUser from "@libs/client/useUser";
+import Footer from "./common/footer";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -27,9 +26,14 @@ export default function Layout({
   activeMenu,
   description,
 }: LayoutProps) {
-  const { user, isLoading } = useUser();
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100vh",
+      }}
+    >
       <Head>
         <title>{title ? `${title} | chanstory` : `chanstory`}</title>
         <meta
@@ -84,7 +88,8 @@ export default function Layout({
           </ul>
         </div>
       </div>
-      {children}
+      <div style={{ flex: 1, paddingTop: 50 }}>{children}</div>
+      <Footer />
     </div>
   );
 }
