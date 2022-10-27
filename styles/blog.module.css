@@ -14,7 +14,7 @@
 }
 .section {
   width: 100%;
-  margin-bottom: 100px;
+  margin-bottom: 60px;
 }
 .section:nth-last-child(1) {
   margin-bottom: 0px;
@@ -51,7 +51,7 @@
 .postContainer {
   width: 100%;
   display: flex;
-  row-gap: 60px;
+  row-gap: 40px;
   flex-wrap: wrap;
   column-gap: 2%;
 }
