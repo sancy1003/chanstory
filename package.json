@@ -18,6 +18,7 @@
     "@types/prismjs": "^1.26.0",
     "@types/react-js-pagination": "^3.0.4",
     "bcrypt": "^5.0.1",
+    "embla-carousel-react": "^7.0.3",
     "iron-session": "^6.1.2",
     "next": "12.1.5",
     "next-sitemap": "^3.1.10",
