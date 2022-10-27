@@ -13,6 +13,7 @@ import {
 import { useRouter } from "next/router";
 import Comment from "@components/post/comment";
 import { Post } from "@prisma/client";
+import EmblaCarousel from "@components/gallery/EmblaCarousel";
 
 interface postFromSSG extends Post {
   url: string;
@@ -48,7 +49,8 @@ const PostDetail: NextPage<PostProps> = ({ post }) => {
           </div>
         </div>
         <div className={styles.postingContentWrap}>
-          <div className={styles.imageEditWrap}>
+          <EmblaCarousel slides={images} />
+          {/* <div className={styles.imageEditWrap}>
             <div className={styles.imagePrevBox}>
               {images && (
                 <SimpleImageSlider
@@ -67,7 +69,7 @@ const PostDetail: NextPage<PostProps> = ({ post }) => {
                 />
               )}
             </div>
-          </div>
+          </div> */}
           <div className={styles.postContent}>{post.content}</div>
           {tags && tags.length > 0 ? (
             <ul className={styles.postingTag}>
