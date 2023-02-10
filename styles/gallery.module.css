@@ -38,7 +38,7 @@
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   color: var(--black_70);
   font-size: 14px;
 }
@@ -215,6 +215,7 @@
 .postingTitleWrap svg {
   color: var(--brandColor);
   margin-right: 40px;
+  padding-bottom: 3px;
   cursor: pointer;
 }
 .postingRegistTime {
@@ -233,6 +234,7 @@
 .postContent {
   font-size: 19px !important;
   line-height: 160%;
+  white-space: pre-wrap;
 }
 .postingTag {
   width: 100%;
@@ -247,6 +249,16 @@
   color: var(--black_70);
   padding: 10px 24px;
   font-size: 14px;
+}
+.autoHeightImageWrap span {
+  position: unset !important;
+}
+.autoImage {
+  object-fit: cover !important;
+  position: relative !important;
+  height: auto !important;
+  min-height: 300px !important;
+  max-height: 450px !important;
 }
 
 @media screen and (max-width: 800px) {
@@ -266,5 +278,6 @@
   }
   .galleryListM {
     display: block;
+    width: 100%;
   }
 }

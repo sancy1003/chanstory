@@ -19,15 +19,13 @@
   height: 100%;
 }
 .logo {
+  position: relative;
+  height: 60px;
+  width: 100px;
   display: flex;
   align-items: center;
 }
-.logo img {
-  width: 100px;
-  height: auto;
-}
 .menu {
-  flex: 1;
   display: flex;
   align-items: center;
   margin-left: 132px;
@@ -50,6 +48,8 @@
   cursor: pointer;
 }
 .userProfileImage {
+  position: relative;
+  overflow: hidden;
   width: 35px;
   height: 35px;
   border-radius: 99px;
@@ -59,6 +59,56 @@
 }
 .userNickname {
   color: var(--brandColor);
+}
+.autoHeightImageWrap span {
+  position: unset !important;
+}
+.autoImage {
+  object-fit: cover !important;
+  position: relative !important;
+  height: auto !important;
+}
+.footer {
+  width: 100%;
+  background-color: var(--brandColor_weak);
+}
+.footerWrap {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1160px;
+  padding: 16px 0;
+  display: flex;
+  align-items: flex-end;
+  color: var(--black_70);
+  font-size: 14px;
+  justify-content: space-between;
+}
+.footerCopyright {
+  color: var(--brandColor);
+}
+.footerInfoBox {
+  display: flex;
+  flex-direction: column;
+  row-gap: 6px;
+  align-items: flex-end;
+}
+.footerEmail {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+}
+.footerGit {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  cursor: pointer;
+}
+.footerGit:hover {
+  color: var(--brandColor);
+}
+.footerGit svg,
+.footerEmail svg {
+  font-size: 16px;
 }
 
 @media screen and (max-width: 1200px) {

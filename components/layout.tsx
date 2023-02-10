@@ -2,36 +2,48 @@ import React from "react";
 import Link from "next/link";
 import Head from "next/head";
 import styles from "@styles/Layout.module.css";
-import { SessionUserData } from "@libs/server/withSession";
-import { formattingUserProfileURL } from "@libs/client/commonFunction";
-import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import Image from "next/image";
+import useUser from "@libs/client/useUser";
+import Footer from "./common/footer";
 
 interface LayoutProps {
   children: React.ReactNode;
   title?: string;
-  user?: SessionUserData | null;
   thumbnailURL?: string | null;
   keywords?: string | null;
   url?: string;
-  userLoading?: boolean;
+  description?: string;
   activeMenu: "BLOG" | "GALLERY" | "NONE";
 }
 
 export default function Layout({
   title,
   children,
-  user,
   thumbnailURL,
   keywords,
   url,
-  userLoading,
   activeMenu,
+  description,
 }: LayoutProps) {
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100vh",
+      }}
+    >
       <Head>
         <title>{title ? `${title} | chanstory` : `chanstory`}</title>
+        <meta
+          property="description"
+          content={
+            description && description.length > 0
+              ? description
+              : "프론트엔드 개발 이야기"
+          }
+        />
         <meta
           property="og:title"
           content={title ? `${title} | chanstory` : `chanstory`}
@@ -49,7 +61,13 @@ export default function Layout({
         <div className={styles.headerWrap}>
           <Link href={"/"}>
             <a className={styles.logo}>
-              <img src={"/images/logo/logo.svg"} />
+              <Image
+                src="/images/logo/logo.svg"
+                layout="fill"
+                objectFit="contain"
+                alt="logo"
+                priority={true}
+              />
             </a>
           </Link>
           <ul className={styles.menu}>
@@ -68,39 +86,10 @@ export default function Layout({
               </Link>
             </li>
           </ul>
-          {userLoading ? (
-            <div className={styles.userWrap}>
-              <Skeleton
-                width={"35px"}
-                height={"35px"}
-                style={{ marginRight: 14, borderRadius: "100px" }}
-              />
-              <Skeleton width={"45px"} height={"24px"} />
-            </div>
-          ) : user ? (
-            <Link href="/profile">
-              <a className={styles.userWrap}>
-                <img
-                  src={formattingUserProfileURL(user?.profileURL, "avatar")}
-                  className={styles.userProfileImage}
-                />
-                <div className={styles.userNickname}>{user!.nickname}</div>
-              </a>
-            </Link>
-          ) : (
-            <Link href={"/login"}>
-              <div className={styles.userWrap}>
-                <img
-                  src="/images/user/default_profile.svg"
-                  className={styles.userProfileImage}
-                />
-                <a className={styles.login}>로그인</a>
-              </div>
-            </Link>
-          )}
         </div>
       </div>
-      {children}
+      <div style={{ flex: 1, paddingTop: 50 }}>{children}</div>
+      <Footer />
     </div>
   );
 }

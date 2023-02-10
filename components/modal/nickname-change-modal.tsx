@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styles from "@styles/modal.module.css";
 import { useForm } from "react-hook-form";
 import Lottie from "react-lottie-player";

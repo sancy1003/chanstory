@@ -105,7 +105,6 @@ body {
   font-family: "NanumBarunGothic", sans-serif, "TossFaceFontMac";
   /* font-family: "Noto Sans KR", sans-serif; */
   color: var(--black_100);
-  padding-top: 50px;
 }
 input,
 button,
@@ -207,7 +206,6 @@ ul.pagination li.active {
 }
 ul.pagination li a:hover,
 ul.pagination li a.active {
-  color: blue;
 }
 .page-selection {
   width: 48px;
@@ -229,5 +227,5 @@ ul.pagination li a.active {
 
 @font-face {
   font-family: "TossFaceFontMac";
-  src: url("../resource/fonts/TossFaceFontMac.ttf");
+  src: url("/fonts/TossFaceFontMac.ttf");
 }

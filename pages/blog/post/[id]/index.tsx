@@ -1,28 +1,27 @@
-import { NextPage, NextPageContext } from "next";
+import { GetStaticPropsContext, NextPage } from "next";
 import styles from "@styles/blog.module.css";
 import Layout from "@components/layout";
 import { FaChevronLeft } from "react-icons/fa";
-import { SessionUserData, withSsrSession } from "@libs/server/withSession";
-import { dateToString, formattingImageURL } from "@libs/client/commonFunction";
+import {
+  dateToString,
+  dateToStringFromServer,
+  formattingImageURL,
+} from "@libs/client/commonFunction";
 import dynamic from "next/dynamic";
-import useSWR from "swr";
 import { useRouter } from "next/router";
 import Lottie from "react-lottie-player";
 import ring from "@resource/lottie/ring.json";
 import client from "@libs/server/client";
-import { PostDetailResponse } from "types/response";
-import Comment from "@components/comment";
+import Comment from "@components/post/comment";
+import { Post } from "@prisma/client";
 
-interface PostSeoInfo {
-  title: string;
-  thumbnailURL: string | null;
-  tags: string | null;
+interface postFromSSG extends Post {
   url: string;
+  description: string;
 }
 
 interface PostProps {
-  user: SessionUserData | null;
-  postSeoInfo: PostSeoInfo;
+  post: postFromSSG;
 }
 
 const Viewer = dynamic(() => import("@components/viewer"), {
@@ -39,52 +38,31 @@ const Viewer = dynamic(() => import("@components/viewer"), {
   ),
 });
 
-const PostDetail: NextPage<PostProps> = ({ user, postSeoInfo }) => {
+const PostDetail: NextPage<PostProps> = ({ post }) => {
   const router = useRouter();
-  const { data, mutate } = useSWR<PostDetailResponse>(
-    router?.query?.id ? `/api/blog/${router.query.id}` : null
-  );
-  const tags = data?.post?.tags?.split(", ");
-  if (!data) {
-    return (
-      <Layout
-        activeMenu="BLOG"
-        user={user}
-        title={postSeoInfo?.title}
-        thumbnailURL={
-          postSeoInfo ? formattingImageURL(postSeoInfo.thumbnailURL) : null
-        }
-        keywords={postSeoInfo?.tags}
-        url={postSeoInfo?.url}
-      >
-        <div />
-      </Layout>
-    );
-  }
+  const tags = post.tags?.split(", ");
   return (
     <Layout
       activeMenu="BLOG"
-      user={user}
-      title={postSeoInfo?.title}
-      thumbnailURL={
-        postSeoInfo ? formattingImageURL(postSeoInfo.thumbnailURL) : null
-      }
-      keywords={postSeoInfo?.tags}
-      url={postSeoInfo?.url}
+      description={post.description}
+      title={post.title}
+      thumbnailURL={formattingImageURL(post.thumbnailURL)}
+      keywords={post.tags}
+      url={post.url}
     >
       <div className={styles.postContentContainer}>
         <div className={styles.postingHeader}>
           <div className={styles.postingTitleWrap}>
             <FaChevronLeft onClick={() => router.back()} />
-            <div>{data?.post?.title}</div>
+            <h1>{post?.title}</h1>
           </div>
           <div className={styles.postingRegistTime}>
-            {data?.post && dateToString(data.post.createdAt)}
+            {dateToString(post.createdAt)}
           </div>
         </div>
         <div className={styles.postingContentWrap}>
           <div className={styles.postingCotnet}>
-            {data?.post?.content && <Viewer content={data?.post?.content} />}
+            <Viewer content={post.content!} />
           </div>
           {tags && tags.length > 0 ? (
             <ul className={styles.postingTag}>
@@ -96,40 +74,66 @@ const PostDetail: NextPage<PostProps> = ({ user, postSeoInfo }) => {
             ""
           )}
         </div>
-        <Comment type="blog" id={Number(router?.query?.id)} user={user} />
+        <Comment />
       </div>
     </Layout>
   );
 };
 
-export const getServerSideProps = withSsrSession(async function ({
-  req,
-  query,
-}: NextPageContext) {
-  const user = req?.session.user;
-  if (user) {
-    const userData = await client?.user.findUnique({ where: { id: user.id } });
-    if (!userData) req.session.destroy();
-  }
-
-  const id = Number(query.id);
-
-  const post = await client.post.findUnique({
-    where: { id: +id },
-    select: { title: true, thumbnailURL: true, tags: true },
+export async function getStaticPaths() {
+  const paths = [];
+  const blogPosts = await client.post?.findMany({
+    where: {
+      isHide: false,
+      type: "POST",
+    },
+    select: {
+      id: true,
+    },
   });
 
+  for (const data of blogPosts) {
+    paths.push({ params: { id: String(data.id) } });
+  }
+
+  return { paths, fallback: "blocking" };
+}
+
+export async function getStaticProps({ params }: GetStaticPropsContext) {
+  const post = await client.post?.findUnique({
+    where: {
+      id: Number(params?.id),
+    },
+    select: {
+      id: true,
+      title: true,
+      thumbnailURL: true,
+      content: true,
+      tags: true,
+      imageURLs: true,
+      createdAt: true,
+    },
+  });
+
+  let description = "";
+
+  if (post?.content) {
+    if (post?.content.length > 150)
+      description = post?.content.substring(0, 150);
+    else description = post?.content;
+  }
+
   return {
+    revalidate: 600,
     props: {
-      user: user ? user : null,
-      postSeoInfo: {
-        title: post?.title,
-        thumbnailURL: post?.thumbnailURL,
-        tags: post?.tags,
-        url: req?.url,
+      post: {
+        ...post,
+        description,
+        url: `${process.env.SITE_URL}/blog/post/${post?.id}`,
+        createdAt: dateToStringFromServer(post?.createdAt!),
       },
     },
   };
-});
+}
 
 export default PostDetail;

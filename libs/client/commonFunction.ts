@@ -15,7 +15,10 @@ export const dateToStringFromServer = (date: Date) => {
   }-${init.getDate() < 10 ? "0" : ""}${init.getDate()}`;
 };
 
-export const formattingImageURL = (url?: string | null, type?: string) => {
+export const formattingImageURL = (
+  url?: string | null,
+  type?: "avatar" | "public" | "blogThumbnail" | "galleryThumbnail"
+) => {
   let imageType = type ? type : "public";
   if (url) {
     return `https://imagedelivery.net/R2WiK4wfRK3oBXTwjgzQfA/${url}/${imageType}`;
@@ -27,7 +30,7 @@ export const formattingImageURL = (url?: string | null, type?: string) => {
 export const formattingUserProfileURL = (
   url?: string | null,
   type?: string
-) => {
+): string => {
   let imageType = type ? type : "public";
   if (url) {
     return `https://imagedelivery.net/R2WiK4wfRK3oBXTwjgzQfA/${url}/${imageType}`;

@@ -1,63 +1,56 @@
 import Layout from "@components/layout";
-import type { NextPage, NextPageContext } from "next";
+import type { GetStaticPropsContext, NextPage } from "next";
 import styles from "@styles/gallery.module.css";
 import SimpleImageSlider from "react-simple-image-slider/dist";
 import React from "react";
-import { SessionUserData, withSsrSession } from "@libs/server/withSession";
 import { FaChevronLeft } from "react-icons/fa";
-import TagEditor from "@components/post/tag-editor";
 import client from "@libs/server/client";
-import { dateToString, formattingImageURL } from "@libs/client/commonFunction";
+import {
+  dateToString,
+  dateToStringFromServer,
+  formattingImageURL,
+} from "@libs/client/commonFunction";
 import { useRouter } from "next/router";
-import useSWR from "swr";
-import { PostDetailResponse } from "types/response";
-import Comment from "@components/comment";
+import Comment from "@components/post/comment";
+import { Post } from "@prisma/client";
+import EmblaCarousel from "@components/gallery/EmblaCarousel";
 
-interface PostSeoInfo {
-  title: string;
-  thumbnailURL: string | null;
-  tags: string | null;
+interface postFromSSG extends Post {
   url: string;
+  description: string;
 }
 
 interface PostProps {
-  user: SessionUserData | null;
-  postSeoInfo: PostSeoInfo;
+  post: postFromSSG;
 }
 
-const PostDetail: NextPage<PostProps> = ({ user, postSeoInfo }) => {
+const PostDetail: NextPage<PostProps> = ({ post }) => {
   const router = useRouter();
-  const { data, mutate } = useSWR<PostDetailResponse>(
-    router?.query?.id ? `/api/gallery/${router.query.id}` : null
-  );
-  const images = data?.post?.imageURLs?.split(", ");
-  const tags = data?.post?.tags?.split(", ");
-
-  console.log(data, "data");
+  const images = post.imageURLs?.split(", ");
+  const tags = post.tags?.split(", ");
 
   return (
     <Layout
       activeMenu="GALLERY"
-      user={user}
-      title={postSeoInfo?.title}
-      thumbnailURL={
-        postSeoInfo ? formattingImageURL(postSeoInfo.thumbnailURL) : null
-      }
-      keywords={postSeoInfo?.tags}
-      url={postSeoInfo?.url}
+      title={post.title}
+      description={post.description}
+      thumbnailURL={post ? formattingImageURL(post.thumbnailURL) : null}
+      keywords={post.tags}
+      url={post.url}
     >
       <div className={styles.galleryContainer}>
         <div className={styles.postingHeader}>
           <div className={styles.postingTitleWrap}>
             <FaChevronLeft onClick={() => router.back()} />
-            <div>{data?.post?.title}</div>
+            <h1>{post.title}</h1>
           </div>
           <div className={styles.postingRegistTime}>
-            {data?.post && dateToString(data.post.createdAt)}
+            {dateToString(post.createdAt)}
           </div>
         </div>
         <div className={styles.postingContentWrap}>
-          <div className={styles.imageEditWrap}>
+          <EmblaCarousel slides={images} />
+          {/* <div className={styles.imageEditWrap}>
             <div className={styles.imagePrevBox}>
               {images && (
                 <SimpleImageSlider
@@ -70,14 +63,14 @@ const PostDetail: NextPage<PostProps> = ({ user, postSeoInfo }) => {
                   images={images!.map((image) => {
                     return { url: formattingImageURL(image) };
                   })}
-                  showBullets={true}
-                  showNavs={true}
+                  showBullets={images && images.length > 1}
+                  showNavs={images && images.length > 1}
                   bgColor="#E1DFE9"
                 />
               )}
             </div>
-          </div>
-          <div className={styles.postContent}>{data?.post?.content}</div>
+          </div> */}
+          <div className={styles.postContent}>{post.content}</div>
           {tags && tags.length > 0 ? (
             <ul className={styles.postingTag}>
               {tags.map((tag: string, idx: number) => {
@@ -88,40 +81,66 @@ const PostDetail: NextPage<PostProps> = ({ user, postSeoInfo }) => {
             ""
           )}
         </div>
-        <Comment type="gallery" id={Number(router?.query?.id)} user={user} />
+        <Comment />
       </div>
     </Layout>
   );
 };
 
-export const getServerSideProps = withSsrSession(async function ({
-  req,
-  query,
-}: NextPageContext) {
-  const user = req?.session.user;
-  if (user) {
-    const userData = await client?.user.findUnique({ where: { id: user.id } });
-    if (!userData) req.session.destroy();
-  }
-
-  const id = Number(query.id);
-
-  const post = await client.post.findUnique({
-    where: { id: +id },
-    select: { title: true, thumbnailURL: true, tags: true },
+export async function getStaticPaths() {
+  const paths = [];
+  const galleryPosts = await client.post?.findMany({
+    where: {
+      isHide: false,
+      type: "GALLERY",
+    },
+    select: {
+      id: true,
+    },
   });
 
+  for (const data of galleryPosts) {
+    paths.push({ params: { id: String(data.id) } });
+  }
+
+  return { paths, fallback: "blocking" };
+}
+
+export async function getStaticProps({ params }: GetStaticPropsContext) {
+  const post = await client.post?.findUnique({
+    where: {
+      id: Number(params?.id),
+    },
+    select: {
+      id: true,
+      title: true,
+      thumbnailURL: true,
+      content: true,
+      tags: true,
+      imageURLs: true,
+      createdAt: true,
+    },
+  });
+
+  let description = "";
+
+  if (post?.content) {
+    if (post?.content.length > 150)
+      description = post?.content.substring(0, 150);
+    else description = post?.content;
+  }
+
   return {
+    revalidate: 600,
     props: {
-      user: user ? user : null,
-      postSeoInfo: {
-        title: post?.title,
-        thumbnailURL: post?.thumbnailURL,
-        tags: post?.tags,
-        url: req?.url,
+      post: {
+        ...post,
+        description,
+        url: `${process.env.SITE_URL}/gallery/post/${post?.id}`,
+        createdAt: dateToStringFromServer(post?.createdAt!),
       },
     },
   };
-});
+}
 
 export default PostDetail;

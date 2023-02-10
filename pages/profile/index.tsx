@@ -1,7 +1,7 @@
-import { NextPage, NextPageContext } from "next";
+import { NextPage } from "next";
 import styles from "@styles/profile.module.css";
 import Layout from "@components/layout";
-import { SessionUserData, withSsrSession } from "@libs/server/withSession";
+import { SessionUserData } from "@libs/server/withSession";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import useMutation from "@libs/client/useMutation";
@@ -13,8 +13,11 @@ import useDelete from "@libs/client/useDelete";
 import ConfirmModal from "@components/modal/confirm-modal";
 import NicknameChangeModal from "@components/modal/nickname-change-modal";
 import { formattingUserProfileURL } from "@libs/client/commonFunction";
-import client from "@libs/server/client";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import { APIResponse } from "types/response";
+import Image from "next/image";
+import useUser from "@libs/client/useUser";
 
 interface ProfileImageForm {
   profileImage: FileList;
@@ -23,7 +26,8 @@ interface ProfileEditResponse extends APIResponse {
   nickname: string;
 }
 
-const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
+const Login: NextPage = () => {
+  const { user, isLoading } = useUser();
   const router = useRouter();
   const [nicknameChangeModal, setNicknameChangeModal] = useState(false);
   const [deleteConfirmModal, setDeleteConfirmModal] = useState(false);
@@ -39,7 +43,7 @@ const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
       window.removeEventListener("click", modalCloseHandler);
     };
   });
-  const [userProfile, setUserProfile] = useState<SessionUserData | null>(user);
+  const [userProfile, setUserProfile] = useState<SessionUserData | null>(null);
   const [profileURL, setProfileURL] = useState<string | null>(null);
   const [loading, setLoading] = useState<Boolean>(false);
   const [editProfileImage, { data }] = useMutation<ProfileEditResponse>(
@@ -121,10 +125,26 @@ const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
       setUserProfile({ ...userProfile, nickname: changeNicknameData.nickname });
     }
   }, [changeNicknameData]);
+  useEffect(() => {
+    if (user) setUserProfile({ ...user });
+  }, [user]);
+
+  if (isLoading) {
+    return (
+      <Layout title="프로필" activeMenu={"NONE"}>
+        <div className={styles.container}>
+          <div className={styles.section}>
+            <Skeleton height={45} style={{ marginBottom: 30 }} />
+            <Skeleton height={190} />
+          </div>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <>
-      <Layout user={userProfile} title="프로필" activeMenu={"NONE"}>
+      <Layout title="프로필" activeMenu={"NONE"}>
         <div className={styles.container}>
           <div className={styles.section}>
             <div className={styles.sectionTitle}>
@@ -196,13 +216,16 @@ const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
                     />
                     <span onClick={() => deleteImage()}>삭제</span>
                   </div>
-                  <img
-                    className={styles.profileImage}
-                    src={formattingUserProfileURL(
-                      userProfile?.profileURL,
-                      "avatar"
-                    )}
-                  />
+                  <div className={styles.profileImage}>
+                    <Image
+                      alt="avatar"
+                      layout="fill"
+                      src={formattingUserProfileURL(
+                        userProfile?.profileURL,
+                        "avatar"
+                      )}
+                    />
+                  </div>
                 </div>
               ) : (
                 <div className={styles.profileImageWrap}>
@@ -219,13 +242,16 @@ const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
                       accept="image/*"
                     />
                   </div>
-                  <img
-                    className={styles.profileImage}
-                    src={formattingUserProfileURL(
-                      userProfile?.profileURL,
-                      "avatar"
-                    )}
-                  />
+                  <div className={styles.profileImage}>
+                    <Image
+                      alt="avatar"
+                      layout="fill"
+                      src={formattingUserProfileURL(
+                        userProfile?.profileURL,
+                        "avatar"
+                      )}
+                    />
+                  </div>
                 </div>
               )}
               <div className={styles.profileInfoBox}>
@@ -260,18 +286,5 @@ const Login: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
     </>
   );
 };
-
-export const getServerSideProps = withSsrSession(async function ({
-  req,
-}: NextPageContext) {
-  const user = req?.session.user;
-  if (user) {
-    const userData = await client?.user.findUnique({ where: { id: user.id } });
-    if (!userData) req.session.destroy();
-  }
-  return {
-    props: { user: user ? user : null },
-  };
-});
 
 export default Login;

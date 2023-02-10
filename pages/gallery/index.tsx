@@ -10,9 +10,9 @@ import GalleryItem from "@components/gallery/gallery-item";
 import { PostsList } from "types/post";
 import Lottie from "react-lottie-player";
 import ring from "@resource/lottie/ring.json";
+import GalleryItemSkeleton from "@components/gallery/gallery-item-skeleton";
 
 const Gallery: NextPage = () => {
-  const { user, isLoading } = useUser();
   const [leftPosts, setLeftPost] = useState<PostsList[]>([]);
   const [rightPosts, setRightPosts] = useState<PostsList[]>([]);
   const [posts, setPosts] = useState<PostsList[]>([]);
@@ -61,17 +61,13 @@ const Gallery: NextPage = () => {
   }, [data]);
 
   return (
-    <Layout user={user} userLoading={isLoading} activeMenu={"GALLERY"}>
+    <Layout activeMenu={"GALLERY"}>
       <div className={styles.galleryContainer}>
         <div className={styles.galleryListWrap}>
           <ul className={styles.galleryList}>
             {leftPosts.map((post) => {
               return (
-                <li
-                  id="masonryItem"
-                  key={post.id}
-                  className={styles.galleryListItem}
-                >
+                <li key={post.id} className={styles.galleryListItem}>
                   <GalleryItem
                     commentNum={post.commentCount}
                     createdAt={dateToString(post.createdAt)}
@@ -82,15 +78,13 @@ const Gallery: NextPage = () => {
                 </li>
               );
             })}
+            {(!data || scrollLoading) &&
+              [0, 0].map((item, index) => <GalleryItemSkeleton key={index} />)}
           </ul>
           <ul className={styles.galleryList}>
             {rightPosts.map((post) => {
               return (
-                <li
-                  id="masonryItem"
-                  key={post.id}
-                  className={styles.galleryListItem}
-                >
+                <li key={post.id} className={styles.galleryListItem}>
                   <GalleryItem
                     commentNum={post.commentCount}
                     createdAt={dateToString(post.createdAt)}
@@ -101,15 +95,13 @@ const Gallery: NextPage = () => {
                 </li>
               );
             })}
+            {(!data || scrollLoading) &&
+              [0, 0].map((item, index) => <GalleryItemSkeleton key={index} />)}
           </ul>
           <ul className={styles.galleryListM}>
             {posts.map((post) => {
               return (
-                <li
-                  id="masonryItem"
-                  key={post.id}
-                  className={styles.galleryListItem}
-                >
+                <li key={post.id} className={styles.galleryListItem}>
                   <GalleryItem
                     commentNum={post.commentCount}
                     createdAt={dateToString(post.createdAt)}
@@ -120,24 +112,15 @@ const Gallery: NextPage = () => {
                 </li>
               );
             })}
+            {(!data || scrollLoading) &&
+              [0, 0].map((item, index) => <GalleryItemSkeleton key={index} />)}
           </ul>
         </div>
         {posts && (
           <div
             style={{ height: 100, display: "flex", alignItems: "flex-start" }}
             ref={lastPostElementRef}
-          >
-            {scrollLoading && (
-              <div style={{ width: "100%", marginBottom: "50px" }}>
-                <Lottie
-                  loop
-                  animationData={ring}
-                  play
-                  style={{ width: 150, height: 150, margin: "0 auto" }}
-                />
-              </div>
-            )}
-          </div>
+          />
         )}
       </div>
     </Layout>
