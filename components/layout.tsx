@@ -59,30 +59,29 @@ export default function Layout({
       </Head>
       <div className={styles.header}>
         <div className={styles.headerWrap}>
-          <Link href={"/"}>
-            <a className={styles.logo}>
-              <Image
-                src="/images/logo/logo.svg"
-                layout="fill"
-                objectFit="contain"
-                alt="logo"
-                priority={true}
-              />
-            </a>
+          <Link href={"/"} className={styles.logo}>
+            <Image
+              src="/images/logo/logo.svg"
+              fill
+              alt="logo"
+              priority={true}
+            />
           </Link>
           <ul className={styles.menu}>
             <li>
-              <Link href={"/blog"}>
-                <a className={activeMenu === "BLOG" ? styles.active : ""}>
-                  blog
-                </a>
+              <Link
+                href={"/blog"}
+                className={activeMenu === "BLOG" ? styles.active : ""}
+              >
+                blog
               </Link>
             </li>
             <li>
-              <Link href={"/gallery"}>
-                <a className={activeMenu === "GALLERY" ? styles.active : ""}>
-                  gallery
-                </a>
+              <Link
+                href={"/gallery"}
+                className={activeMenu === "GALLERY" ? styles.active : ""}
+              >
+                gallery
               </Link>
             </li>
           </ul>

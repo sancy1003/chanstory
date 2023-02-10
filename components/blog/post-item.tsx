@@ -18,37 +18,34 @@ export default function PostItem({
   postId,
 }: PostItemProps) {
   return (
-    <Link href={`/blog/post/${postId}`}>
-      <a className={styles.postItem}>
-        <div className={styles.postImageWrap}>
-          <div className={styles.postImage}>
-            <Image
-              alt={`${title}-thumbnail`}
-              layout="fill"
-              objectFit="cover"
-              placeholder="blur"
-              src={
-                imageURL
-                  ? formattingImageURL(imageURL, "blogThumbnail")
-                  : "/images/thumbnail/default_thumbnail.png"
-              }
-              blurDataURL={
-                imageURL
-                  ? formattingImageURL(imageURL, "blogThumbnail")
-                  : "/images/thumbnail/default_thumbnail.png"
-              }
-            />
-          </div>
+    <Link href={`/blog/post/${postId}`} className={styles.postItem}>
+      <div className={styles.postImageWrap}>
+        <div className={styles.postImage}>
+          <Image
+            alt={`${title}-thumbnail`}
+            fill
+            placeholder="blur"
+            src={
+              imageURL
+                ? formattingImageURL(imageURL, "blogThumbnail")
+                : "/images/thumbnail/default_thumbnail.png"
+            }
+            blurDataURL={
+              imageURL
+                ? formattingImageURL(imageURL, "blogThumbnail")
+                : "/images/thumbnail/default_thumbnail.png"
+            }
+          />
         </div>
-        <div className={styles.postInfoBox}>
-          <div title={title} className={styles.postTitle}>
-            {title}
-          </div>
-          <div className={styles.postInfo}>
-            <div>{createdAt}</div>
-          </div>
+      </div>
+      <div className={styles.postInfoBox}>
+        <div title={title} className={styles.postTitle}>
+          {title}
         </div>
-      </a>
+        <div className={styles.postInfo}>
+          <div>{createdAt}</div>
+        </div>
+      </div>
     </Link>
   );
 }

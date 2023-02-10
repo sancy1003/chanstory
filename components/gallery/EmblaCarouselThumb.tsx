@@ -22,8 +22,8 @@ export const Thumb = ({ selected, onClick, imgSrc }: any) => (
       <Image
         className={styles.embla__slide__thumbnail}
         src={imgSrc}
-        layout="fill"
-        objectFit="cover"
+        alt="thumbnail"
+        fill
         placeholder="blur"
         blurDataURL={imgSrc}
       />

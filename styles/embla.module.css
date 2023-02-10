@@ -41,6 +41,7 @@
   position: relative;
   overflow: hidden;
   height: 533px;
+  object-fit: cover;
 }
 
 .embla__slide__img {
@@ -98,6 +99,7 @@
   min-height: 1000%;
   max-width: none;
   transform: scale(0.1); */
+  object-fit: cover;
   transition: opacity 0.2s;
 }
 

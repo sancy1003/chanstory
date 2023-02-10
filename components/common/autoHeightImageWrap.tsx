@@ -16,7 +16,7 @@ export default function AutoHeightImageWrap({
       className={styles.autoHeightImageWrap}
       style={{ width: "100%", position: "relative" }}
     >
-      <Image layout="fill" className={styles.autoImage} {...props} />
+      <Image fill className={styles.autoImage} {...props} />
     </div>
   );
 }

@@ -219,7 +219,7 @@ const Login: NextPage = () => {
                   <div className={styles.profileImage}>
                     <Image
                       alt="avatar"
-                      layout="fill"
+                      fill
                       src={formattingUserProfileURL(
                         userProfile?.profileURL,
                         "avatar"
@@ -245,7 +245,7 @@ const Login: NextPage = () => {
                   <div className={styles.profileImage}>
                     <Image
                       alt="avatar"
-                      layout="fill"
+                      fill
                       src={formattingUserProfileURL(
                         userProfile?.profileURL,
                         "avatar"

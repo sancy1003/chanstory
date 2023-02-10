@@ -24,6 +24,7 @@
   width: 100px;
   display: flex;
   align-items: center;
+  object-fit: contain;
 }
 .menu {
   display: flex;

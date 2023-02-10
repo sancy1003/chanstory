@@ -50,8 +50,8 @@ const EmblaCarousel = ({ slides }: any) => {
                   /> */}
                   <Image
                     src={formattingImageURL(url, "galleryThumbnail")}
-                    layout="fill"
-                    objectFit="contain"
+                    alt="thumnail"
+                    fill
                     placeholder="blur"
                     blurDataURL={formattingImageURL(url, "galleryThumbnail")}
                   />
