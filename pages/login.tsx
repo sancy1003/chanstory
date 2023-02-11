@@ -1,12 +1,12 @@
-import { NextPage } from "next";
-import styles from "@styles/profile.module.css";
-import { useForm } from "react-hook-form";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import useMutation from "@libs/client/useMutation";
-import { useEffect } from "react";
-import { APIResponse } from "types/response";
-import { LoginForm } from "types/auth";
+import { NextPage } from 'next';
+import styles from '@styles/profile.module.css';
+import { useForm } from 'react-hook-form';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import useMutation from '@libs/client/useMutation';
+import { useEffect } from 'react';
+import { APIResponse } from 'types/response';
+import { LoginForm } from 'types/auth';
 
 const Login: NextPage = () => {
   const router = useRouter();
@@ -23,17 +23,17 @@ const Login: NextPage = () => {
     login(data);
   };
   const onClickSignUp = () => {
-    router.push("/signup");
+    router.push('/signup');
   };
   useEffect(() => {
     if (loginResult?.result) {
-      router.push("/");
+      router.push('/');
     }
   }, [loginResult, router]);
   useEffect(() => {
     if (loginResult && !loginResult.result && loginResult.error) {
-      setError("password", {
-        type: "error",
+      setError('password', {
+        type: 'error',
         message: loginResult.error,
       });
     }
@@ -49,11 +49,11 @@ const Login: NextPage = () => {
         <form onSubmit={handleSubmit(onSubmit)} className={styles.loginForm}>
           <div className={styles.formInputWrap}>
             <input
-              {...register("account", {
-                required: "아이디를 입력해주세요.",
+              {...register('account', {
+                required: '아이디를 입력해주세요.',
               })}
               type="account"
-              placeholder={"아이디"}
+              placeholder={'아이디'}
               className={styles.formInput}
             />
             <div className={styles.formInputWarn}>
@@ -62,11 +62,11 @@ const Login: NextPage = () => {
           </div>
           <div className={styles.formInputWrap}>
             <input
-              {...register("password", {
-                required: "비밀번호를 입력해주세요.",
+              {...register('password', {
+                required: '비밀번호를 입력해주세요.',
               })}
               type="password"
-              placeholder={"비밀번호"}
+              placeholder={'비밀번호'}
               className={styles.formInput}
             />
             <div className={styles.formInputWarn}>

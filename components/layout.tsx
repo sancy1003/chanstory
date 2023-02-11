@@ -1,11 +1,10 @@
-import React from "react";
-import Link from "next/link";
-import Head from "next/head";
-import styles from "@styles/Layout.module.css";
-import "react-loading-skeleton/dist/skeleton.css";
-import Image from "next/image";
-import useUser from "@libs/client/useUser";
-import Footer from "./common/footer";
+import React from 'react';
+import Link from 'next/link';
+import Head from 'next/head';
+import styles from '@styles/Layout.module.css';
+import 'react-loading-skeleton/dist/skeleton.css';
+import Image from 'next/image';
+import Footer from './common/footer';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -14,7 +13,7 @@ interface LayoutProps {
   keywords?: string | null;
   url?: string;
   description?: string;
-  activeMenu: "BLOG" | "GALLERY" | "NONE";
+  activeMenu: 'BLOG' | 'GALLERY' | 'NONE';
 }
 
 export default function Layout({
@@ -29,9 +28,9 @@ export default function Layout({
   return (
     <div
       style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100vh",
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh',
       }}
     >
       <Head>
@@ -41,7 +40,7 @@ export default function Layout({
           content={
             description && description.length > 0
               ? description
-              : "프론트엔드 개발 이야기"
+              : '프론트엔드 개발 이야기'
           }
         />
         <meta
@@ -50,7 +49,7 @@ export default function Layout({
         />
         <meta
           property="og:image"
-          content={thumbnailURL || "/images/thumbnail/default_thumbnail.png"}
+          content={thumbnailURL || '/images/thumbnail/default_thumbnail.png'}
         />
         {url && (
           <meta property="og:url" content={`https://www.chanstory.dev${url}`} />
@@ -59,7 +58,7 @@ export default function Layout({
       </Head>
       <div className={styles.header}>
         <div className={styles.headerWrap}>
-          <Link href={"/"} className={styles.logo}>
+          <Link href={'/'} className={styles.logo}>
             <Image
               src="/images/logo/logo.svg"
               fill
@@ -70,16 +69,16 @@ export default function Layout({
           <ul className={styles.menu}>
             <li>
               <Link
-                href={"/blog"}
-                className={activeMenu === "BLOG" ? styles.active : ""}
+                href={'/blog'}
+                className={activeMenu === 'BLOG' ? styles.active : ''}
               >
                 blog
               </Link>
             </li>
             <li>
               <Link
-                href={"/gallery"}
-                className={activeMenu === "GALLERY" ? styles.active : ""}
+                href={'/gallery'}
+                className={activeMenu === 'GALLERY' ? styles.active : ''}
               >
                 gallery
               </Link>

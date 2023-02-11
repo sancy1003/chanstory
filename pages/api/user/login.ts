@@ -1,8 +1,8 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import withHandler, { ResponseType } from "@libs/server/withHandler";
-import client from "@libs/server/client";
-import { withApiSession } from "@libs/server/withSession";
-import { comparePassword } from "@libs/server/bcrypt";
+import { NextApiRequest, NextApiResponse } from 'next';
+import withHandler, { ResponseType } from '@libs/server/withHandler';
+import client from '@libs/server/client';
+import { withApiSession } from '@libs/server/withSession';
+import { comparePassword } from '@libs/server/bcrypt';
 
 async function handler(
   req: NextApiRequest,
@@ -17,7 +17,7 @@ async function handler(
   if (!foundUser) {
     return res.json({
       result: false,
-      error: "아이디 혹은 비밀번호가 일치하지 않습니다.",
+      error: '아이디 혹은 비밀번호가 일치하지 않습니다.',
     });
   }
   const isVailid = await comparePassword({
@@ -27,7 +27,7 @@ async function handler(
   if (!isVailid) {
     return res.json({
       result: false,
-      error: "아이디 혹은 비밀번호가 일치하지 않습니다.",
+      error: '아이디 혹은 비밀번호가 일치하지 않습니다.',
     });
   }
   req.session.user = {
@@ -42,4 +42,4 @@ async function handler(
   res.json({ result: true });
 }
 
-export default withApiSession(withHandler({ methods: ["POST"], handler }));
+export default withApiSession(withHandler({ methods: ['POST'], handler }));

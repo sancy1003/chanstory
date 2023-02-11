@@ -1,5 +1,5 @@
-import { CommentWithAuthor, RecommentWithAuthor } from "./comment";
-import { PostsList, PostWithComments } from "./post";
+import { CommentWithAuthor, RecommentWithAuthor } from './comment';
+import { PostsList, PostWithComments } from './post';
 
 export interface APIResponse {
   result: boolean;

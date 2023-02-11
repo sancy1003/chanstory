@@ -1,19 +1,19 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import withHandler, { ResponseType } from "@libs/server/withHandler";
-import client from "@libs/server/client";
-import { withApiSession } from "@libs/server/withSession";
+import { NextApiRequest, NextApiResponse } from 'next';
+import withHandler, { ResponseType } from '@libs/server/withHandler';
+import client from '@libs/server/client';
+import { withApiSession } from '@libs/server/withSession';
 
 async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
-  if (req.method === "GET") {
+  if (req.method === 'GET') {
     const { page } = req.query;
     const postCount = await client.post.count({
-      where: { isHide: false, type: "GALLERY" },
+      where: { isHide: false, type: 'GALLERY' },
     });
     const galleryPosts = await client.post.findMany({
-      where: { isHide: false, type: "GALLERY" },
+      where: { isHide: false, type: 'GALLERY' },
       select: {
         id: true,
         title: true,
@@ -28,7 +28,7 @@ async function handler(
       },
       take: 8,
       skip: 8 * (+page - 1),
-      orderBy: { createdAt: "desc" },
+      orderBy: { createdAt: 'desc' },
     });
     return res.json({
       result: true,
@@ -37,14 +37,14 @@ async function handler(
         return {
           ...post,
           commentCount: post._count.comments + post._count.recomments,
-          thumbnailURL: post.imageURLs?.split(", ")[0],
+          thumbnailURL: post.imageURLs?.split(', ')[0],
         };
       }),
     });
   }
-  if (req.method === "POST") {
+  if (req.method === 'POST') {
     const { user } = req.session;
-    if (!user || user?.role !== "ADMIN") {
+    if (!user || user?.role !== 'ADMIN') {
       return res.json({
         result: false,
       });
@@ -61,7 +61,7 @@ async function handler(
           title,
           imageURLs,
           isHide: isHide ? isHide : false,
-          type: "GALLERY",
+          type: 'GALLERY',
         },
       });
       return res.json({
@@ -91,7 +91,7 @@ async function handler(
 
 export default withApiSession(
   withHandler({
-    methods: ["GET", "POST"],
+    methods: ['GET', 'POST'],
     handler,
   })
 );

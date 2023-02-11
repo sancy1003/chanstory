@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import styles from "@styles/modal.module.css";
-import { useForm } from "react-hook-form";
-import Lottie from "react-lottie-player";
-import ring from "@resource/lottie/ring.json";
+import React, { useEffect } from 'react';
+import styles from '@styles/modal.module.css';
+import { useForm } from 'react-hook-form';
+import Lottie from 'react-lottie-player';
+import ring from '@resource/lottie/ring.json';
 
 interface ChangeNicknameResponse {
   result: boolean;
@@ -42,8 +42,8 @@ export default function NicknameChangeModal({
       !changeNicknameData.result &&
       changeNicknameData.error
     ) {
-      setError("text", {
-        type: "alreadyExists",
+      setError('text', {
+        type: 'alreadyExists',
         message: changeNicknameData.error,
       });
     } else if (changeNicknameData && changeNicknameData.result) {
@@ -60,7 +60,7 @@ export default function NicknameChangeModal({
             loop
             animationData={ring}
             play
-            style={{ width: 114, height: 114, margin: "0 auto" }}
+            style={{ width: 114, height: 114, margin: '0 auto' }}
           />
         ) : (
           <>
@@ -69,15 +69,15 @@ export default function NicknameChangeModal({
                 변경할 닉네임을 입력해주세요.
               </div>
               <input
-                {...register("text", {
-                  required: "변경할 닉네임을 입력해주세요.",
+                {...register('text', {
+                  required: '변경할 닉네임을 입력해주세요.',
                   minLength: {
                     value: 2,
-                    message: "닉네임이 너무 짧아요. (2 ~ 16자)",
+                    message: '닉네임이 너무 짧아요. (2 ~ 16자)',
                   },
                   maxLength: {
                     value: 16,
-                    message: "닉네임이 너무 길어요. (2 ~ 16자)",
+                    message: '닉네임이 너무 길어요. (2 ~ 16자)',
                   },
                 })}
                 placeholder="2 ~ 16자"
@@ -88,7 +88,7 @@ export default function NicknameChangeModal({
               )}
             </div>
             <div className={styles.modalBtnBox}>
-              <button>{confirmMessage ? confirmMessage : "확인"}</button>
+              <button>{confirmMessage ? confirmMessage : '확인'}</button>
               <div
                 className={styles.btnCancel}
                 onClick={() => {

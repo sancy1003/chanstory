@@ -1,6 +1,6 @@
-import { withIronSessionApiRoute, withIronSessionSsr } from "iron-session/next";
+import { withIronSessionApiRoute, withIronSessionSsr } from 'iron-session/next';
 
-declare module "iron-session" {
+declare module 'iron-session' {
   interface IronSessionData {
     user?: SessionUserData;
   }
@@ -16,7 +16,7 @@ export interface SessionUserData {
 }
 
 const cookieOptions = {
-  cookieName: "chanstorysession",
+  cookieName: 'chanstorysession',
   password: process.env.COOKIE_PASSWORD!,
 };
 

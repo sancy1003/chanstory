@@ -1,19 +1,18 @@
-import Layout from "@components/layout";
-import type { GetStaticPropsContext, NextPage } from "next";
-import styles from "@styles/gallery.module.css";
-import SimpleImageSlider from "react-simple-image-slider/dist";
-import React from "react";
-import { FaChevronLeft } from "react-icons/fa";
-import client from "@libs/server/client";
+import Layout from '@components/layout';
+import type { GetStaticPropsContext, NextPage } from 'next';
+import styles from '@styles/gallery.module.css';
+import React from 'react';
+import { FaChevronLeft } from 'react-icons/fa';
+import client from '@libs/server/client';
 import {
   dateToString,
   dateToStringFromServer,
   formattingImageURL,
-} from "@libs/client/commonFunction";
-import { useRouter } from "next/router";
-import Comment from "@components/post/comment";
-import { Post } from "@prisma/client";
-import EmblaCarousel from "@components/gallery/EmblaCarousel";
+} from '@libs/client/commonFunction';
+import { useRouter } from 'next/router';
+import Comment from '@components/post/comment';
+import { Post } from '@prisma/client';
+import EmblaCarousel from '@components/gallery/EmblaCarousel';
 
 interface postFromSSG extends Post {
   url: string;
@@ -26,8 +25,8 @@ interface PostProps {
 
 const PostDetail: NextPage<PostProps> = ({ post }) => {
   const router = useRouter();
-  const images = post.imageURLs?.split(", ");
-  const tags = post.tags?.split(", ");
+  const images = post.imageURLs?.split(', ');
+  const tags = post.tags?.split(', ');
 
   return (
     <Layout
@@ -78,7 +77,7 @@ const PostDetail: NextPage<PostProps> = ({ post }) => {
               })}
             </ul>
           ) : (
-            ""
+            ''
           )}
         </div>
         <Comment />
@@ -92,7 +91,7 @@ export async function getStaticPaths() {
   const galleryPosts = await client.post?.findMany({
     where: {
       isHide: false,
-      type: "GALLERY",
+      type: 'GALLERY',
     },
     select: {
       id: true,
@@ -103,7 +102,7 @@ export async function getStaticPaths() {
     paths.push({ params: { id: String(data.id) } });
   }
 
-  return { paths, fallback: "blocking" };
+  return { paths, fallback: 'blocking' };
 }
 
 export async function getStaticProps({ params }: GetStaticPropsContext) {
@@ -122,7 +121,7 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
     },
   });
 
-  let description = "";
+  let description = '';
 
   if (post?.content) {
     if (post?.content.length > 150)

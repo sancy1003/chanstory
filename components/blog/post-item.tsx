@@ -1,8 +1,7 @@
-import { formattingImageURL } from "@libs/client/commonFunction";
-import styles from "@styles/blog.module.css";
-import Image from "next/image";
-import Link from "next/link";
-import { FaRegCommentDots } from "react-icons/fa";
+import { formattingImageURL } from '@libs/client/commonFunction';
+import styles from '@styles/blog.module.css';
+import Image from 'next/image';
+import Link from 'next/link';
 
 interface PostItemProps {
   createdAt: string;
@@ -27,13 +26,13 @@ export default function PostItem({
             placeholder="blur"
             src={
               imageURL
-                ? formattingImageURL(imageURL, "blogThumbnail")
-                : "/images/thumbnail/default_thumbnail.png"
+                ? formattingImageURL(imageURL, 'blogThumbnail')
+                : '/images/thumbnail/default_thumbnail.png'
             }
             blurDataURL={
               imageURL
-                ? formattingImageURL(imageURL, "blogThumbnail")
-                : "/images/thumbnail/default_thumbnail.png"
+                ? formattingImageURL(imageURL, 'blogThumbnail')
+                : '/images/thumbnail/default_thumbnail.png'
             }
           />
         </div>

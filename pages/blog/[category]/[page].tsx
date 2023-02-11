@@ -1,23 +1,23 @@
-import { useRouter } from "next/router";
-import Layout from "@components/layout";
-import type { GetStaticPropsContext, NextPage } from "next";
-import styles from "@styles/blog.module.css";
-import PostItem from "@components/blog/post-item";
-import Category from "@components/blog/category";
+import { useRouter } from 'next/router';
+import Layout from '@components/layout';
+import type { GetStaticPropsContext, NextPage } from 'next';
+import styles from '@styles/blog.module.css';
+import PostItem from '@components/blog/post-item';
+import Category from '@components/blog/category';
 import {
   categoryToNumber,
   categoryToString,
   dateToStringFromServer,
-} from "@libs/client/commonFunction";
-import Pagination from "react-js-pagination";
-import client from "@libs/server/client";
-import { PostListWithCountResponse } from "types/response";
+} from '@libs/client/commonFunction';
+import Pagination from 'react-js-pagination';
+import client from '@libs/server/client';
+import { PostListWithCountResponse } from 'types/response';
 import {
   MdOutlineFirstPage,
   MdOutlineLastPage,
   MdOutlineChevronRight,
   MdOutlineChevronLeft,
-} from "react-icons/md";
+} from 'react-icons/md';
 
 interface Props {
   data: PostListWithCountResponse;
@@ -28,12 +28,12 @@ const Blog: NextPage<Props> = ({ data, category }) => {
   const router = useRouter();
 
   return (
-    <Layout activeMenu={"BLOG"}>
+    <Layout activeMenu={'BLOG'}>
       <div className={styles.container}>
         <Category active={category} />
         <div className={styles.section}>
           <div className={styles.postContainer}>
-            {data.posts.map((post, idx) => {
+            {data.posts.map((post) => {
               return (
                 <PostItem
                   key={post.id}
@@ -91,19 +91,19 @@ export async function getStaticPaths() {
     const postCount = await client.post.count({
       where: {
         isHide: false,
-        type: "POST",
+        type: 'POST',
         category: i,
       },
     });
     categoryData.push({
-      category: categoryToString({ index: i, type: "query" }),
+      category: categoryToString({ index: i, type: 'query' }),
       maxPage: Math.ceil(postCount / 8),
     });
   }
 
   for (const data of categoryData) {
     if (data.maxPage <= 1) {
-      paths.push({ params: { category: data.category, page: "1" } });
+      paths.push({ params: { category: data.category, page: '1' } });
     } else {
       for (let i = 1; i <= data.maxPage; i++) {
         paths.push({ params: { category: data.category, page: i.toString() } });
@@ -111,21 +111,21 @@ export async function getStaticPaths() {
     }
   }
 
-  return { paths, fallback: "blocking" };
+  return { paths, fallback: 'blocking' };
 }
 
 export async function getStaticProps({ params }: GetStaticPropsContext) {
   const postCount = await client.post.count({
     where: {
       isHide: false,
-      type: "POST",
+      type: 'POST',
       category: categoryToNumber({ query: params?.category?.toString() }),
     },
   });
   const posts = await client.post.findMany({
     where: {
       isHide: false,
-      type: "POST",
+      type: 'POST',
       category: categoryToNumber({ query: params?.category?.toString() }),
     },
     select: {
@@ -142,7 +142,7 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
     },
     take: 8,
     skip: 8 * (+params?.page! - 1),
-    orderBy: { createdAt: "desc" },
+    orderBy: { createdAt: 'desc' },
   });
 
   return {

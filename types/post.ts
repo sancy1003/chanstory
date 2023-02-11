@@ -1,5 +1,5 @@
-import { Post } from "@prisma/client";
-import { CommentWithAuthor } from "./comment";
+import { Post } from '@prisma/client';
+import { CommentWithAuthor } from './comment';
 
 export interface PostsList {
   id: number;

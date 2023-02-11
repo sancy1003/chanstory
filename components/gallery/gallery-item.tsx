@@ -1,8 +1,7 @@
-import { formattingImageURL } from "@libs/client/commonFunction";
-import styles from "@styles/gallery.module.css";
-import Image from "next/image";
-import Link from "next/link";
-import { FaRegCommentDots } from "react-icons/fa";
+import { formattingImageURL } from '@libs/client/commonFunction';
+import styles from '@styles/gallery.module.css';
+import Image from 'next/image';
+import Link from 'next/link';
 
 interface GalleryItemProps {
   commentNum: number;
@@ -13,7 +12,6 @@ interface GalleryItemProps {
 }
 
 export default function GalleryItem({
-  commentNum,
   createdAt,
   title,
   imageURL,
@@ -24,13 +22,13 @@ export default function GalleryItem({
       <div className={styles.postImageWrap}>
         <div
           className={styles.autoHeightImageWrap}
-          style={{ width: "100%", position: "relative" }}
+          style={{ width: '100%', position: 'relative' }}
         >
           <Image
             fill
             className={styles.autoImage}
             alt={`${title}-thumbnail`}
-            src={formattingImageURL(imageURL, "galleryThumbnail")}
+            src={formattingImageURL(imageURL, 'galleryThumbnail')}
             style={{ borderRadius: 8 }}
           />
         </div>

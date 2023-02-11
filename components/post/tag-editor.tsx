@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import styles from "@styles/post.module.css";
-import { MdClose } from "react-icons/md";
+import React, { useState } from 'react';
+import styles from '@styles/post.module.css';
+import { MdClose } from 'react-icons/md';
 
 interface Props {
   tags: string[];
@@ -8,11 +8,11 @@ interface Props {
 }
 
 export default function TagEditor({ tags, setTags }: Props) {
-  const [text, setText] = useState<string>("");
+  const [text, setText] = useState<string>('');
   const addTag = () => {
     if (text.length === 0) return;
     setTags([...tags, text]);
-    setText("");
+    setText('');
   };
   const deleteTag = (deleteIndex: number) => {
     setTags(tags.filter((tag, index) => index !== deleteIndex));
@@ -31,7 +31,7 @@ export default function TagEditor({ tags, setTags }: Props) {
         <div className={styles.inputWrap}>
           <input
             onKeyDown={(e) => {
-              if (e.key === "Enter") {
+              if (e.key === 'Enter') {
                 e.preventDefault();
                 addTag();
               }

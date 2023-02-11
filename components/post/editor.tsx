@@ -1,17 +1,17 @@
-import { createRef } from "react";
-import "@toast-ui/editor/dist/toastui-editor.css";
-import { Editor } from "@toast-ui/react-editor";
-import "tui-color-picker/dist/tui-color-picker.css";
-import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
-import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
-import { formattingImageURL } from "@libs/client/commonFunction";
-import "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css";
-import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight";
-import Prism from "prismjs";
-import "prismjs/components/prism-typescript.min";
-import "prismjs/components/prism-jsx.min";
-import "prismjs/components/prism-tsx.min";
-import "prismjs/themes/prism.css";
+import { createRef } from 'react';
+import '@toast-ui/editor/dist/toastui-editor.css';
+import { Editor } from '@toast-ui/react-editor';
+import 'tui-color-picker/dist/tui-color-picker.css';
+import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
+import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
+import { formattingImageURL } from '@libs/client/commonFunction';
+import '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css';
+import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
+import Prism from 'prismjs';
+import 'prismjs/components/prism-typescript.min';
+import 'prismjs/components/prism-jsx.min';
+import 'prismjs/components/prism-tsx.min';
+import 'prismjs/themes/prism.css';
 
 export default function PostEditor({
   content,
@@ -28,12 +28,12 @@ export default function PostEditor({
     let Imageurl = null;
     const { uploadURL } = await (await fetch(`/api/uploadImage`)).json();
     const form = new FormData();
-    form.append("file", image, `post_conetent_${new Date()}`);
+    form.append('file', image, `post_conetent_${new Date()}`);
     const {
       result: { id },
     } = await (
       await fetch(uploadURL, {
-        method: "POST",
+        method: 'POST',
         body: form,
       })
     ).json();
@@ -46,7 +46,7 @@ export default function PostEditor({
       <Editor
         onChange={onChangeIntroFunction}
         ref={editorRef}
-        initialValue={content ? content : "내용을 입력해주세요."}
+        initialValue={content ? content : '내용을 입력해주세요.'}
         previewStyle="vertical"
         height="700px"
         initialEditType="markdown"
@@ -55,7 +55,7 @@ export default function PostEditor({
         hooks={{
           addImageBlobHook: async (blob: any, callback: any) => {
             const imageURL = formattingImageURL(await uploadImage(blob));
-            callback(imageURL, "");
+            callback(imageURL, '');
             return;
           },
         }}

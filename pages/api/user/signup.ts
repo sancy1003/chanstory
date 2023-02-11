@@ -1,7 +1,7 @@
-import { encryptPassword } from "@libs/server/bcrypt";
-import client from "@libs/server/client";
-import withHandler, { ResponseType } from "@libs/server/withHandler";
-import { NextApiRequest, NextApiResponse } from "next";
+import { encryptPassword } from '@libs/server/bcrypt';
+import client from '@libs/server/client';
+import withHandler, { ResponseType } from '@libs/server/withHandler';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 async function handler(
   req: NextApiRequest,
@@ -21,17 +21,17 @@ async function handler(
   if (checkAccount) {
     return res.json({
       result: false,
-      error: "이미 사용중인 아이디가 있어요.",
+      error: '이미 사용중인 아이디가 있어요.',
     });
   }
   if (checkNickname) {
     return res.json({
       result: false,
-      error: "이미 사용중인 닉네임이 있어요.",
+      error: '이미 사용중인 닉네임이 있어요.',
     });
   }
   const encryptedPassword = await encryptPassword(password);
-  const user = await client.user.create({
+  await client.user.create({
     data: {
       account,
       password: encryptedPassword,
@@ -44,6 +44,6 @@ async function handler(
 }
 
 export default withHandler({
-  methods: ["POST"],
+  methods: ['POST'],
   handler,
 });

@@ -1,5 +1,5 @@
-import React from "react";
-import styles from "@styles/modal.module.css";
+import React from 'react';
+import styles from '@styles/modal.module.css';
 
 interface ConfirmModalProps {
   isView: boolean;
@@ -23,7 +23,7 @@ export default function ConfirmModal({
         <div className={styles.modalMessage}>{message}</div>
         <div className={styles.modalBtnBox}>
           <button onClick={fn}>
-            {confirmMessage ? confirmMessage : "확인"}
+            {confirmMessage ? confirmMessage : '확인'}
           </button>
           <button onClick={cancel}>취소</button>
         </div>

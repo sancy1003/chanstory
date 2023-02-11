@@ -6,8 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "postbuild": "next-sitemap"
+    "postbuild": "next-sitemap",
+    "lint": "eslint \"**/*.{ts,tsx}\" --ext .ts,.tsx ",
+    "lint:fix": "eslint \"**/*.{ts,tsx}\" --ext .ts,.tsx --fix"
   },
   "dependencies": {
     "@prisma/client": "^4.10.1",

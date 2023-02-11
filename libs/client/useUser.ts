@@ -1,5 +1,5 @@
-import { User } from "@prisma/client";
-import useSWR from "swr";
+import { User } from '@prisma/client';
+import useSWR from 'swr';
 
 interface ProfileResponse {
   ok: boolean;
@@ -7,6 +7,6 @@ interface ProfileResponse {
 }
 
 export default function useUser() {
-  const { data, error } = useSWR<ProfileResponse>("/api/user");
+  const { data, error } = useSWR<ProfileResponse>('/api/user');
   return { user: data?.profile, isLoading: !data && !error };
 }

@@ -1,19 +1,19 @@
-import { GetStaticPropsContext, NextPage } from "next";
-import styles from "@styles/blog.module.css";
-import Layout from "@components/layout";
-import { FaChevronLeft } from "react-icons/fa";
+import { GetStaticPropsContext, NextPage } from 'next';
+import styles from '@styles/blog.module.css';
+import Layout from '@components/layout';
+import { FaChevronLeft } from 'react-icons/fa';
 import {
   dateToString,
   dateToStringFromServer,
   formattingImageURL,
-} from "@libs/client/commonFunction";
-import dynamic from "next/dynamic";
-import { useRouter } from "next/router";
-import Lottie from "react-lottie-player";
-import ring from "@resource/lottie/ring.json";
-import client from "@libs/server/client";
-import Comment from "@components/post/comment";
-import { Post } from "@prisma/client";
+} from '@libs/client/commonFunction';
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
+import Lottie from 'react-lottie-player';
+import ring from '@resource/lottie/ring.json';
+import client from '@libs/server/client';
+import Comment from '@components/post/comment';
+import { Post } from '@prisma/client';
 
 interface postFromSSG extends Post {
   url: string;
@@ -24,15 +24,15 @@ interface PostProps {
   post: postFromSSG;
 }
 
-const Viewer = dynamic(() => import("@components/viewer"), {
+const Viewer = dynamic(() => import('@components/viewer'), {
   ssr: false,
   loading: () => (
-    <div style={{ width: "100%", height: "100vh", paddingTop: "100px" }}>
+    <div style={{ width: '100%', height: '100vh', paddingTop: '100px' }}>
       <Lottie
         loop
         animationData={ring}
         play
-        style={{ width: 150, height: 150, margin: "0 auto" }}
+        style={{ width: 150, height: 150, margin: '0 auto' }}
       />
     </div>
   ),
@@ -40,7 +40,7 @@ const Viewer = dynamic(() => import("@components/viewer"), {
 
 const PostDetail: NextPage<PostProps> = ({ post }) => {
   const router = useRouter();
-  const tags = post.tags?.split(", ");
+  const tags = post.tags?.split(', ');
   return (
     <Layout
       activeMenu="BLOG"
@@ -71,7 +71,7 @@ const PostDetail: NextPage<PostProps> = ({ post }) => {
               })}
             </ul>
           ) : (
-            ""
+            ''
           )}
         </div>
         <Comment />
@@ -85,7 +85,7 @@ export async function getStaticPaths() {
   const blogPosts = await client.post?.findMany({
     where: {
       isHide: false,
-      type: "POST",
+      type: 'POST',
     },
     select: {
       id: true,
@@ -96,7 +96,7 @@ export async function getStaticPaths() {
     paths.push({ params: { id: String(data.id) } });
   }
 
-  return { paths, fallback: "blocking" };
+  return { paths, fallback: 'blocking' };
 }
 
 export async function getStaticProps({ params }: GetStaticPropsContext) {
@@ -115,7 +115,7 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
     },
   });
 
-  let description = "";
+  let description = '';
 
   if (post?.content) {
     if (post?.content.length > 150)

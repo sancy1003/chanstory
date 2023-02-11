@@ -1,9 +1,9 @@
-import styles from "@styles/Layout.module.css";
-import { AiFillGithub, AiFillMail } from "react-icons/ai";
+import styles from '@styles/Layout.module.css';
+import { AiFillGithub, AiFillMail } from 'react-icons/ai';
 
 export default function Footer(): React.ReactElement {
   const goGit = () => {
-    window.open("https://github.com/sancy1003");
+    window.open('https://github.com/sancy1003');
   };
   return (
     <div className={styles.footer}>

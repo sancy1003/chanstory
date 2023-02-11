@@ -1,16 +1,13 @@
-import Layout from "@components/layout";
-import type { NextPage } from "next";
-import styles from "@styles/gallery.module.css";
-import { dateToString } from "@libs/client/commonFunction";
-import useUser from "@libs/client/useUser";
-import useSWR from "swr";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { PostListWithCountResponse } from "types/response";
-import GalleryItem from "@components/gallery/gallery-item";
-import { PostsList } from "types/post";
-import Lottie from "react-lottie-player";
-import ring from "@resource/lottie/ring.json";
-import GalleryItemSkeleton from "@components/gallery/gallery-item-skeleton";
+import Layout from '@components/layout';
+import type { NextPage } from 'next';
+import styles from '@styles/gallery.module.css';
+import { dateToString } from '@libs/client/commonFunction';
+import useSWR from 'swr';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { PostListWithCountResponse } from 'types/response';
+import GalleryItem from '@components/gallery/gallery-item';
+import { PostsList } from 'types/post';
+import GalleryItemSkeleton from '@components/gallery/gallery-item-skeleton';
 
 const Gallery: NextPage = () => {
   const [leftPosts, setLeftPost] = useState<PostsList[]>([]);
@@ -19,7 +16,7 @@ const Gallery: NextPage = () => {
   const [scrollLoading, setScrollLoading] = useState<boolean>(false);
   const maxPage = useRef(0);
   const page = useRef(1);
-  const { data, error, mutate } = useSWR<PostListWithCountResponse>(
+  const { data } = useSWR<PostListWithCountResponse>(
     `/api/gallery?page=${page.current}`
   );
 
@@ -46,8 +43,8 @@ const Gallery: NextPage = () => {
 
   useEffect(() => {
     if (data && data.result) {
-      let left: PostsList[] = [];
-      let right: PostsList[] = [];
+      const left: PostsList[] = [];
+      const right: PostsList[] = [];
       data.posts.forEach((post, idx) => {
         if (idx % 2 === 0) left.push(post);
         else right.push(post);
@@ -61,7 +58,7 @@ const Gallery: NextPage = () => {
   }, [data]);
 
   return (
-    <Layout activeMenu={"GALLERY"}>
+    <Layout activeMenu={'GALLERY'}>
       <div className={styles.galleryContainer}>
         <div className={styles.galleryListWrap}>
           <ul className={styles.galleryList}>
@@ -96,7 +93,7 @@ const Gallery: NextPage = () => {
               );
             })}
             {(!data || scrollLoading) &&
-              [0, 0].map((item, index) => <GalleryItemSkeleton key={index} />)}
+              [0, 0].map((_, index) => <GalleryItemSkeleton key={index} />)}
           </ul>
           <ul className={styles.galleryListM}>
             {posts.map((post) => {
@@ -118,7 +115,7 @@ const Gallery: NextPage = () => {
         </div>
         {posts && (
           <div
-            style={{ height: 100, display: "flex", alignItems: "flex-start" }}
+            style={{ height: 100, display: 'flex', alignItems: 'flex-start' }}
             ref={lastPostElementRef}
           />
         )}

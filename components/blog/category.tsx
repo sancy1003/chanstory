@@ -1,5 +1,5 @@
-import styles from "@styles/blog.module.css";
-import Link from "next/link";
+import styles from '@styles/blog.module.css';
+import Link from 'next/link';
 
 interface CategoryProps {
   active: string;
@@ -15,7 +15,7 @@ export default function Category({ active }: CategoryProps) {
         <li>
           <Link
             href="/blog"
-            className={currentCategory === "home" ? styles.active : ""}
+            className={currentCategory === 'home' ? styles.active : ''}
           >
             🏠&nbsp;&nbsp;홈
           </Link>
@@ -23,7 +23,7 @@ export default function Category({ active }: CategoryProps) {
         <li>
           <Link
             href="/blog/develop/1"
-            className={currentCategory === "develop" ? styles.active : ""}
+            className={currentCategory === 'develop' ? styles.active : ''}
           >
             📕&nbsp;&nbsp;개발 일기
           </Link>
@@ -31,7 +31,7 @@ export default function Category({ active }: CategoryProps) {
         <li>
           <Link
             href="/blog/study/1"
-            className={currentCategory === "study" ? styles.active : ""}
+            className={currentCategory === 'study' ? styles.active : ''}
           >
             ✏&nbsp;&nbsp;스터디
           </Link>
@@ -39,7 +39,7 @@ export default function Category({ active }: CategoryProps) {
         <li>
           <Link
             href="/blog/hobby/1"
-            className={currentCategory === "hobby" ? styles.active : ""}
+            className={currentCategory === 'hobby' ? styles.active : ''}
           >
             😎&nbsp;&nbsp;취미
           </Link>
@@ -47,7 +47,7 @@ export default function Category({ active }: CategoryProps) {
         <li>
           <Link
             href="/blog/daily/1"
-            className={currentCategory === "daily" ? styles.active : ""}
+            className={currentCategory === 'daily' ? styles.active : ''}
           >
             🥰&nbsp;&nbsp;일상
           </Link>

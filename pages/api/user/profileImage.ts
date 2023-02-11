@@ -1,7 +1,7 @@
-import client from "@libs/server/client";
-import withHandler, { ResponseType } from "@libs/server/withHandler";
-import { withApiSession } from "@libs/server/withSession";
-import { NextApiRequest, NextApiResponse } from "next";
+import client from '@libs/server/client';
+import withHandler, { ResponseType } from '@libs/server/withHandler';
+import { withApiSession } from '@libs/server/withSession';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 async function handler(
   req: NextApiRequest,
@@ -11,10 +11,10 @@ async function handler(
   if (!user) {
     return res.json({
       result: false,
-      error: "유저 정보가 없습니다.",
+      error: '유저 정보가 없습니다.',
     });
   }
-  if (req.method === "POST") {
+  if (req.method === 'POST') {
     const { profileURL } = req.body;
     await client.user.update({
       where: {
@@ -33,7 +33,7 @@ async function handler(
       result: true,
     });
   }
-  if (req.method === "DELETE") {
+  if (req.method === 'DELETE') {
     await client.user.update({
       where: {
         id: user.id,
@@ -55,7 +55,7 @@ async function handler(
 
 export default withApiSession(
   withHandler({
-    methods: ["POST", "DELETE"],
+    methods: ['POST', 'DELETE'],
     handler,
     isPrivate: true,
   })

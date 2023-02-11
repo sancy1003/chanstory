@@ -1,17 +1,17 @@
-import React, { useState, useEffect, useCallback } from "react";
-import useEmblaCarousel from "embla-carousel-react";
-import { Thumb } from "./EmblaCarouselThumb";
-import styles from "@styles/embla.module.css";
-import { formattingImageURL } from "@libs/client/commonFunction";
-import Image from "next/image";
+import React, { useState, useEffect, useCallback } from 'react';
+import useEmblaCarousel from 'embla-carousel-react';
+import { Thumb } from './EmblaCarouselThumb';
+import styles from '@styles/embla.module.css';
+import { formattingImageURL } from '@libs/client/commonFunction';
+import Image from 'next/image';
 
 const EmblaCarousel = ({ slides }: any) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [mainViewportRef, embla] = useEmblaCarousel({ skipSnaps: false });
   const [thumbViewportRef, emblaThumbs] = useEmblaCarousel({
-    containScroll: "keepSnaps",
+    containScroll: 'keepSnaps',
     // @ts-ignore
-    selectedClass: "",
+    selectedClass: '',
     dragFree: true,
   });
 
@@ -32,7 +32,7 @@ const EmblaCarousel = ({ slides }: any) => {
   useEffect(() => {
     if (!embla) return;
     onSelect();
-    embla.on("select", onSelect);
+    embla.on('select', onSelect);
   }, [embla, onSelect]);
 
   return (
@@ -49,11 +49,11 @@ const EmblaCarousel = ({ slides }: any) => {
                     alt="image"
                   /> */}
                   <Image
-                    src={formattingImageURL(url, "galleryThumbnail")}
+                    src={formattingImageURL(url, 'galleryThumbnail')}
                     alt="thumnail"
                     fill
                     placeholder="blur"
-                    blurDataURL={formattingImageURL(url, "galleryThumbnail")}
+                    blurDataURL={formattingImageURL(url, 'galleryThumbnail')}
                   />
                 </div>
               </div>
@@ -71,7 +71,7 @@ const EmblaCarousel = ({ slides }: any) => {
               <Thumb
                 onClick={() => onThumbClick(index)}
                 selected={index === selectedIndex}
-                imgSrc={formattingImageURL(url, "avatar")}
+                imgSrc={formattingImageURL(url, 'avatar')}
                 key={index}
               />
             ))}

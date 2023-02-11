@@ -1,6 +1,6 @@
-import styles from "@styles/blog.module.css";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
+import styles from '@styles/blog.module.css';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 export default function PostItemSkeleton() {
   return (
@@ -8,8 +8,8 @@ export default function PostItemSkeleton() {
       <Skeleton className={styles.postImageWrap} />
       <Skeleton className={styles.postTitle} />
       <div className={styles.postInfo}>
-        <Skeleton width={"50px"} />
-        <Skeleton width={"100px"} />
+        <Skeleton width={'50px'} />
+        <Skeleton width={'100px'} />
       </div>
     </div>
   );

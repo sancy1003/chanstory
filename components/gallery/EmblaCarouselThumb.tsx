@@ -1,11 +1,11 @@
-import React from "react";
-import styles from "@styles/embla.module.css";
-import Image from "next/image";
+import React from 'react';
+import styles from '@styles/embla.module.css';
+import Image from 'next/image';
 
 export const Thumb = ({ selected, onClick, imgSrc }: any) => (
   <div
     className={`${styles.sembla__slide} ${styles.embla__slideThumb} ${
-      selected ? styles.isSelected : ""
+      selected ? styles.isSelected : ''
     }`}
   >
     <button
