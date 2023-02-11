@@ -22,6 +22,11 @@ class CustomDocument extends Document {
           />
           <script
             async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3131973401944410"
+            crossOrigin="anonymous"
+          ></script>
+          <script
+            async
             src={`https://www.googletagmanager.com/gtag/js?${process.env.GOOGLE_ANALYTICS_ID}`}
           ></script>
           <script
