@@ -33,10 +33,10 @@ const Login: NextPage = () => {
   const [deleteConfirmModal, setDeleteConfirmModal] = useState(false);
   const moreBtnRef = useRef<HTMLSpanElement>(null);
   const [moreBtnView, setMoreBtnView] = useState<boolean>(false);
-  const modalCloseHandler = ({ target }: any) => {
-    if (moreBtnView && !moreBtnRef?.current?.contains(target))
+  function modalCloseHandler(this: Window, e: MouseEvent) {
+    if (moreBtnView && !moreBtnRef?.current?.contains(e.target as Node))
       setMoreBtnView(false);
-  };
+  }
   useEffect(() => {
     window.addEventListener('click', modalCloseHandler);
     return () => {

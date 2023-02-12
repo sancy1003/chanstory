@@ -27,7 +27,7 @@ async function handler(
         },
       },
       take: 8,
-      skip: 8 * (+page - 1),
+      skip: 8 * (+page! - 1),
       orderBy: { createdAt: 'desc' },
     });
     return res.json({

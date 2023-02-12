@@ -1,7 +1,8 @@
-import type { NextRequest, NextFetchEvent } from 'next/server';
-import { NextResponse } from 'next/server';
+// import type { NextRequest, NextFetchEvent } from 'next/server';
+// import { NextResponse } from 'next/server';
 
-export function middleware(req: NextRequest, ev: NextFetchEvent) {
+export function middleware() {
+  // req: NextRequest, ev: NextFetchEvent
   // if (!req.url.includes("/api")) {
   //   if (
   //     (req.url.includes("/login") || req.url.includes("/signup")) &&

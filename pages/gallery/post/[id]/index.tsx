@@ -48,7 +48,7 @@ const PostDetail: NextPage<PostProps> = ({ post }) => {
           </div>
         </div>
         <div className={styles.postingContentWrap}>
-          <EmblaCarousel slides={images} />
+          <EmblaCarousel slides={images as string[]} />
           {/* <div className={styles.imageEditWrap}>
             <div className={styles.imagePrevBox}>
               {images && (

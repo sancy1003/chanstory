@@ -11,10 +11,10 @@ async function handler(
     const { page } = req.query;
     const { category } = req.query;
     const postCount = await client.post.count({
-      where: { isHide: false, category: +category },
+      where: { isHide: false, category: +category! },
     });
     const posts = await client.post.findMany({
-      where: { isHide: false, category: +category },
+      where: { isHide: false, category: +category! },
       select: {
         id: true,
         title: true,
@@ -28,7 +28,7 @@ async function handler(
         },
       },
       take: 8,
-      skip: 8 * (+page - 1),
+      skip: 8 * (+page! - 1),
       orderBy: { createdAt: 'desc' },
     });
     return res.json({

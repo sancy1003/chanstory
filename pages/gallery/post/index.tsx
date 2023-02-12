@@ -30,7 +30,7 @@ const fileTypes = ['JPG', 'PNG', 'GIF'];
 const Write: NextPage<{ user: SessionUserData | null }> = () => {
   const router = useRouter();
   const [imageUploadLoading, setImageUploadLoading] = useState<boolean>(false);
-  const [isHide, _] = useState(false);
+  const isHide = false;
   const [isDrag, setIsDrag] = useState(false);
   const [tags, setTags] = useState<string[]>([]);
   const [imageList, setImageList] = useState<File[]>([]);

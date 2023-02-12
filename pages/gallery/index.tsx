@@ -20,7 +20,7 @@ const Gallery: NextPage = () => {
     `/api/gallery?page=${page.current}`
   );
 
-  const observer = useRef<any>(null);
+  const observer = useRef<null | IntersectionObserver>(null);
 
   const lastPostElementRef = useCallback(
     (element: HTMLDivElement) => {

@@ -5,7 +5,11 @@ import styles from '@styles/embla.module.css';
 import { formattingImageURL } from '@libs/client/commonFunction';
 import Image from 'next/image';
 
-const EmblaCarousel = ({ slides }: any) => {
+interface Props {
+  slides: string[];
+}
+
+const EmblaCarousel = ({ slides }: Props) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [mainViewportRef, embla] = useEmblaCarousel({ skipSnaps: false });
   const [thumbViewportRef, emblaThumbs] = useEmblaCarousel({

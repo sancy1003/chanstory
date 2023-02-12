@@ -20,12 +20,12 @@ export default function PostEditor({
   content: string | null;
   fn: (content: string) => void;
 }): JSX.Element {
-  const editorRef = createRef<any>();
+  const editorRef = createRef<Editor>();
   const onChangeIntroFunction = () => {
-    fn(editorRef.current.getInstance().getMarkdown());
+    fn(editorRef.current!.getInstance().getMarkdown());
   };
-  const uploadImage = async (image: File) => {
-    let Imageurl = null;
+  const uploadImage = async (image: File | Blob) => {
+    //let Imageurl = null;
     const { uploadURL } = await (await fetch(`/api/uploadImage`)).json();
     const form = new FormData();
     form.append('file', image, `post_conetent_${new Date()}`);
@@ -37,7 +37,7 @@ export default function PostEditor({
         body: form,
       })
     ).json();
-    Imageurl = id;
+    // Imageurl = id;
     return id;
   };
 
@@ -53,7 +53,10 @@ export default function PostEditor({
         useCommandShortcut={true}
         plugins={[colorSyntax, [codeSyntaxHighlight, { highlighter: Prism }]]}
         hooks={{
-          addImageBlobHook: async (blob: any, callback: any) => {
+          addImageBlobHook: async (
+            blob: Blob | File,
+            callback: (imageURL: string, callbackString: string) => void
+          ) => {
             const imageURL = formattingImageURL(await uploadImage(blob));
             callback(imageURL, '');
             return;

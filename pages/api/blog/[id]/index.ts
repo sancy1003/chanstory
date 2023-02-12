@@ -10,7 +10,7 @@ async function handler(
   if (req.method === 'GET') {
     const { id } = req.query;
     const post = await client.post.findUnique({
-      where: { id: +id },
+      where: { id: +id! },
     });
     res.json({
       result: true,
@@ -21,7 +21,7 @@ async function handler(
     const { id } = req.query;
     await client.post.delete({
       where: {
-        id: +id,
+        id: +id!,
       },
     });
     res.json({
