@@ -1,0 +1,34 @@
+.login {
+  color: var(--black_100);
+}
+.userWrap {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.userProfileImage {
+  position: relative;
+  overflow: hidden;
+  width: 35px;
+  height: 35px;
+  border-radius: 99px;
+  margin-right: 14px;
+  object-fit: cover;
+  object-position: center;
+}
+.userNickname {
+  color: var(--brandColor);
+}
+
+@media screen and (max-width: 800px) {
+  .menu {
+    margin-left: 10vw;
+    column-gap: 32px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .menu {
+    display: none;
+  }
+}

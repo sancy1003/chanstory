@@ -10,7 +10,7 @@ import { MdUploadFile, MdClose } from 'react-icons/md';
 import useMutation from '@libs/client/useMutation';
 import { useForm } from 'react-hook-form';
 import { FileUploader } from 'react-drag-drop-files';
-import TagEditor from '@components/post/tag-editor';
+import TagEditor from '@components/post/TagEditor';
 import uploadImageToStorage from '@libs/client/uploadImageToStorage';
 import Lottie from 'react-lottie-player';
 import ring from '@resource/lottie/ring.json';

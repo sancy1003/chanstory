@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import styles from '@styles/post.module.css';
 import { MdClose } from 'react-icons/md';
+import * as S from '@styles/components/post/tagEditor.style';
 
 interface Props {
   tags: string[];
@@ -9,33 +9,36 @@ interface Props {
 
 export default function TagEditor({ tags, setTags }: Props) {
   const [text, setText] = useState<string>('');
+
   const addTag = () => {
     if (text.length === 0) return;
     setTags([...tags, text]);
     setText('');
   };
+  const handleInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      addTag();
+    }
+  };
   const deleteTag = (deleteIndex: number) => {
     setTags(tags.filter((tag, index) => index !== deleteIndex));
   };
+
   return (
-    <ul className={styles.tagList}>
+    <S.TagListContainer>
       {tags.map((tag, index) => {
         return (
-          <li key={index} className={styles.tagItem}>
+          <li key={index}>
             <div>{tag}</div>
             <MdClose onClick={() => deleteTag(index)} />
           </li>
         );
       })}
       <li>
-        <div className={styles.inputWrap}>
+        <S.TagInputBox>
           <input
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault();
-                addTag();
-              }
-            }}
+            onKeyDown={handleInput}
             type="text"
             value={text}
             onChange={(e) => setText(e.target.value)}
@@ -43,8 +46,8 @@ export default function TagEditor({ tags, setTags }: Props) {
           <button onClick={addTag} type="button">
             추가
           </button>
-        </div>
+        </S.TagInputBox>
       </li>
-    </ul>
+    </S.TagListContainer>
   );
 }

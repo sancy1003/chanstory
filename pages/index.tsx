@@ -1,8 +1,8 @@
-import Category from '@components/blog/category';
+import Category from '@components/blog/Category';
 import Layout from '@components/layout';
 import type { GetStaticProps, NextPage } from 'next';
 import styles from '@styles/blog.module.css';
-import PostItem from '@components/blog/post-item';
+import PostItem from '@components/blog/PostItem';
 import { dateToStringFromServer } from '@libs/client/commonFunction';
 import client from '@libs/server/client';
 import { PostListResponse } from 'types/response';

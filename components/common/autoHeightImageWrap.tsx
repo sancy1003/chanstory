@@ -1,22 +1,19 @@
 import Image from 'next/image';
-import styles from '@styles/Layout.module.css';
+import * as S from '@styles/components/common/autoHeightImageWrapper.style';
 import { CSSProperties } from 'react';
 
-interface ImageProps {
+interface Props {
   src: string;
   alt: string;
   style: CSSProperties;
 }
 
-export default function AutoHeightImageWrap({
-  ...props
-}: ImageProps): React.ReactElement {
+const AutoHeightImageWrapper = ({ ...props }: Props) => {
   return (
-    <div
-      className={styles.autoHeightImageWrap}
-      style={{ width: '100%', position: 'relative' }}
-    >
-      <Image fill className={styles.autoImage} {...props} />
-    </div>
+    <S.AutoHeightImageWrapper>
+      <Image fill {...props} />
+    </S.AutoHeightImageWrapper>
   );
-}
+};
+
+export default AutoHeightImageWrapper;

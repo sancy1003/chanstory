@@ -5,9 +5,9 @@ import { dateToString } from '@libs/client/commonFunction';
 import useSWR from 'swr';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { PostListWithCountResponse } from 'types/response';
-import GalleryItem from '@components/gallery/gallery-item';
+import GalleryItem from '@components/gallery/GalleryItem';
 import { PostsList } from 'types/post';
-import GalleryItemSkeleton from '@components/gallery/gallery-item-skeleton';
+import GalleryItemSkeleton from '@components/gallery/GalleryItemSkeleton';
 
 const Gallery: NextPage = () => {
   const [leftPosts, setLeftPost] = useState<PostsList[]>([]);

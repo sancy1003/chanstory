@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 import Lottie from 'react-lottie-player';
 import ring from '@resource/lottie/ring.json';
 import client from '@libs/server/client';
-import Comment from '@components/post/comment';
+import Comment from 'backup/comment';
 import { Post } from '@prisma/client';
 
 interface postFromSSG extends Post {

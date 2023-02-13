@@ -102,7 +102,7 @@ section {
 }
 body {
   line-height: 130%;
-  font-family: "NanumBarunGothic", sans-serif, "TossFaceFontMac";
+  font-family: 'NanumBarunGothic', sans-serif, 'TossFaceFontMac';
   /* font-family: "Noto Sans KR", sans-serif; */
   color: var(--black_100);
 }
@@ -110,7 +110,7 @@ input,
 button,
 textarea {
   line-height: 130%;
-  font-family: "NanumBarunGothic", sans-serif, "TossFaceFontMac";
+  font-family: 'NanumBarunGothic', sans-serif, 'TossFaceFontMac';
   /* font-family: "Noto Sans KR", sans-serif; */
   color: var(--black_100);
 }
@@ -134,7 +134,7 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: "";
+  content: '';
   content: none;
 }
 table {
@@ -151,6 +151,16 @@ a:active {
   color: initial;
   text-decoration: none;
 }
+
+* {
+  box-sizing: border-box;
+}
+
+ul,
+nav {
+  list-style: none;
+}
+
 :root {
   --brandColor: #7360bd;
   --brandColor_weak: #e7e3f5;
@@ -214,7 +224,7 @@ ul.pagination li a.active {
 }
 .toastui-editor-contents {
   font-size: 19px !important;
-  font-family: "NanumBarunGothic", sans-serif, "TossFaceFontMac" !important;
+  font-family: 'NanumBarunGothic', sans-serif, 'TossFaceFontMac' !important;
 }
 .toastui-editor-contents img {
   display: block !important;
@@ -226,6 +236,6 @@ ul.pagination li a.active {
 }
 
 @font-face {
-  font-family: "TossFaceFontMac";
-  src: url("/fonts/TossFaceFontMac.ttf");
+  font-family: 'TossFaceFontMac';
+  src: url('/fonts/TossFaceFontMac.ttf');
 }

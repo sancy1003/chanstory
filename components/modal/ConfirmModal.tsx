@@ -1,7 +1,7 @@
 import React from 'react';
-import styles from '@styles/modal.module.css';
+import * as S from '@styles/components/modal/confirmModal.style';
 
-interface ConfirmModalProps {
+interface Props {
   isView: boolean;
   fn: () => void;
   cancel: () => void;
@@ -9,25 +9,27 @@ interface ConfirmModalProps {
   message: string;
 }
 
-export default function ConfirmModal({
+const ConfirmModal = ({
   isView,
   fn,
   cancel,
   confirmMessage,
   message,
-}: ConfirmModalProps) {
+}: Props) => {
   if (!isView) return null;
   return (
-    <div className={styles.cover}>
-      <div className={styles.modalWrap}>
-        <div className={styles.modalMessage}>{message}</div>
-        <div className={styles.modalBtnBox}>
+    <S.ConfirmModalContainer>
+      <S.ConfirmModalBox>
+        <S.Message>{message}</S.Message>
+        <S.ButtonBox>
           <button onClick={fn}>
             {confirmMessage ? confirmMessage : '확인'}
           </button>
           <button onClick={cancel}>취소</button>
-        </div>
-      </div>
-    </div>
+        </S.ButtonBox>
+      </S.ConfirmModalBox>
+    </S.ConfirmModalContainer>
   );
-}
+};
+
+export default ConfirmModal;

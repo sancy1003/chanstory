@@ -1,25 +1,19 @@
 import { formattingImageURL } from '@libs/client/commonFunction';
-import styles from '@styles/blog.module.css';
+import * as S from '@styles/components/blog/postItem.style';
 import Image from 'next/image';
 import Link from 'next/link';
 
-interface PostItemProps {
+interface Props {
   createdAt: string;
   title: string;
   imageURL: string | null;
   postId: number;
 }
-
-export default function PostItem({
-  createdAt,
-  title,
-  imageURL,
-  postId,
-}: PostItemProps) {
+const PostItem = ({ createdAt, title, imageURL, postId }: Props) => {
   return (
-    <Link href={`/blog/post/${postId}`} className={styles.postItem}>
-      <div className={styles.postImageWrap}>
-        <div className={styles.postImage}>
+    <S.PostItemCard>
+      <Link href={`/blog/post/${postId}`}>
+        <S.ImageWrapper>
           <Image
             alt={`${title}-thumbnail`}
             fill
@@ -35,16 +29,16 @@ export default function PostItem({
                 : '/images/thumbnail/default_thumbnail.png'
             }
           />
-        </div>
-      </div>
-      <div className={styles.postInfoBox}>
-        <div title={title} className={styles.postTitle}>
-          {title}
-        </div>
-        <div className={styles.postInfo}>
-          <div>{createdAt}</div>
-        </div>
-      </div>
-    </Link>
+        </S.ImageWrapper>
+        <S.InfoBox>
+          <S.Title title={title}>{title}</S.Title>
+          <S.Info>
+            <div>{createdAt}</div>
+          </S.Info>
+        </S.InfoBox>
+      </Link>
+    </S.PostItemCard>
   );
-}
+};
+
+export default PostItem;

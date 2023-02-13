@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
-import { Thumb } from './EmblaCarouselThumb';
-import styles from '@styles/embla.module.css';
+import EmblaCarouselThumbnail from './EmblaCarouselThumbnail';
 import { formattingImageURL } from '@libs/client/commonFunction';
 import Image from 'next/image';
+import * as S from '@styles/components/gallery/emblaCarousel.style';
 
 interface Props {
   slides: string[];
@@ -41,47 +41,41 @@ const EmblaCarousel = ({ slides }: Props) => {
 
   return (
     <>
-      <div className={styles.embla}>
-        <div className={styles.embla__viewport} ref={mainViewportRef}>
-          <div className={styles.embla__container}>
+      <S.CarouselContainer>
+        <S.Viewport ref={mainViewportRef}>
+          <S.CarouselImagesContainer>
             {slides.map((url: string, index: number) => (
-              <div className={styles.embla__slide} key={index}>
-                <div className={styles.embla__slide__inner}>
-                  {/* <img
-                    className={styles.embla__slide__img}
-                    src={formattingImageURL(url)}
-                    alt="image"
-                  /> */}
+              <S.CarouselImageBox key={index}>
+                <S.CarouselImageWrapper>
                   <Image
                     src={formattingImageURL(url, 'galleryThumbnail')}
                     alt="thumnail"
                     fill
+                    style={{ objectFit: 'contain' }}
                     placeholder="blur"
                     blurDataURL={formattingImageURL(url, 'galleryThumbnail')}
                   />
-                </div>
-              </div>
+                </S.CarouselImageWrapper>
+              </S.CarouselImageBox>
             ))}
-          </div>
-        </div>
-      </div>
+          </S.CarouselImagesContainer>
+        </S.Viewport>
+      </S.CarouselContainer>
 
-      <div className={`${styles.embla} ${styles.emblaThumb}`}>
-        <div className={styles.embla__viewport} ref={thumbViewportRef}>
-          <div
-            className={`${styles.embla__container} ${styles.embla__containerThumb}`}
-          >
+      <S.ThumbnailContainer>
+        <S.Viewport ref={thumbViewportRef}>
+          <S.ThumbnailImagesContainer>
             {slides.map((url: string, index: number) => (
-              <Thumb
+              <EmblaCarouselThumbnail
                 onClick={() => onThumbClick(index)}
                 selected={index === selectedIndex}
                 imgSrc={formattingImageURL(url, 'avatar')}
                 key={index}
               />
             ))}
-          </div>
-        </div>
-      </div>
+          </S.ThumbnailImagesContainer>
+        </S.Viewport>
+      </S.ThumbnailContainer>
     </>
   );
 };

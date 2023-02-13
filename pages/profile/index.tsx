@@ -10,8 +10,7 @@ import ring from '@resource/lottie/ring.json';
 import { FaEllipsisV } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import useDelete from '@libs/client/useDelete';
-import ConfirmModal from '@components/modal/confirm-modal';
-import NicknameChangeModal from '@components/modal/nickname-change-modal';
+import ConfirmModal from '@components/modal/ConfirmModal';
 import { formattingUserProfileURL } from '@libs/client/commonFunction';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
@@ -29,7 +28,6 @@ interface ProfileEditResponse extends APIResponse {
 const Login: NextPage = () => {
   const { user, isLoading } = useUser();
   const router = useRouter();
-  const [nicknameChangeModal, setNicknameChangeModal] = useState(false);
   const [deleteConfirmModal, setDeleteConfirmModal] = useState(false);
   const moreBtnRef = useRef<HTMLSpanElement>(null);
   const [moreBtnView, setMoreBtnView] = useState<boolean>(false);
@@ -119,12 +117,7 @@ const Login: NextPage = () => {
     onChangeNickname,
     { data: changeNicknameData, loading: changeNicknameLoading },
   ] = useMutation<ProfileEditResponse>(`/api/user/`);
-  useEffect(() => {
-    if (changeNicknameData && changeNicknameData.result && userProfile) {
-      setNicknameChangeModal(false);
-      setUserProfile({ ...userProfile, nickname: changeNicknameData.nickname });
-    }
-  }, [changeNicknameData]);
+
   useEffect(() => {
     if (user) setUserProfile({ ...user });
   }, [user]);
@@ -160,14 +153,6 @@ const Login: NextPage = () => {
                 />
                 {moreBtnView && (
                   <ul className={styles.moreBtnBox}>
-                    <li
-                      onClick={() => {
-                        setMoreBtnView(false);
-                        setNicknameChangeModal(true);
-                      }}
-                    >
-                      닉네임 변경
-                    </li>
                     <li onClick={onLogout}>로그아웃</li>
                     <li
                       onClick={() => {
@@ -268,15 +253,6 @@ const Login: NextPage = () => {
           </div>
         </div>
       </Layout>
-      <NicknameChangeModal
-        isView={nicknameChangeModal}
-        cancel={() => setNicknameChangeModal(false)}
-        fn={({ text }: { text: string }) =>
-          onChangeNickname({ nickname: text })
-        }
-        changeNicknameLoading={changeNicknameLoading}
-        changeNicknameData={changeNicknameData}
-      />
       <ConfirmModal
         isView={deleteConfirmModal}
         cancel={() => setDeleteConfirmModal(false)}

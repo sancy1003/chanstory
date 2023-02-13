@@ -2,7 +2,7 @@ import styles from '@styles/gallery.module.css';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
-export default function GalleryItemSkeleton() {
+const GalleryItemSkeleton = () => {
   return (
     <div style={{ marginBottom: 50 }}>
       <Skeleton style={{ marginBottom: 16 }} height={350} />
@@ -13,4 +13,6 @@ export default function GalleryItemSkeleton() {
       </div>
     </div>
   );
-}
+};
+
+export default GalleryItemSkeleton;

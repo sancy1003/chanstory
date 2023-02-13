@@ -1,10 +1,9 @@
 import React from 'react';
-import Link from 'next/link';
 import Head from 'next/head';
-import styles from '@styles/Layout.module.css';
 import 'react-loading-skeleton/dist/skeleton.css';
-import Image from 'next/image';
-import Footer from './common/footer';
+import Footer from './common/Footer';
+import * as S from '@styles/components/common/layout.style';
+import Header from './common/Header';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -26,13 +25,7 @@ export default function Layout({
   description,
 }: LayoutProps) {
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100vh',
-      }}
-    >
+    <S.LayoutContainer>
       <Head>
         <title>{title ? `${title} | chanstory` : `chanstory`}</title>
         <meta
@@ -56,38 +49,9 @@ export default function Layout({
         )}
         {keywords && <meta name="keywords" content={keywords} />}
       </Head>
-      <div className={styles.header}>
-        <div className={styles.headerWrap}>
-          <Link href={'/'} className={styles.logo}>
-            <Image
-              src="/images/logo/logo.svg"
-              fill
-              alt="logo"
-              priority={true}
-            />
-          </Link>
-          <ul className={styles.menu}>
-            <li>
-              <Link
-                href={'/blog'}
-                className={activeMenu === 'BLOG' ? styles.active : ''}
-              >
-                blog
-              </Link>
-            </li>
-            <li>
-              <Link
-                href={'/gallery'}
-                className={activeMenu === 'GALLERY' ? styles.active : ''}
-              >
-                gallery
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div style={{ flex: 1, paddingTop: 50 }}>{children}</div>
+      <Header activeMenu={activeMenu} />
+      <S.LayoutContent>{children}</S.LayoutContent>
       <Footer />
-    </div>
+    </S.LayoutContainer>
   );
 }

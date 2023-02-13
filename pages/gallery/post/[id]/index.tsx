@@ -10,7 +10,7 @@ import {
   formattingImageURL,
 } from '@libs/client/commonFunction';
 import { useRouter } from 'next/router';
-import Comment from '@components/post/comment';
+import Comment from 'backup/comment';
 import { Post } from '@prisma/client';
 import EmblaCarousel from '@components/gallery/EmblaCarousel';
 
