@@ -1,4 +1,4 @@
-import Layout from '@components/layout';
+import Layout from '@components/Layout';
 import type { NextPage, NextPageContext } from 'next';
 import { withSsrSession } from '@libs/server/withSession';
 import dynamic from 'next/dynamic';
@@ -15,7 +15,7 @@ interface PostResponse extends APIResponse {
   id: number;
 }
 
-const PostEditor = dynamic(() => import('@components/post/postEditor'), {
+const PostEditor = dynamic(() => import('@components/post/PostEditor'), {
   ssr: false,
 });
 

@@ -1,7 +1,7 @@
-import Category from 'backup/blog/category';
-import Layout from '@components/layout';
+import Category from '@components/blog/Category';
+import Layout from '@components/Layout';
 import type { GetStaticProps, NextPage } from 'next';
-import PostItem from 'backup/blog/postItem';
+import PostItem from '@components/blog/PostItem';
 import { dateToStringFromServer } from '@libs/client/commonFunction';
 import client from '@libs/server/client';
 import { PostListResponse } from 'types/response';

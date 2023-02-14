@@ -1,4 +1,4 @@
-import Layout from '@components/layout';
+import Layout from '@components/Layout';
 import type { NextPage, NextPageContext } from 'next';
 import SimpleImageSlider from 'react-simple-image-slider/dist';
 import React, { useEffect, useState } from 'react';
@@ -9,7 +9,7 @@ import { MdUploadFile, MdClose } from 'react-icons/md';
 import useMutation from '@libs/client/useMutation';
 import { useForm } from 'react-hook-form';
 import { FileUploader } from 'react-drag-drop-files';
-import TagEditor from '@components/post/tagEditor';
+import TagEditor from '@components/post/TagEditor';
 import uploadImageToStorage from '@libs/client/uploadImageToStorage';
 import Lottie from 'react-lottie-player';
 import ring from '@resource/lottie/ring.json';

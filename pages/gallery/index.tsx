@@ -1,12 +1,12 @@
-import Layout from '@components/layout';
+import Layout from '@components/Layout';
 import type { NextPage } from 'next';
 import { dateToString } from '@libs/client/commonFunction';
 import useSWR from 'swr';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { PostListWithCountResponse } from 'types/response';
-import GalleryItem from '@components/gallery/galleryItem';
+import GalleryItem from '@components/gallery/GalleryItem';
 import { PostsList } from 'types/post';
-import GalleryItemSkeleton from '@components/gallery/galleryItemSkeleton';
+import GalleryItemSkeleton from '@components/gallery/GalleryItemSkeleton';
 import * as S from '@styles/pages/gallery.style';
 
 const Gallery: NextPage = () => {
