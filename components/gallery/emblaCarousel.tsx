@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
-import EmblaCarouselThumbnail from './EmblaCarouselThumbnail';
+import EmblaCarouselThumbnail from './emblaCarouselThumbnail';
 import { formattingImageURL } from '@libs/client/commonFunction';
 import Image from 'next/image';
 import * as S from '@styles/components/gallery/emblaCarousel.style';

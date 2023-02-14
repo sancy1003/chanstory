@@ -1,9 +1,9 @@
 import React from 'react';
 import Head from 'next/head';
 import 'react-loading-skeleton/dist/skeleton.css';
-import Footer from './common/Footer';
+import Footer from './common/footer';
 import * as S from '@styles/components/common/layout.style';
-import Header from './common/Header';
+import Header from './common/header';
 
 interface Props {
   children: React.ReactNode;

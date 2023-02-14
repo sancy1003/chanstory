@@ -24,7 +24,7 @@ interface PostProps {
   post: postFromSSG;
 }
 
-const Viewer = dynamic(() => import('@components/PostVeiwer'), {
+const Viewer = dynamic(() => import('@components/postVeiwer'), {
   ssr: false,
   loading: () => (
     <div style={{ width: '100%', height: '100vh', paddingTop: '100px' }}>
