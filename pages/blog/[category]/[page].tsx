@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
-import Layout from '@components/Layout';
+import Layout from '@components/layout';
 import type { GetStaticPropsContext, NextPage } from 'next';
-import PostItem from '@components/blog/PostItem';
-import Category from '@components/blog/Category';
+import PostItem from '@components/blog/postItem';
+import Category from '@components/blog/category';
 import {
   categoryToNumber,
   categoryToString,

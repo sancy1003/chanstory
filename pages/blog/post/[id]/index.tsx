@@ -1,5 +1,5 @@
 import { GetStaticPropsContext, NextPage } from 'next';
-import Layout from '@components/Layout';
+import Layout from '@components/layout';
 import { FaChevronLeft } from 'react-icons/fa';
 import {
   dateToString,
@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 import Lottie from 'react-lottie-player';
 import ring from '@resource/lottie/ring.json';
 import client from '@libs/server/client';
-import Comment from '@components/common/Comment';
+import Comment from '@components/common/comment';
 import { Post } from '@prisma/client';
 import * as S from '@styles/pages/blog.style';
 

@@ -1,4 +1,4 @@
-import Layout from '@components/Layout';
+import Layout from '@components/layout';
 import type { GetStaticPropsContext, NextPage } from 'next';
 import React from 'react';
 import { FaChevronLeft } from 'react-icons/fa';
@@ -9,9 +9,9 @@ import {
   formattingImageURL,
 } from '@libs/client/commonFunction';
 import { useRouter } from 'next/router';
-import Comment from '@components/common/Comment';
+import Comment from '@components/common/comment';
 import { Post } from '@prisma/client';
-import EmblaCarousel from '@components/gallery/EmblaCarousel';
+import EmblaCarousel from '@components/gallery/emblaCarousel';
 import * as S from '@styles/pages/gallery.style';
 
 interface postFromSSG extends Post {
