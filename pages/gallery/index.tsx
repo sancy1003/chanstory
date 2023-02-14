@@ -1,6 +1,5 @@
 import Layout from '@components/layout';
 import type { NextPage } from 'next';
-import styles from '@styles/gallery.module.css';
 import { dateToString } from '@libs/client/commonFunction';
 import useSWR from 'swr';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -8,6 +7,7 @@ import { PostListWithCountResponse } from 'types/response';
 import GalleryItem from '@components/gallery/GalleryItem';
 import { PostsList } from 'types/post';
 import GalleryItemSkeleton from '@components/gallery/GalleryItemSkeleton';
+import * as S from '@styles/pages/gallery.style';
 
 const Gallery: NextPage = () => {
   const [leftPosts, setLeftPost] = useState<PostsList[]>([]);
@@ -59,12 +59,12 @@ const Gallery: NextPage = () => {
 
   return (
     <Layout activeMenu={'GALLERY'}>
-      <div className={styles.galleryContainer}>
-        <div className={styles.galleryListWrap}>
-          <ul className={styles.galleryList}>
+      <S.GalleryContainer>
+        <S.GalleryListContainer>
+          <S.GalleryList>
             {leftPosts.map((post) => {
               return (
-                <li key={post.id} className={styles.galleryListItem}>
+                <li key={post.id}>
                   <GalleryItem
                     commentNum={post.commentCount}
                     createdAt={dateToString(post.createdAt)}
@@ -77,11 +77,11 @@ const Gallery: NextPage = () => {
             })}
             {(!data || scrollLoading) &&
               [0, 0].map((item, index) => <GalleryItemSkeleton key={index} />)}
-          </ul>
-          <ul className={styles.galleryList}>
+          </S.GalleryList>
+          <S.GalleryList>
             {rightPosts.map((post) => {
               return (
-                <li key={post.id} className={styles.galleryListItem}>
+                <li key={post.id}>
                   <GalleryItem
                     commentNum={post.commentCount}
                     createdAt={dateToString(post.createdAt)}
@@ -94,11 +94,11 @@ const Gallery: NextPage = () => {
             })}
             {(!data || scrollLoading) &&
               [0, 0].map((_, index) => <GalleryItemSkeleton key={index} />)}
-          </ul>
-          <ul className={styles.galleryListM}>
+          </S.GalleryList>
+          <S.MobileGalleryList>
             {posts.map((post) => {
               return (
-                <li key={post.id} className={styles.galleryListItem}>
+                <li key={post.id}>
                   <GalleryItem
                     commentNum={post.commentCount}
                     createdAt={dateToString(post.createdAt)}
@@ -111,15 +111,15 @@ const Gallery: NextPage = () => {
             })}
             {(!data || scrollLoading) &&
               [0, 0].map((item, index) => <GalleryItemSkeleton key={index} />)}
-          </ul>
-        </div>
+          </S.MobileGalleryList>
+        </S.GalleryListContainer>
         {posts && (
           <div
             style={{ height: 100, display: 'flex', alignItems: 'flex-start' }}
             ref={lastPostElementRef}
           />
         )}
-      </div>
+      </S.GalleryContainer>
     </Layout>
   );
 };

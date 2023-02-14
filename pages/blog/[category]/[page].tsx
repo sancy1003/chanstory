@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 import Layout from '@components/layout';
 import type { GetStaticPropsContext, NextPage } from 'next';
-import styles from '@styles/blog.module.css';
 import PostItem from '@components/blog/PostItem';
 import Category from '@components/blog/Category';
 import {
@@ -18,21 +17,22 @@ import {
   MdOutlineChevronRight,
   MdOutlineChevronLeft,
 } from 'react-icons/md';
+import * as S from '@styles/pages/blog.style';
 
 interface Props {
   data: PostListWithCountResponse;
   category: string;
 }
 
-const Blog: NextPage<Props> = ({ data, category }) => {
+const PostCategory: NextPage<Props> = ({ data, category }) => {
   const router = useRouter();
 
   return (
     <Layout activeMenu={'BLOG'}>
-      <div className={styles.container}>
+      <S.BlogContainer>
         <Category active={category} />
-        <div className={styles.section}>
-          <div className={styles.postContainer}>
+        <S.BlogSection>
+          <S.PostContainer>
             {data.posts.map((post) => {
               return (
                 <PostItem
@@ -44,7 +44,7 @@ const Blog: NextPage<Props> = ({ data, category }) => {
                 />
               );
             })}
-          </div>
+          </S.PostContainer>
           {data.postCount > 8 && (
             <div style={{ marginTop: 80 }}>
               <Pagination
@@ -53,24 +53,24 @@ const Blog: NextPage<Props> = ({ data, category }) => {
                 totalItemsCount={data ? data.postCount : 0}
                 pageRangeDisplayed={5}
                 prevPageText={
-                  <div className={styles.paginationIconBox}>
+                  <S.PaginationIconBox>
                     <MdOutlineChevronLeft />
-                  </div>
+                  </S.PaginationIconBox>
                 }
                 nextPageText={
-                  <div className={styles.paginationIconBox}>
+                  <S.PaginationIconBox>
                     <MdOutlineChevronRight />
-                  </div>
+                  </S.PaginationIconBox>
                 }
                 firstPageText={
-                  <div className={styles.paginationIconBox}>
+                  <S.PaginationIconBox>
                     <MdOutlineFirstPage />
-                  </div>
+                  </S.PaginationIconBox>
                 }
                 lastPageText={
-                  <div className={styles.paginationIconBox}>
+                  <S.PaginationIconBox>
                     <MdOutlineLastPage />
-                  </div>
+                  </S.PaginationIconBox>
                 }
                 onChange={(page) => {
                   router.push(`/blog/${router.query.category}/${page}`);
@@ -78,8 +78,8 @@ const Blog: NextPage<Props> = ({ data, category }) => {
               />
             </div>
           )}
-        </div>
-      </div>
+        </S.BlogSection>
+      </S.BlogContainer>
     </Layout>
   );
 };
@@ -161,4 +161,4 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
   };
 }
 
-export default Blog;
+export default PostCategory;

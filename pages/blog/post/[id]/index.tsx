@@ -1,5 +1,4 @@
 import { GetStaticPropsContext, NextPage } from 'next';
-import styles from '@styles/blog.module.css';
 import Layout from '@components/layout';
 import { FaChevronLeft } from 'react-icons/fa';
 import {
@@ -12,8 +11,9 @@ import { useRouter } from 'next/router';
 import Lottie from 'react-lottie-player';
 import ring from '@resource/lottie/ring.json';
 import client from '@libs/server/client';
-import Comment from 'backup/comment';
+import Comment from '@components/common/comment';
 import { Post } from '@prisma/client';
+import * as S from '@styles/pages/blog.style';
 
 interface postFromSSG extends Post {
   url: string;
@@ -41,6 +41,7 @@ const Viewer = dynamic(() => import('@components/viewer'), {
 const PostDetail: NextPage<PostProps> = ({ post }) => {
   const router = useRouter();
   const tags = post.tags?.split(', ');
+
   return (
     <Layout
       activeMenu="BLOG"
@@ -50,32 +51,30 @@ const PostDetail: NextPage<PostProps> = ({ post }) => {
       keywords={post.tags}
       url={post.url}
     >
-      <div className={styles.postContentContainer}>
-        <div className={styles.postingHeader}>
-          <div className={styles.postingTitleWrap}>
+      <S.PostDetailContainer>
+        <S.PostDetailHeader>
+          <S.PostDetailTitleBox>
             <FaChevronLeft onClick={() => router.back()} />
             <h1>{post?.title}</h1>
-          </div>
-          <div className={styles.postingRegistTime}>
-            {dateToString(post.createdAt)}
-          </div>
-        </div>
-        <div className={styles.postingContentWrap}>
-          <div className={styles.postingCotnet}>
+          </S.PostDetailTitleBox>
+          <div className="registTime">{dateToString(post.createdAt)}</div>
+        </S.PostDetailHeader>
+        <S.PostDetailContent>
+          <div>
             <Viewer content={post.content!} />
           </div>
           {tags && tags.length > 0 ? (
-            <ul className={styles.postingTag}>
+            <S.PostDetailTagList>
               {tags.map((tag: string, idx: number) => {
                 return <li key={idx}># {tag}</li>;
               })}
-            </ul>
+            </S.PostDetailTagList>
           ) : (
             ''
           )}
-        </div>
+        </S.PostDetailContent>
         <Comment />
-      </div>
+      </S.PostDetailContainer>
     </Layout>
   );
 };

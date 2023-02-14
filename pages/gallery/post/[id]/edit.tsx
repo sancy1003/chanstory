@@ -1,10 +1,9 @@
 import Layout from '@components/layout';
 import type { NextPage, NextPageContext } from 'next';
-import styles from '@styles/gallery.module.css';
 import SimpleImageSlider from 'react-simple-image-slider/dist';
 import React, { useEffect, useState } from 'react';
 import { APIResponse, PostDetailResponse } from 'types/response';
-import { SessionUserData, withSsrSession } from '@libs/server/withSession';
+import { withSsrSession } from '@libs/server/withSession';
 import { useRouter } from 'next/router';
 import { MdUploadFile, MdClose } from 'react-icons/md';
 import useMutation from '@libs/client/useMutation';
@@ -16,6 +15,7 @@ import Lottie from 'react-lottie-player';
 import ring from '@resource/lottie/ring.json';
 import useSWR from 'swr';
 import { formattingImageURL } from '@libs/client/commonFunction';
+import * as S from '@styles/pages/gallery.style';
 
 interface PostResponse extends APIResponse {
   id: number;
@@ -29,7 +29,7 @@ interface RegistForm {
 
 const fileTypes = ['JPG', 'PNG', 'GIF'];
 
-const Edit: NextPage<{ user: SessionUserData | null }> = () => {
+const GalleryEdit: NextPage = () => {
   const router = useRouter();
   const { data: prevData } = useSWR<PostDetailResponse>(
     router?.query?.id ? `/api/gallery/${router.query.id}` : null
@@ -115,46 +115,31 @@ const Edit: NextPage<{ user: SessionUserData | null }> = () => {
   return (
     <>
       {(loading || imageUploadLoading) && (
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'cenyer',
-            position: 'fixed',
-            left: 0,
-            top: 0,
-            bottom: 0,
-            right: 0,
-            backgroundColor: 'rgba(0, 0, 0, .7)',
-            zIndex: 999,
-          }}
-        >
+        <S.UploadLoadingContainer>
           <Lottie
             loop
             animationData={ring}
             play
             style={{ width: 200, height: 200, margin: '0 auto' }}
           />
-        </div>
+        </S.UploadLoadingContainer>
       )}
       <Layout activeMenu="GALLERY">
-        <div className={styles.galleryContainer}>
-          <form onSubmit={handleSubmit(onPost)}>
-            <div style={{ display: 'flex', gap: 24 }}>
+        <S.GalleryContainer>
+          <S.PostingForm onSubmit={handleSubmit(onPost)}>
+            <S.PostingTitleBox>
               <input
                 placeholder="제목을 입력해 주세요."
                 {...register('title')}
-                className={styles.postTitleInput}
+                className="titleInput"
               />
-              <input {...register('date')} className={styles.postDateInput} />
-            </div>
-            <div className={styles.imageEditWrap}>
+              <input {...register('date')} className="dateInput" />
+            </S.PostingTitleBox>
+            <S.ImageEditContainer>
               {imageList.length === 0 ? (
-                <div className={styles.imageNoneBox}>
-                  이미지를 추가해 주세요.
-                </div>
+                <div className="imageEmptyBox">이미지를 추가해 주세요.</div>
               ) : (
-                <div className={styles.imagePrevBox}>
+                <div className="imagePrevBox">
                   <SimpleImageSlider
                     style={{
                       backgroundSize: 'contain',
@@ -175,11 +160,11 @@ const Edit: NextPage<{ user: SessionUserData | null }> = () => {
                   />
                 </div>
               )}
-              <ul className={styles.imageRegistWrap}>
+              <S.UploadImageList>
                 {imageList.map((image, index) => {
                   return (
-                    <li key={index} className={styles.imageRegistItem}>
-                      <div className={styles.imageRegistItemCover}>
+                    <li key={index}>
+                      <div className="cover">
                         <MdClose onClick={() => imageDeleteHandler(index)} />
                       </div>
                       <img
@@ -203,27 +188,26 @@ const Edit: NextPage<{ user: SessionUserData | null }> = () => {
                     setIsDrag(dragging)
                   }
                 >
-                  <button type="button" className={styles.BtnImageRegist}>
+                  <S.BtnUploadImage type="button">
                     {!isDrag && <MdUploadFile />}
-                  </button>
+                  </S.BtnUploadImage>
                 </FileUploader>
-              </ul>
-            </div>
-            <div className={styles.sectionTitle}>내용</div>
-            <textarea
+              </S.UploadImageList>
+            </S.ImageEditContainer>
+            <div className="sectionTitle">내용</div>
+            <S.ContentTextarea
               {...register('content')}
               placeholder="내용을 입력해 주세요."
-              className={styles.postContetInput}
             />
-            <div className={styles.sectionTitle}>태그</div>
+            <div className="sectionTitle">태그</div>
             <div style={{ marginBottom: 50 }}>
               <TagEditor tags={tags} setTags={setTags} />
             </div>
-            <div className={styles.btnPostingBox}>
-              <button className={styles.btnPosting}>포스팅</button>
-            </div>
-          </form>
-        </div>
+            <S.ButtonBox>
+              <S.BtnWrite>포스팅</S.BtnWrite>
+            </S.ButtonBox>
+          </S.PostingForm>
+        </S.GalleryContainer>
       </Layout>
     </>
   );
@@ -247,4 +231,4 @@ export const getServerSideProps = withSsrSession(async function ({
   };
 });
 
-export default Edit;
+export default GalleryEdit;

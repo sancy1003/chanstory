@@ -1,7 +1,6 @@
 import Layout from '@components/layout';
 import type { NextPage, NextPageContext } from 'next';
-import styles from '@styles/blog.module.css';
-import { SessionUserData, withSsrSession } from '@libs/server/withSession';
+import { withSsrSession } from '@libs/server/withSession';
 import dynamic from 'next/dynamic';
 import useMutation from '@libs/client/useMutation';
 import { useEffect, useState } from 'react';
@@ -10,6 +9,7 @@ import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { PostRegistForm } from 'types/post';
 import { APIResponse, PostDetailResponse } from 'types/response';
+import * as S from '@styles/pages/blog.style';
 
 interface PostResponse extends APIResponse {
   id: number;
@@ -19,7 +19,7 @@ const PostEditor = dynamic(() => import('@components/post/editor'), {
   ssr: false,
 });
 
-const Edit: NextPage<{ user: SessionUserData | null }> = () => {
+const PostEdit: NextPage = () => {
   const router = useRouter();
   const { data: prevData } = useSWR<PostDetailResponse>(
     router?.query?.id ? `/api/blog/${router.query.id}` : null
@@ -75,20 +75,20 @@ const Edit: NextPage<{ user: SessionUserData | null }> = () => {
       setContent(prevData.post.content);
     }
   }, [prevData]);
+
   return (
     <Layout activeMenu="BLOG">
-      <div className={styles.container}>
-        <form onSubmit={handleSubmit(onPost)}>
-          <input {...register('title')} className={styles.postTitleInput} />
+      <S.BlogContainer>
+        <S.PostingForm onSubmit={handleSubmit(onPost)}>
+          <input {...register('title')} className="titleInput" />
           {content && <PostEditor content={content} fn={setContent} />}
-          <div className={styles.btnPostingBox}>
+          <S.PostingOptionBox>
             <div>
               <input
                 {...register('tags')}
-                className={styles.tagInput}
                 placeholder="태그 입력 ', '로 여러 태그 입력"
               />
-              <div style={{ marginBottom: 20 }}>
+              <div>
                 <span>썸네일</span>
                 <input
                   style={{ marginLeft: 10, marginRight: 20, cursor: 'pointer' }}
@@ -100,20 +100,16 @@ const Edit: NextPage<{ user: SessionUserData | null }> = () => {
               </div>
               <input
                 {...register('category')}
-                className={styles.tagInput}
                 placeholder="카테고리 / 1: 개발일기 2: 스터디 3: 취미 4: 일상"
               />
-              <div
-                style={{ cursor: 'pointer' }}
-                onClick={() => setIsHide(!isHide)}
-              >
+              <div onClick={() => setIsHide(!isHide)}>
                 숨기기 {isHide ? 'on' : 'off'}
               </div>
             </div>
-            <button className={styles.btnPosting}>포스팅</button>
-          </div>
-        </form>
-      </div>
+            <S.BtnPost>수정</S.BtnPost>
+          </S.PostingOptionBox>
+        </S.PostingForm>
+      </S.BlogContainer>
     </Layout>
   );
 };
@@ -136,4 +132,4 @@ export const getServerSideProps = withSsrSession(async function ({
   };
 });
 
-export default Edit;
+export default PostEdit;

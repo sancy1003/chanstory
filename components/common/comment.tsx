@@ -1,4 +1,3 @@
-import styles from '@styles/blog.module.css';
 import { useEffect, useRef } from 'react';
 
 export default function Comment() {
@@ -16,7 +15,7 @@ export default function Comment() {
   }, []);
 
   return (
-    <div className={styles.commentWrap} style={{ borderBottom: 0 }}>
+    <div style={{ borderBottom: 0 }}>
       <div ref={commentsEl} />
     </div>
   );

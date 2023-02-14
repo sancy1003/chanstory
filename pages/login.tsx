@@ -1,5 +1,4 @@
 import { NextPage } from 'next';
-import styles from '@styles/profile.module.css';
 import { useForm } from 'react-hook-form';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -7,6 +6,7 @@ import useMutation from '@libs/client/useMutation';
 import { useEffect } from 'react';
 import { APIResponse } from 'types/response';
 import { LoginForm } from 'types/auth';
+import * as S from '@styles/pages/login.style';
 
 const Login: NextPage = () => {
   const router = useRouter();
@@ -40,60 +40,42 @@ const Login: NextPage = () => {
   }, [loginResult]);
 
   return (
-    <div className={styles.bg}>
+    <S.LoginContainer>
       <Head>
         <title>로그인 - chanstory</title>
       </Head>
-      <div className={styles.container}>
-        <div className={styles.logo}>chanstory</div>
-        <form onSubmit={handleSubmit(onSubmit)} className={styles.loginForm}>
-          <div className={styles.formInputWrap}>
-            <input
+      <S.LoginContentsBox>
+        <S.Logo>chanstory</S.Logo>
+        <S.LoginForm onSubmit={handleSubmit(onSubmit)}>
+          <S.InputBox>
+            <S.Input
               {...register('account', {
                 required: '아이디를 입력해주세요.',
               })}
               type="account"
               placeholder={'아이디'}
-              className={styles.formInput}
             />
-            <div className={styles.formInputWarn}>
-              {errors?.account?.message}
-            </div>
-          </div>
-          <div className={styles.formInputWrap}>
-            <input
+            <S.InputMessage>{errors?.account?.message}</S.InputMessage>
+          </S.InputBox>
+          <S.InputBox>
+            <S.Input
               {...register('password', {
                 required: '비밀번호를 입력해주세요.',
               })}
               type="password"
               placeholder={'비밀번호'}
-              className={styles.formInput}
             />
-            <div className={styles.formInputWarn}>
-              {errors?.password?.message}
-            </div>
-          </div>
-          <div className={styles.btnWrap}>
-            <button
-              onClick={handleSubmit(onSubmit)}
-              className={styles.btnLogin}
-            >
-              로그인
-            </button>
-          </div>
-          {/* <div className={styles.btnWrap}>
-            <div>아이디 찾기</div>
-            <div>|</div>
-            <div>비밀번호 찾기</div>
-          </div> */}
-        </form>
-        <div className={styles.btnWrap}>
-          <button onClick={onClickSignUp} className={styles.btnSignUp}>
-            회원가입
-          </button>
-        </div>
-      </div>
-    </div>
+            <S.InputMessage>{errors?.password?.message}</S.InputMessage>
+          </S.InputBox>
+          <S.ButtonWrapper>
+            <S.BtnLogin onClick={handleSubmit(onSubmit)}>로그인</S.BtnLogin>
+          </S.ButtonWrapper>
+        </S.LoginForm>
+        <S.ButtonWrapper>
+          <S.BtnSignup onClick={onClickSignUp}>회원가입</S.BtnSignup>
+        </S.ButtonWrapper>
+      </S.LoginContentsBox>
+    </S.LoginContainer>
   );
 };
 

@@ -1,6 +1,5 @@
 import { formattingImageURL } from '@libs/client/commonFunction';
 import * as S from '@styles/components/gallery/galleryItem.style';
-import styles from '@styles/gallery.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
 
