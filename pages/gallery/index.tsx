@@ -1,4 +1,4 @@
-import Layout from '@components/layout';
+import Layout from '@components/Layout';
 import type { NextPage } from 'next';
 import { dateToString } from '@libs/client/commonFunction';
 import useSWR from 'swr';

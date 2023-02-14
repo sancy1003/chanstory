@@ -13,13 +13,12 @@ import 'prismjs/components/prism-jsx.min';
 import 'prismjs/components/prism-tsx.min';
 import 'prismjs/themes/prism.css';
 
-export default function PostEditor({
-  content,
-  fn,
-}: {
+interface Props {
   content: string | null;
   fn: (content: string) => void;
-}): JSX.Element {
+}
+
+const PostEditor = ({ content, fn }: Props) => {
   const editorRef = createRef<Editor>();
   const onChangeIntroFunction = () => {
     fn(editorRef.current!.getInstance().getMarkdown());
@@ -65,4 +64,6 @@ export default function PostEditor({
       />
     </>
   );
-}
+};
+
+export default PostEditor;

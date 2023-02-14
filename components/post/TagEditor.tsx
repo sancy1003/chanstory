@@ -7,7 +7,7 @@ interface Props {
   setTags: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-export default function TagEditor({ tags, setTags }: Props) {
+const TagEditor = ({ tags, setTags }: Props) => {
   const [text, setText] = useState<string>('');
 
   const addTag = () => {
@@ -50,4 +50,6 @@ export default function TagEditor({ tags, setTags }: Props) {
       </li>
     </S.TagListContainer>
   );
-}
+};
+
+export default TagEditor;

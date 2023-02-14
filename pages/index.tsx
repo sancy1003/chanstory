@@ -1,5 +1,5 @@
 import Category from '@components/blog/Category';
-import Layout from '@components/layout';
+import Layout from '@components/Layout';
 import type { GetStaticProps, NextPage } from 'next';
 import PostItem from '@components/blog/PostItem';
 import { dateToStringFromServer } from '@libs/client/commonFunction';

@@ -1,4 +1,4 @@
-import Layout from '@components/layout';
+import Layout from '@components/Layout';
 import type { NextPage, NextPageContext } from 'next';
 import SimpleImageSlider from 'react-simple-image-slider/dist';
 import React, { useEffect, useState } from 'react';

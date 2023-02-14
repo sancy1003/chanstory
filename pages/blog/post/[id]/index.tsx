@@ -1,5 +1,5 @@
 import { GetStaticPropsContext, NextPage } from 'next';
-import Layout from '@components/layout';
+import Layout from '@components/Layout';
 import { FaChevronLeft } from 'react-icons/fa';
 import {
   dateToString,
@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 import Lottie from 'react-lottie-player';
 import ring from '@resource/lottie/ring.json';
 import client from '@libs/server/client';
-import Comment from '@components/common/comment';
+import Comment from '@components/common/Comment';
 import { Post } from '@prisma/client';
 import * as S from '@styles/pages/blog.style';
 
@@ -24,7 +24,7 @@ interface PostProps {
   post: postFromSSG;
 }
 
-const Viewer = dynamic(() => import('@components/viewer'), {
+const Viewer = dynamic(() => import('@components/PostVeiwer'), {
   ssr: false,
   loading: () => (
     <div style={{ width: '100%', height: '100vh', paddingTop: '100px' }}>

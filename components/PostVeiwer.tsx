@@ -8,11 +8,7 @@ import 'prismjs/components/prism-jsx.min';
 import 'prismjs/components/prism-tsx.min';
 import 'prismjs/themes/prism.css';
 
-export default function PostVeiwer({
-  content,
-}: {
-  content: string;
-}): JSX.Element {
+const PostVeiwer = ({ content }: { content: string }) => {
   return (
     <>
       <Viewer
@@ -21,4 +17,6 @@ export default function PostVeiwer({
       />
     </>
   );
-}
+};
+
+export default PostVeiwer;
