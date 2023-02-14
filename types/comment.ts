@@ -1,4 +1,4 @@
-import { Recomment, User, Comment } from "@prisma/client";
+import { Recomment, User, Comment } from '@prisma/client';
 
 export interface CommentWithAuthor extends Comment {
   author: User;

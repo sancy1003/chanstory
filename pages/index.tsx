@@ -1,11 +1,11 @@
-import Category from "@components/blog/category";
-import Layout from "@components/layout";
-import type { GetStaticProps, GetStaticPropsContext, NextPage } from "next";
-import styles from "@styles/blog.module.css";
-import PostItem from "@components/blog/post-item";
-import { dateToStringFromServer } from "@libs/client/commonFunction";
-import client from "@libs/server/client";
-import { PostListResponse } from "types/response";
+import Category from '@components/blog/Category';
+import Layout from '@components/Layout';
+import type { GetStaticProps, NextPage } from 'next';
+import PostItem from '@components/blog/PostItem';
+import { dateToStringFromServer } from '@libs/client/commonFunction';
+import client from '@libs/server/client';
+import { PostListResponse } from 'types/response';
+import * as S from '@styles/pages/blog.style';
 
 interface Props {
   data: PostListResponse;
@@ -13,13 +13,13 @@ interface Props {
 
 const Home: NextPage<Props> = ({ data }) => {
   return (
-    <Layout activeMenu={"BLOG"}>
-      <div className={styles.container}>
+    <Layout activeMenu={'BLOG'}>
+      <S.BlogContainer>
         <Category active="home" />
-        <div className={styles.section}>
-          <div className={styles.sectionTitle}>✨&nbsp;&nbsp;최근 포스팅</div>
-          <div className={styles.postContainer}>
-            {data.newPosts.map((post, idx) => {
+        <S.BlogSection>
+          <div className="title">✨&nbsp;&nbsp;최근 포스팅</div>
+          <S.PostContainer>
+            {data.newPosts.map((post) => {
               return (
                 <PostItem
                   key={post.id}
@@ -30,18 +30,16 @@ const Home: NextPage<Props> = ({ data }) => {
                 />
               );
             })}
-          </div>
-        </div>
-      </div>
+          </S.PostContainer>
+        </S.BlogSection>
+      </S.BlogContainer>
     </Layout>
   );
 };
 
-export const getStaticProps: GetStaticProps = async function (
-  context: GetStaticPropsContext
-) {
+export const getStaticProps: GetStaticProps = async function () {
   const newPosts = await client.post.findMany({
-    where: { isHide: false, type: "POST" },
+    where: { isHide: false, type: 'POST' },
     select: {
       id: true,
       title: true,
@@ -55,36 +53,9 @@ export const getStaticProps: GetStaticProps = async function (
       },
     },
     take: 12,
-    orderBy: { createdAt: "desc" },
+    orderBy: { createdAt: 'desc' },
   });
-  // const hotPosts = await client.post.findMany({
-  //   where: { isHide: false, type: "POST" },
-  //   select: {
-  //     id: true,
-  //     title: true,
-  //     createdAt: true,
-  //     thumbnailURL: true,
-  //     _count: {
-  //       select: {
-  //         comments: true,
-  //         recomments: true,
-  //       },
-  //     },
-  //   },
-  //   take: 4,
-  //   orderBy: [
-  //     {
-  //       comments: {
-  //         _count: "desc",
-  //       },
-  //     },
-  //     {
-  //       recomments: {
-  //         _count: "desc",
-  //       },
-  //     },
-  //   ],
-  // });
+
   return {
     revalidate: 600,
     props: {

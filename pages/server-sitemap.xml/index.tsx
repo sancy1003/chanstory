@@ -1,6 +1,6 @@
-import { getServerSideSitemap } from "next-sitemap";
-import { GetServerSideProps } from "next";
-import client from "@libs/server/client";
+import { getServerSideSitemap } from 'next-sitemap';
+import { GetServerSideProps } from 'next';
+import client from '@libs/server/client';
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   // Method to source urls from cms
@@ -12,7 +12,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const postFileds = posts.map((post) => ({
     loc: `${process.env.SITE_URL}/${
-      post.type === "GALLERY" ? "gallery" : "blog"
+      post.type === 'GALLERY' ? 'gallery' : 'blog'
     }/post/${post.id}`, // Absolute url
     lastmod: new Date().toISOString(),
     // changefreq
@@ -25,4 +25,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 
 // Default export to prevent next.js errors
-export default () => {};
+export default () => {
+  return;
+};

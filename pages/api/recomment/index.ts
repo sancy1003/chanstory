@@ -1,15 +1,15 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import withHandler, { ResponseType } from "@libs/server/withHandler";
-import client from "@libs/server/client";
-import { withApiSession } from "@libs/server/withSession";
+import { NextApiRequest, NextApiResponse } from 'next';
+import withHandler, { ResponseType } from '@libs/server/withHandler';
+import client from '@libs/server/client';
+import { withApiSession } from '@libs/server/withSession';
 
 async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
-  if (req.method === "POST") {
+  if (req.method === 'POST') {
     const { comment: content, tagedUserId, commentId, recommentId } = req.body;
-    const { id: postId, type } = req.query;
+    const { id: postId } = req.query;
     const { user } = req.session;
     if (!user) {
       return res.json({
@@ -17,7 +17,7 @@ async function handler(
       });
     }
     if (!recommentId) {
-      const createdRecomment = await client.recomment.create({
+      await client.recomment.create({
         data: {
           content,
           author: {
@@ -32,7 +32,7 @@ async function handler(
           },
           post: {
             connect: {
-              id: +postId,
+              id: +postId!,
             },
           },
           comment: {
@@ -57,11 +57,11 @@ async function handler(
       result: true,
     });
   }
-  if (req.method === "DELETE") {
+  if (req.method === 'DELETE') {
     const { id: commentId } = req.query;
     await client.recomment.delete({
       where: {
-        id: +commentId,
+        id: +commentId!,
       },
     });
     return res.json({
@@ -72,7 +72,7 @@ async function handler(
 
 export default withApiSession(
   withHandler({
-    methods: ["POST", "DELETE"],
+    methods: ['POST', 'DELETE'],
     handler,
     isPrivate: true,
   })

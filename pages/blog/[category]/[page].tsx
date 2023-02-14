@@ -1,39 +1,39 @@
-import { useRouter } from "next/router";
-import Layout from "@components/layout";
-import type { GetStaticPropsContext, NextPage } from "next";
-import styles from "@styles/blog.module.css";
-import PostItem from "@components/blog/post-item";
-import Category from "@components/blog/category";
+import { useRouter } from 'next/router';
+import Layout from '@components/Layout';
+import type { GetStaticPropsContext, NextPage } from 'next';
+import PostItem from '@components/blog/PostItem';
+import Category from '@components/blog/Category';
 import {
   categoryToNumber,
   categoryToString,
   dateToStringFromServer,
-} from "@libs/client/commonFunction";
-import Pagination from "react-js-pagination";
-import client from "@libs/server/client";
-import { PostListWithCountResponse } from "types/response";
+} from '@libs/client/commonFunction';
+import Pagination from 'react-js-pagination';
+import client from '@libs/server/client';
+import { PostListWithCountResponse } from 'types/response';
 import {
   MdOutlineFirstPage,
   MdOutlineLastPage,
   MdOutlineChevronRight,
   MdOutlineChevronLeft,
-} from "react-icons/md";
+} from 'react-icons/md';
+import * as S from '@styles/pages/blog.style';
 
 interface Props {
   data: PostListWithCountResponse;
   category: string;
 }
 
-const Blog: NextPage<Props> = ({ data, category }) => {
+const PostCategory: NextPage<Props> = ({ data, category }) => {
   const router = useRouter();
 
   return (
-    <Layout activeMenu={"BLOG"}>
-      <div className={styles.container}>
+    <Layout activeMenu={'BLOG'}>
+      <S.BlogContainer>
         <Category active={category} />
-        <div className={styles.section}>
-          <div className={styles.postContainer}>
-            {data.posts.map((post, idx) => {
+        <S.BlogSection>
+          <S.PostContainer>
+            {data.posts.map((post) => {
               return (
                 <PostItem
                   key={post.id}
@@ -44,7 +44,7 @@ const Blog: NextPage<Props> = ({ data, category }) => {
                 />
               );
             })}
-          </div>
+          </S.PostContainer>
           {data.postCount > 8 && (
             <div style={{ marginTop: 80 }}>
               <Pagination
@@ -53,24 +53,24 @@ const Blog: NextPage<Props> = ({ data, category }) => {
                 totalItemsCount={data ? data.postCount : 0}
                 pageRangeDisplayed={5}
                 prevPageText={
-                  <div className={styles.paginationIconBox}>
+                  <S.PaginationIconBox>
                     <MdOutlineChevronLeft />
-                  </div>
+                  </S.PaginationIconBox>
                 }
                 nextPageText={
-                  <div className={styles.paginationIconBox}>
+                  <S.PaginationIconBox>
                     <MdOutlineChevronRight />
-                  </div>
+                  </S.PaginationIconBox>
                 }
                 firstPageText={
-                  <div className={styles.paginationIconBox}>
+                  <S.PaginationIconBox>
                     <MdOutlineFirstPage />
-                  </div>
+                  </S.PaginationIconBox>
                 }
                 lastPageText={
-                  <div className={styles.paginationIconBox}>
+                  <S.PaginationIconBox>
                     <MdOutlineLastPage />
-                  </div>
+                  </S.PaginationIconBox>
                 }
                 onChange={(page) => {
                   router.push(`/blog/${router.query.category}/${page}`);
@@ -78,8 +78,8 @@ const Blog: NextPage<Props> = ({ data, category }) => {
               />
             </div>
           )}
-        </div>
-      </div>
+        </S.BlogSection>
+      </S.BlogContainer>
     </Layout>
   );
 };
@@ -91,19 +91,19 @@ export async function getStaticPaths() {
     const postCount = await client.post.count({
       where: {
         isHide: false,
-        type: "POST",
+        type: 'POST',
         category: i,
       },
     });
     categoryData.push({
-      category: categoryToString({ index: i, type: "query" }),
+      category: categoryToString({ index: i, type: 'query' }),
       maxPage: Math.ceil(postCount / 8),
     });
   }
 
   for (const data of categoryData) {
     if (data.maxPage <= 1) {
-      paths.push({ params: { category: data.category, page: "1" } });
+      paths.push({ params: { category: data.category, page: '1' } });
     } else {
       for (let i = 1; i <= data.maxPage; i++) {
         paths.push({ params: { category: data.category, page: i.toString() } });
@@ -111,21 +111,21 @@ export async function getStaticPaths() {
     }
   }
 
-  return { paths, fallback: "blocking" };
+  return { paths, fallback: 'blocking' };
 }
 
 export async function getStaticProps({ params }: GetStaticPropsContext) {
   const postCount = await client.post.count({
     where: {
       isHide: false,
-      type: "POST",
+      type: 'POST',
       category: categoryToNumber({ query: params?.category?.toString() }),
     },
   });
   const posts = await client.post.findMany({
     where: {
       isHide: false,
-      type: "POST",
+      type: 'POST',
       category: categoryToNumber({ query: params?.category?.toString() }),
     },
     select: {
@@ -142,7 +142,7 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
     },
     take: 8,
     skip: 8 * (+params?.page! - 1),
-    orderBy: { createdAt: "desc" },
+    orderBy: { createdAt: 'desc' },
   });
 
   return {
@@ -161,4 +161,4 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
   };
 }
 
-export default Blog;
+export default PostCategory;

@@ -1,19 +1,19 @@
-import Layout from "@components/layout";
-import type { NextPage, NextPageContext } from "next";
-import styles from "@styles/gallery.module.css";
-import SimpleImageSlider from "react-simple-image-slider/dist";
-import React, { useEffect, useState } from "react";
-import { APIResponse } from "types/response";
-import { SessionUserData, withSsrSession } from "@libs/server/withSession";
-import { useRouter } from "next/router";
-import { MdUploadFile, MdClose } from "react-icons/md";
-import useMutation from "@libs/client/useMutation";
-import { useForm } from "react-hook-form";
-import { FileUploader } from "react-drag-drop-files";
-import TagEditor from "@components/post/tag-editor";
-import uploadImageToStorage from "@libs/client/uploadImageToStorage";
-import Lottie from "react-lottie-player";
-import ring from "@resource/lottie/ring.json";
+import Layout from '@components/Layout';
+import type { NextPage, NextPageContext } from 'next';
+import SimpleImageSlider from 'react-simple-image-slider/dist';
+import React, { useEffect, useState } from 'react';
+import { APIResponse } from 'types/response';
+import { withSsrSession } from '@libs/server/withSession';
+import { useRouter } from 'next/router';
+import { MdUploadFile, MdClose } from 'react-icons/md';
+import useMutation from '@libs/client/useMutation';
+import { useForm } from 'react-hook-form';
+import { FileUploader } from 'react-drag-drop-files';
+import TagEditor from '@components/post/TagEditor';
+import uploadImageToStorage from '@libs/client/uploadImageToStorage';
+import Lottie from 'react-lottie-player';
+import ring from '@resource/lottie/ring.json';
+import * as S from '@styles/pages/gallery.style';
 
 interface PostResponse extends APIResponse {
   id: number;
@@ -25,25 +25,25 @@ interface RegistForm {
   content: string;
 }
 
-const fileTypes = ["JPG", "PNG", "GIF"];
+const fileTypes = ['JPG', 'PNG', 'GIF'];
 
-const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
+const GalleryWrite: NextPage = () => {
   const router = useRouter();
   const [imageUploadLoading, setImageUploadLoading] = useState<boolean>(false);
-  const [isHide, setIsHide] = useState(false);
+  const isHide = false;
   const [isDrag, setIsDrag] = useState(false);
   const [tags, setTags] = useState<string[]>([]);
   const [imageList, setImageList] = useState<File[]>([]);
-  const [post, { loading, data, error }] =
-    useMutation<PostResponse>("/api/gallery");
+  const [post, { loading, data }] = useMutation<PostResponse>('/api/gallery');
   const { register, handleSubmit, setValue } = useForm<RegistForm>();
+
   const onPost = async (formData: RegistForm) => {
     if (loading || imageUploadLoading) return;
     setImageUploadLoading(true);
-    let imageURLs = [];
+    const imageURLs = [];
     for (let i = 0; i < imageList.length; i++) {
-      let imageFile = new File([imageList[i]], "image");
-      let imageURL = await uploadImageToStorage(
+      const imageFile = new File([imageList[i]], 'image');
+      const imageURL = await uploadImageToStorage(
         imageFile,
         `gallery_${formData.title}_${i}`
       );
@@ -55,17 +55,17 @@ const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
       post({
         createdAt: new Date(formData.date),
         thumbnailURL: imageURLs[0],
-        imageURLs: imageURLs.join(", "),
+        imageURLs: imageURLs.join(', '),
         title: formData.title,
         content: formData.content,
         isHide,
-        tags: tags.join(", "),
+        tags: tags.join(', '),
       });
     }
   };
 
   const imageRegistHandler = (files: File[]) => {
-    let tempImagelist = [...imageList];
+    const tempImagelist = [...imageList];
     for (let i = 0; i < files.length; i++) {
       tempImagelist.push(files[i]);
     }
@@ -83,9 +83,10 @@ const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
       alert(data.error);
     }
   }, [data, router]);
+
   useEffect(() => {
     setValue(
-      "date",
+      'date',
       `${new Date().getFullYear()}-${
         new Date().getMonth() + 1
       }-${new Date().getDate()}`
@@ -95,53 +96,39 @@ const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
   return (
     <>
       {(loading || imageUploadLoading) && (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "cenyer",
-            position: "fixed",
-            left: 0,
-            top: 0,
-            bottom: 0,
-            right: 0,
-            backgroundColor: "rgba(0, 0, 0, .7)",
-            zIndex: 999,
-          }}
-        >
+        <S.UploadLoadingContainer>
           <Lottie
             loop
             animationData={ring}
             play
-            style={{ width: 200, height: 200, margin: "0 auto" }}
+            style={{ width: 200, height: 200, margin: '0 auto' }}
           />
-        </div>
+        </S.UploadLoadingContainer>
       )}
+
       <Layout activeMenu="GALLERY">
-        <div className={styles.galleryContainer}>
-          <form onSubmit={handleSubmit(onPost)}>
-            <div style={{ display: "flex", gap: 24 }}>
+        <S.GalleryContainer>
+          <S.PostingForm onSubmit={handleSubmit(onPost)}>
+            <S.PostingTitleBox>
               <input
                 placeholder="제목을 입력해 주세요."
-                {...register("title")}
-                className={styles.postTitleInput}
+                {...register('title')}
+                className="titleInput"
               />
-              <input {...register("date")} className={styles.postDateInput} />
-            </div>
-            <div className={styles.imageEditWrap}>
+              <input {...register('date')} className="dateInput" />
+            </S.PostingTitleBox>
+            <S.ImageEditContainer>
               {imageList.length === 0 ? (
-                <div className={styles.imageNoneBox}>
-                  이미지를 추가해 주세요.
-                </div>
+                <div className="imageEmptyBox">이미지를 추가해 주세요.</div>
               ) : (
-                <div className={styles.imagePrevBox}>
+                <div className="imagePrevBox">
                   <SimpleImageSlider
                     style={{
-                      backgroundSize: "contain",
-                      backgroundRepeat: "none",
+                      backgroundSize: 'contain',
+                      backgroundRepeat: 'none',
                     }}
-                    width={"100%"}
-                    height={"100%"}
+                    width={'100%'}
+                    height={'100%'}
                     images={imageList.map((item) => {
                       return { url: URL.createObjectURL(item) };
                     })}
@@ -151,11 +138,11 @@ const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
                   />
                 </div>
               )}
-              <ul className={styles.imageRegistWrap}>
+              <S.UploadImageList>
                 {imageList.map((image, index) => {
                   return (
-                    <li key={index} className={styles.imageRegistItem}>
-                      <div className={styles.imageRegistItemCover}>
+                    <li key={index}>
+                      <div className="cover">
                         <MdClose onClick={() => imageDeleteHandler(index)} />
                       </div>
                       <img
@@ -175,27 +162,26 @@ const Write: NextPage<{ user: SessionUserData | null }> = ({ user }) => {
                     setIsDrag(dragging)
                   }
                 >
-                  <button type="button" className={styles.BtnImageRegist}>
+                  <S.BtnUploadImage type="button">
                     {!isDrag && <MdUploadFile />}
-                  </button>
+                  </S.BtnUploadImage>
                 </FileUploader>
-              </ul>
-            </div>
-            <div className={styles.sectionTitle}>내용</div>
-            <textarea
-              {...register("content")}
+              </S.UploadImageList>
+            </S.ImageEditContainer>
+            <div className="sectionTitle">내용</div>
+            <S.ContentTextarea
+              {...register('content')}
               placeholder="내용을 입력해 주세요."
-              className={styles.postContetInput}
             />
-            <div className={styles.sectionTitle}>태그</div>
+            <div className="sectionTitle">태그</div>
             <div style={{ marginBottom: 50 }}>
               <TagEditor tags={tags} setTags={setTags} />
             </div>
-            <div className={styles.btnPostingBox}>
-              <button className={styles.btnPosting}>포스팅</button>
-            </div>
-          </form>
-        </div>
+            <S.ButtonBox>
+              <S.BtnWrite>포스팅</S.BtnWrite>
+            </S.ButtonBox>
+          </S.PostingForm>
+        </S.GalleryContainer>
       </Layout>
     </>
   );
@@ -205,11 +191,11 @@ export const getServerSideProps = withSsrSession(async function ({
   req,
 }: NextPageContext) {
   const user = req?.session.user;
-  if (user?.role !== "ADMIN") {
+  if (user?.role !== 'ADMIN') {
     return {
       redirect: {
         permanent: false,
-        destination: "/gallery",
+        destination: '/gallery',
       },
       props: {},
     };
@@ -219,4 +205,4 @@ export const getServerSideProps = withSsrSession(async function ({
   };
 });
 
-export default Write;
+export default GalleryWrite;

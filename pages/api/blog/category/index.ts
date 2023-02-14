@@ -1,20 +1,20 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import withHandler, { ResponseType } from "@libs/server/withHandler";
-import client from "@libs/server/client";
-import { withApiSession } from "@libs/server/withSession";
+import { NextApiRequest, NextApiResponse } from 'next';
+import withHandler, { ResponseType } from '@libs/server/withHandler';
+import client from '@libs/server/client';
+import { withApiSession } from '@libs/server/withSession';
 
 async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
-  if (req.method === "GET") {
+  if (req.method === 'GET') {
     const { page } = req.query;
     const { category } = req.query;
     const postCount = await client.post.count({
-      where: { isHide: false, category: +category },
+      where: { isHide: false, category: +category! },
     });
     const posts = await client.post.findMany({
-      where: { isHide: false, category: +category },
+      where: { isHide: false, category: +category! },
       select: {
         id: true,
         title: true,
@@ -28,8 +28,8 @@ async function handler(
         },
       },
       take: 8,
-      skip: 8 * (+page - 1),
-      orderBy: { createdAt: "desc" },
+      skip: 8 * (+page! - 1),
+      orderBy: { createdAt: 'desc' },
     });
     return res.json({
       result: true,
@@ -46,7 +46,7 @@ async function handler(
 
 export default withApiSession(
   withHandler({
-    methods: ["GET"],
+    methods: ['GET'],
     handler,
   })
 );

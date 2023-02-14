@@ -1,16 +1,16 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import withHandler, { ResponseType } from "@libs/server/withHandler";
-import client from "@libs/server/client";
-import { withApiSession } from "@libs/server/withSession";
+import { NextApiRequest, NextApiResponse } from 'next';
+import withHandler, { ResponseType } from '@libs/server/withHandler';
+import client from '@libs/server/client';
+import { withApiSession } from '@libs/server/withSession';
 
 async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
-  if (req.method === "GET") {
+  if (req.method === 'GET') {
     const { id } = req.query;
-    let comments = await client.comment.findMany({
-      where: { postId: +id },
+    const comments = await client.comment.findMany({
+      where: { postId: +id! },
       include: {
         author: true,
         recomments: {
@@ -26,7 +26,7 @@ async function handler(
       comments,
     });
   }
-  if (req.method === "POST") {
+  if (req.method === 'POST') {
     const { id } = req.query;
     const { user } = req.session;
     const { comment: content, commentId } = req.body;
@@ -36,7 +36,7 @@ async function handler(
       });
     }
     if (!commentId) {
-      const comment = await client.comment.create({
+      await client.comment.create({
         data: {
           content,
           author: {
@@ -46,7 +46,7 @@ async function handler(
           },
           post: {
             connect: {
-              id: +id,
+              id: +id!,
             },
           },
         },
@@ -66,11 +66,11 @@ async function handler(
       result: true,
     });
   }
-  if (req.method === "DELETE") {
+  if (req.method === 'DELETE') {
     const { id: commentId } = req.query;
     await client.comment.delete({
       where: {
-        id: +commentId,
+        id: +commentId!,
       },
     });
     return res.json({
@@ -81,7 +81,7 @@ async function handler(
 
 export default withApiSession(
   withHandler({
-    methods: ["GET", "POST", "DELETE"],
+    methods: ['GET', 'POST', 'DELETE'],
     handler,
   })
 );

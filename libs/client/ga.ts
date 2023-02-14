@@ -5,7 +5,7 @@ declare global {
 }
 
 export function pageview(url: string) {
-  window.gtag("config", process.env.GOOGLE_ANALYTICS_ID!, {
+  window.gtag('config', process.env.GOOGLE_ANALYTICS_ID!, {
     page_path: url,
   });
 }

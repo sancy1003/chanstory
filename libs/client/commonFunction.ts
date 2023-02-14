@@ -1,29 +1,29 @@
-import { CATEGORY } from "@utils/define/category";
+import { CATEGORY } from '@utils/define/category';
 
 export const dateToString = (date: Date | string) => {
   const init = new Date(date);
-  return `${init.getFullYear()}-${init.getMonth() + 1 < 10 ? "0" : ""}${
+  return `${init.getFullYear()}-${init.getMonth() + 1 < 10 ? '0' : ''}${
     init.getMonth() + 1
-  }-${init.getDate() < 10 ? "0" : ""}${init.getDate()}`;
+  }-${init.getDate() < 10 ? '0' : ''}${init.getDate()}`;
 };
 
 export const dateToStringFromServer = (date: Date) => {
   const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
   const init = new Date(new Date(date).getTime() + KR_TIME_DIFF);
-  return `${init.getFullYear()}-${init.getMonth() + 1 < 10 ? "0" : ""}${
+  return `${init.getFullYear()}-${init.getMonth() + 1 < 10 ? '0' : ''}${
     init.getMonth() + 1
-  }-${init.getDate() < 10 ? "0" : ""}${init.getDate()}`;
+  }-${init.getDate() < 10 ? '0' : ''}${init.getDate()}`;
 };
 
 export const formattingImageURL = (
   url?: string | null,
-  type?: "avatar" | "public" | "blogThumbnail" | "galleryThumbnail"
+  type?: 'avatar' | 'public' | 'blogThumbnail' | 'galleryThumbnail'
 ) => {
-  let imageType = type ? type : "public";
+  const imageType = type ? type : 'public';
   if (url) {
     return `https://imagedelivery.net/R2WiK4wfRK3oBXTwjgzQfA/${url}/${imageType}`;
   } else {
-    return "";
+    return '';
   }
 };
 
@@ -31,11 +31,11 @@ export const formattingUserProfileURL = (
   url?: string | null,
   type?: string
 ): string => {
-  let imageType = type ? type : "public";
+  const imageType = type ? type : 'public';
   if (url) {
     return `https://imagedelivery.net/R2WiK4wfRK3oBXTwjgzQfA/${url}/${imageType}`;
   } else {
-    return "/images/user/default_profile.svg";
+    return '/images/user/default_profile.svg';
   }
 };
 
@@ -59,12 +59,12 @@ export const categoryToString = ({
   type,
 }: {
   index: number;
-  type: "query" | "title";
+  type: 'query' | 'title';
 }) => {
-  if (type === "query") {
+  if (type === 'query') {
     return CATEGORY.find((item) => item.idx === index)?.query;
   }
-  if (type === "title") {
+  if (type === 'title') {
     return CATEGORY.find((item) => item.idx === index)?.title;
   }
 };

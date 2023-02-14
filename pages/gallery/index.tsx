@@ -1,16 +1,13 @@
-import Layout from "@components/layout";
-import type { NextPage } from "next";
-import styles from "@styles/gallery.module.css";
-import { dateToString } from "@libs/client/commonFunction";
-import useUser from "@libs/client/useUser";
-import useSWR from "swr";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { PostListWithCountResponse } from "types/response";
-import GalleryItem from "@components/gallery/gallery-item";
-import { PostsList } from "types/post";
-import Lottie from "react-lottie-player";
-import ring from "@resource/lottie/ring.json";
-import GalleryItemSkeleton from "@components/gallery/gallery-item-skeleton";
+import Layout from '@components/Layout';
+import type { NextPage } from 'next';
+import { dateToString } from '@libs/client/commonFunction';
+import useSWR from 'swr';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { PostListWithCountResponse } from 'types/response';
+import GalleryItem from '@components/gallery/GalleryItem';
+import { PostsList } from 'types/post';
+import GalleryItemSkeleton from '@components/gallery/GalleryItemSkeleton';
+import * as S from '@styles/pages/gallery.style';
 
 const Gallery: NextPage = () => {
   const [leftPosts, setLeftPost] = useState<PostsList[]>([]);
@@ -19,11 +16,11 @@ const Gallery: NextPage = () => {
   const [scrollLoading, setScrollLoading] = useState<boolean>(false);
   const maxPage = useRef(0);
   const page = useRef(1);
-  const { data, error, mutate } = useSWR<PostListWithCountResponse>(
+  const { data } = useSWR<PostListWithCountResponse>(
     `/api/gallery?page=${page.current}`
   );
 
-  const observer = useRef<any>(null);
+  const observer = useRef<null | IntersectionObserver>(null);
 
   const lastPostElementRef = useCallback(
     (element: HTMLDivElement) => {
@@ -46,8 +43,8 @@ const Gallery: NextPage = () => {
 
   useEffect(() => {
     if (data && data.result) {
-      let left: PostsList[] = [];
-      let right: PostsList[] = [];
+      const left: PostsList[] = [];
+      const right: PostsList[] = [];
       data.posts.forEach((post, idx) => {
         if (idx % 2 === 0) left.push(post);
         else right.push(post);
@@ -61,13 +58,13 @@ const Gallery: NextPage = () => {
   }, [data]);
 
   return (
-    <Layout activeMenu={"GALLERY"}>
-      <div className={styles.galleryContainer}>
-        <div className={styles.galleryListWrap}>
-          <ul className={styles.galleryList}>
+    <Layout activeMenu={'GALLERY'}>
+      <S.GalleryContainer>
+        <S.GalleryListContainer>
+          <S.GalleryList>
             {leftPosts.map((post) => {
               return (
-                <li key={post.id} className={styles.galleryListItem}>
+                <li key={post.id}>
                   <GalleryItem
                     commentNum={post.commentCount}
                     createdAt={dateToString(post.createdAt)}
@@ -80,11 +77,11 @@ const Gallery: NextPage = () => {
             })}
             {(!data || scrollLoading) &&
               [0, 0].map((item, index) => <GalleryItemSkeleton key={index} />)}
-          </ul>
-          <ul className={styles.galleryList}>
+          </S.GalleryList>
+          <S.GalleryList>
             {rightPosts.map((post) => {
               return (
-                <li key={post.id} className={styles.galleryListItem}>
+                <li key={post.id}>
                   <GalleryItem
                     commentNum={post.commentCount}
                     createdAt={dateToString(post.createdAt)}
@@ -96,12 +93,12 @@ const Gallery: NextPage = () => {
               );
             })}
             {(!data || scrollLoading) &&
-              [0, 0].map((item, index) => <GalleryItemSkeleton key={index} />)}
-          </ul>
-          <ul className={styles.galleryListM}>
+              [0, 0].map((_, index) => <GalleryItemSkeleton key={index} />)}
+          </S.GalleryList>
+          <S.MobileGalleryList>
             {posts.map((post) => {
               return (
-                <li key={post.id} className={styles.galleryListItem}>
+                <li key={post.id}>
                   <GalleryItem
                     commentNum={post.commentCount}
                     createdAt={dateToString(post.createdAt)}
@@ -114,15 +111,15 @@ const Gallery: NextPage = () => {
             })}
             {(!data || scrollLoading) &&
               [0, 0].map((item, index) => <GalleryItemSkeleton key={index} />)}
-          </ul>
-        </div>
+          </S.MobileGalleryList>
+        </S.GalleryListContainer>
         {posts && (
           <div
-            style={{ height: 100, display: "flex", alignItems: "flex-start" }}
+            style={{ height: 100, display: 'flex', alignItems: 'flex-start' }}
             ref={lastPostElementRef}
           />
         )}
-      </div>
+      </S.GalleryContainer>
     </Layout>
   );
 };
