@@ -1,7 +1,6 @@
 import * as S from '@styles/components/common/header.style';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 
 interface Props {
   activeMenu: 'BLOG' | 'GALLERY' | 'NONE';

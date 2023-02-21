@@ -66,7 +66,6 @@ const Gallery: NextPage = () => {
               return (
                 <li key={post.id}>
                   <GalleryItem
-                    commentNum={post.commentCount}
                     createdAt={dateToString(post.createdAt)}
                     imageURL={post.thumbnailURL}
                     postId={post.id}
@@ -83,7 +82,6 @@ const Gallery: NextPage = () => {
               return (
                 <li key={post.id}>
                   <GalleryItem
-                    commentNum={post.commentCount}
                     createdAt={dateToString(post.createdAt)}
                     imageURL={post.thumbnailURL}
                     postId={post.id}
@@ -100,7 +98,6 @@ const Gallery: NextPage = () => {
               return (
                 <li key={post.id}>
                   <GalleryItem
-                    commentNum={post.commentCount}
                     createdAt={dateToString(post.createdAt)}
                     imageURL={post.thumbnailURL}
                     postId={post.id}

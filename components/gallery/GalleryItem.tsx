@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 interface Props {
-  commentNum: number;
   createdAt: string;
   title: string;
   imageURL: string | null;
