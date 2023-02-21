@@ -14,6 +14,7 @@ import client from '@libs/server/client';
 import Comment from '@components/common/Comment';
 import { Post } from '@prisma/client';
 import * as S from '@styles/pages/blog.style';
+import GoogleAdvertise from '@components/googleAds/GoogleAdvertise';
 
 interface postFromSSG extends Post {
   url: string;
@@ -73,6 +74,7 @@ const PostDetail: NextPage<PostProps> = ({ post }) => {
             ''
           )}
         </S.PostDetailContent>
+        <GoogleAdvertise />
         <Comment />
       </S.PostDetailContainer>
     </Layout>

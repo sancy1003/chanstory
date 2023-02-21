@@ -3,11 +3,16 @@ import screens from '@styles/screens';
 import styled from 'styled-components';
 
 export const BlogContainer = styled.div`
-  padding: 50px 20px 100px 20px;
+  width: 100%;
+  flex: 1;
+  background-color: #fafaf8;
+`;
+
+export const BlogContentsContainer = styled.div`
+  padding: 60px 20px 100px 20px;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  box-sizing: border-box;
 `;
 
 export const BlogSection = styled.section`

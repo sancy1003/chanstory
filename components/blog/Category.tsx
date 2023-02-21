@@ -10,14 +10,13 @@ const Category = ({ active }: Props) => {
 
   return (
     <S.CategoryContainer>
-      <S.CategoryTitle>카테고리</S.CategoryTitle>
       <S.CategoryList>
         <li>
           <Link
             href="/blog"
             className={currentCategory === 'home' ? 'active' : ''}
           >
-            🏠&nbsp;&nbsp;홈
+            <span>🏠&nbsp;&nbsp;홈</span>
           </Link>
         </li>
         <li>
@@ -25,7 +24,7 @@ const Category = ({ active }: Props) => {
             href="/blog/develop/1"
             className={currentCategory === 'develop' ? 'active' : ''}
           >
-            📕&nbsp;&nbsp;개발 일기
+            <span>📕&nbsp;&nbsp;개발 일기</span>
           </Link>
         </li>
         <li>
@@ -33,7 +32,7 @@ const Category = ({ active }: Props) => {
             href="/blog/study/1"
             className={currentCategory === 'study' ? 'active' : ''}
           >
-            ✏&nbsp;&nbsp;스터디
+            <span>✏&nbsp;&nbsp;스터디</span>
           </Link>
         </li>
         <li>
@@ -41,7 +40,7 @@ const Category = ({ active }: Props) => {
             href="/blog/hobby/1"
             className={currentCategory === 'hobby' ? 'active' : ''}
           >
-            😎&nbsp;&nbsp;취미
+            <span>😎&nbsp;&nbsp;취미</span>
           </Link>
         </li>
         <li>

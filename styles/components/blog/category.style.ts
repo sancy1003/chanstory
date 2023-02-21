@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export const CategoryContainer = styled.div`
   width: 100%;
-  margin-bottom: 60px;
+  margin-bottom: 40px;
 `;
 
 export const CategoryTitle = styled.div`
@@ -17,24 +17,25 @@ export const CategoryList = styled.ul`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 20px 8px;
+  column-gap: 60px;
+  row-gap: 24px;
 
   & a {
-    border-radius: 100px;
     font-size: 18px;
-    margin-right: 25px;
     cursor: pointer;
     min-width: 50px;
     display: flex;
     justify-content: center;
-    color: ${colors.black70};
-    background-color: #fff;
-    padding: 10px 16px;
+    color: ${colors.black60};
+    position: relative;
+
+    &:hover {
+      color: #917fd6;
+    }
 
     &.active {
-      background-color: ${colors.brandColorWeak};
       color: ${colors.brandColor};
-      padding: 10px 16px;
+      font-weight: bold;
     }
   }
 `;

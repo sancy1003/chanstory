@@ -4,13 +4,9 @@ import { CommentWithAuthor } from './comment';
 export interface PostsList {
   id: number;
   title: string;
-  commentCount: number;
   createdAt: string;
+  category: number;
   thumbnailURL: string | null;
-  _count: {
-    comments: number;
-    recomments: number;
-  };
 }
 export interface PostRegistForm {
   title: string;

@@ -5,14 +5,15 @@ import styled from 'styled-components';
 export const HeaderContainer = styled.div`
   width: 100%;
   position: fixed;
-  background-color: #fff;
   top: 0;
   left: 0;
   height: 60px;
-  box-shadow: 0px 5px 7px rgba(0, 0, 0, 0.03);
   z-index: 3;
+  background-color: #ffffff;
+  box-shadow: 0px 5px 7px rgba(0, 0, 0, 0.03);
+  transition: background-color 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
 
-  ${screens.medium} {
+  ${screens.large} {
     padding: 0px 20px;
   }
 `;

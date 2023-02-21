@@ -14,7 +14,6 @@ const GalleryItemSkeleton = () => {
           justifyContent: 'flex-end',
         }}
       >
-        <Skeleton width={50} height={24} />
         <Skeleton width={100} height={24} />
       </div>
     </div>

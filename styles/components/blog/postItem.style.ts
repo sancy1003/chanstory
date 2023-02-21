@@ -6,9 +6,9 @@ export const PostItemCard = styled.div`
   width: 23.5%;
   cursor: pointer;
   box-sizing: border-box;
-  border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0px 5px 7px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  box-shadow: 0px 6px 6px rgba(0, 0, 0, 0.05);
 
   & img {
     transition: 0.5s all;
@@ -57,6 +57,39 @@ export const ImageWrapper = styled.div`
   }
 `;
 
+export const Category = styled.div<{ category: number }>`
+  width: fit-content;
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 4px 16px;
+  font-size: 13px;
+  border-radius: 3px;
+
+  ${({ category }) => {
+    let color;
+
+    switch (category) {
+      case 1:
+        color = '#54C8F6';
+        break;
+      case 2:
+        color = '#FFA857';
+        break;
+      case 3:
+        color = '#61D338';
+        break;
+      case 4:
+        color = '#FF6D6D';
+        break;
+    }
+
+    return `
+    color: ${color};
+    border: 1px solid ${color};
+    `;
+  }}
+`;
+
 export const InfoBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -65,7 +98,7 @@ export const InfoBox = styled.div`
 `;
 
 export const Title = styled.p`
-  height: 40px;
+  height: 44px;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -75,13 +108,13 @@ export const Title = styled.p`
   margin-bottom: 20px;
   font-weight: bold;
   color: ${colors.black100};
+  line-height: 24px;
 `;
 
-export const Info = styled.div`
+export const CreatedAt = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  color: ${colors.black70};
-  font-size: 14px;
+  color: ${colors.black60};
+  font-size: 12px;
 `;
