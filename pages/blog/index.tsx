@@ -17,7 +17,6 @@ const Blog: NextPage<Props> = ({ data }) => {
       <S.BlogContainer>
         <Category active="home" />
         <S.BlogSection>
-          <div className="title">✨&nbsp;&nbsp;최근 포스팅</div>
           <S.PostContainer>
             {data.newPosts.map((post) => {
               return (
@@ -27,6 +26,7 @@ const Blog: NextPage<Props> = ({ data }) => {
                   title={post.title}
                   imageURL={post.thumbnailURL}
                   postId={post.id}
+                  category={post.category}
                 />
               );
             })}
@@ -45,14 +45,9 @@ export const getStaticProps: GetStaticProps = async function () {
       title: true,
       createdAt: true,
       thumbnailURL: true,
-      _count: {
-        select: {
-          comments: true,
-          recomments: true,
-        },
-      },
+      category: true,
     },
-    take: 12,
+    take: 16,
     orderBy: { createdAt: 'desc' },
   });
 
@@ -63,7 +58,6 @@ export const getStaticProps: GetStaticProps = async function () {
         newPosts: newPosts.map((post) => ({
           ...post,
           createdAt: dateToStringFromServer(post.createdAt),
-          commentCount: post._count.comments + post._count.recomments,
         })),
       },
     },

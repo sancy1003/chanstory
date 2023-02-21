@@ -122,6 +122,7 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
       category: categoryToNumber({ query: params?.category?.toString() }),
     },
   });
+
   const posts = await client.post.findMany({
     where: {
       isHide: false,
@@ -133,12 +134,7 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
       title: true,
       createdAt: true,
       thumbnailURL: true,
-      _count: {
-        select: {
-          comments: true,
-          recomments: true,
-        },
-      },
+      category: true,
     },
     take: 8,
     skip: 8 * (+params?.page! - 1),
@@ -154,7 +150,6 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
         posts: posts.map((post) => ({
           ...post,
           createdAt: dateToStringFromServer(post.createdAt),
-          commentCount: post._count.comments + post._count.recomments,
         })),
       },
     },

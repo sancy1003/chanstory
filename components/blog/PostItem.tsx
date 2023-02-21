@@ -1,4 +1,7 @@
-import { formattingImageURL } from '@libs/client/commonFunction';
+import {
+  categoryToString,
+  formattingImageURL,
+} from '@libs/client/commonFunction';
 import * as S from '@styles/components/blog/postItem.style';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -8,8 +11,10 @@ interface Props {
   title: string;
   imageURL: string | null;
   postId: number;
+  category?: number;
 }
-const PostItem = ({ createdAt, title, imageURL, postId }: Props) => {
+
+const PostItem = ({ createdAt, title, imageURL, postId, category }: Props) => {
   return (
     <S.PostItemCard>
       <Link href={`/blog/post/${postId}`}>
@@ -31,10 +36,15 @@ const PostItem = ({ createdAt, title, imageURL, postId }: Props) => {
           />
         </S.ImageWrapper>
         <S.InfoBox>
+          {category && (
+            <S.Category category={category}>
+              {categoryToString({ index: category, type: 'title' })}
+            </S.Category>
+          )}
           <S.Title title={title}>{title}</S.Title>
-          <S.Info>
+          <S.CreatedAt>
             <div>{createdAt}</div>
-          </S.Info>
+          </S.CreatedAt>
         </S.InfoBox>
       </Link>
     </S.PostItemCard>

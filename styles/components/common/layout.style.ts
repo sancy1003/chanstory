@@ -4,7 +4,8 @@ export const LayoutContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
+  background-color: #f3f5fd;
 `;
 
 export const LayoutContent = styled.div`
