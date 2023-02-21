@@ -5,10 +5,12 @@ export const LayoutContainer = styled.div`
   flex-direction: column;
   width: 100vw;
   min-height: 100vh;
-  background-color: #f3f5fd;
+  background-color: #ffffff;
 `;
 
 export const LayoutContent = styled.div`
+  display: flex;
+  position: relative;
   flex: 1;
-  padding-top: 80px;
+  padding-top: 60px;
 `;

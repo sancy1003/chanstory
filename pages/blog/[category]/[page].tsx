@@ -30,55 +30,57 @@ const PostCategory: NextPage<Props> = ({ data, category }) => {
   return (
     <Layout activeMenu={'BLOG'}>
       <S.BlogContainer>
-        <Category active={category} />
-        <S.BlogSection>
-          <S.PostContainer>
-            {data.posts.map((post) => {
-              return (
-                <PostItem
-                  key={post.id}
-                  createdAt={post.createdAt}
-                  title={post.title}
-                  imageURL={post.thumbnailURL}
-                  postId={post.id}
+        <S.BlogContentsContainer>
+          <Category active={category} />
+          <S.BlogSection>
+            <S.PostContainer>
+              {data.posts.map((post) => {
+                return (
+                  <PostItem
+                    key={post.id}
+                    createdAt={post.createdAt}
+                    title={post.title}
+                    imageURL={post.thumbnailURL}
+                    postId={post.id}
+                  />
+                );
+              })}
+            </S.PostContainer>
+            {data.postCount > 8 && (
+              <div style={{ marginTop: 80 }}>
+                <Pagination
+                  activePage={router?.query?.page ? +router?.query?.page : 1}
+                  itemsCountPerPage={8}
+                  totalItemsCount={data ? data.postCount : 0}
+                  pageRangeDisplayed={5}
+                  prevPageText={
+                    <S.PaginationIconBox>
+                      <MdOutlineChevronLeft />
+                    </S.PaginationIconBox>
+                  }
+                  nextPageText={
+                    <S.PaginationIconBox>
+                      <MdOutlineChevronRight />
+                    </S.PaginationIconBox>
+                  }
+                  firstPageText={
+                    <S.PaginationIconBox>
+                      <MdOutlineFirstPage />
+                    </S.PaginationIconBox>
+                  }
+                  lastPageText={
+                    <S.PaginationIconBox>
+                      <MdOutlineLastPage />
+                    </S.PaginationIconBox>
+                  }
+                  onChange={(page) => {
+                    router.push(`/blog/${router.query.category}/${page}`);
+                  }}
                 />
-              );
-            })}
-          </S.PostContainer>
-          {data.postCount > 8 && (
-            <div style={{ marginTop: 80 }}>
-              <Pagination
-                activePage={router?.query?.page ? +router?.query?.page : 1}
-                itemsCountPerPage={8}
-                totalItemsCount={data ? data.postCount : 0}
-                pageRangeDisplayed={5}
-                prevPageText={
-                  <S.PaginationIconBox>
-                    <MdOutlineChevronLeft />
-                  </S.PaginationIconBox>
-                }
-                nextPageText={
-                  <S.PaginationIconBox>
-                    <MdOutlineChevronRight />
-                  </S.PaginationIconBox>
-                }
-                firstPageText={
-                  <S.PaginationIconBox>
-                    <MdOutlineFirstPage />
-                  </S.PaginationIconBox>
-                }
-                lastPageText={
-                  <S.PaginationIconBox>
-                    <MdOutlineLastPage />
-                  </S.PaginationIconBox>
-                }
-                onChange={(page) => {
-                  router.push(`/blog/${router.query.category}/${page}`);
-                }}
-              />
-            </div>
-          )}
-        </S.BlogSection>
+              </div>
+            )}
+          </S.BlogSection>
+        </S.BlogContentsContainer>
       </S.BlogContainer>
     </Layout>
   );

@@ -2,22 +2,16 @@ import colors from '@styles/colors';
 import screens from '@styles/screens';
 import styled from 'styled-components';
 
-export const HeaderContainer = styled.div<{ position: number }>`
+export const HeaderContainer = styled.div`
   width: 100%;
   position: fixed;
   top: 0;
   left: 0;
   height: 60px;
   z-index: 3;
+  background-color: #ffffff;
+  box-shadow: 0px 5px 7px rgba(0, 0, 0, 0.03);
   transition: background-color 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
-
-  ${({ position }) => {
-    if (position > 0) {
-      return `
-    background-color: #fff;
-    box-shadow: 0px 5px 7px rgba(0, 0, 0, 0.03);`;
-    }
-  }}
 
   ${screens.large} {
     padding: 0px 20px;

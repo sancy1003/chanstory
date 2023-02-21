@@ -4,9 +4,9 @@ import styled from 'styled-components';
 
 export const FooterContainer = styled.div`
   width: 100%;
-  background-color: ${colors.brandColorWeak};
+  background-color: #cdd5df;
 
-  ${screens.medium} {
+  ${screens.large} {
     padding: 0px 20px;
   }
 `;
@@ -15,16 +15,16 @@ export const FooterWrapper = styled.div`
   margin: 0 auto;
   width: 100%;
   max-width: 1160px;
-  padding: 16px 0;
+  padding: 24px 0;
   display: flex;
   align-items: flex-end;
-  color: ${colors.black70};
+  color: #424965;
   font-size: 14px;
   justify-content: space-between;
 `;
 
 export const FooterCopyright = styled.p`
-  color: ${colors.brandColor};
+  color: #424965;
 `;
 
 export const FooterInfoBox = styled.div`

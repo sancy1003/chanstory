@@ -6,6 +6,7 @@ import { dateToStringFromServer } from '@libs/client/commonFunction';
 import client from '@libs/server/client';
 import { PostListResponse } from 'types/response';
 import * as S from '@styles/pages/blog.style';
+import GoogleAdvertise from '@components/googleAds/GoogleAdvertise';
 
 interface Props {
   data: PostListResponse;
@@ -15,23 +16,42 @@ const Home: NextPage<Props> = ({ data }) => {
   return (
     <Layout activeMenu={'BLOG'}>
       <S.BlogContainer>
-        <Category active="home" />
-        <S.BlogSection>
-          <S.PostContainer>
-            {data.newPosts.map((post) => {
-              return (
-                <PostItem
-                  key={post.id}
-                  createdAt={post.createdAt}
-                  title={post.title}
-                  imageURL={post.thumbnailURL}
-                  postId={post.id}
-                  category={post.category}
-                />
-              );
-            })}
-          </S.PostContainer>
-        </S.BlogSection>
+        <S.BlogContentsContainer>
+          <Category active="home" />
+          <S.BlogSection>
+            <S.PostContainer>
+              {data.newPosts.map((post, idx) => {
+                if (idx < 8) {
+                  return (
+                    <PostItem
+                      key={post.id}
+                      createdAt={post.createdAt}
+                      title={post.title}
+                      imageURL={post.thumbnailURL}
+                      postId={post.id}
+                      category={post.category}
+                    />
+                  );
+                }
+              })}
+              <GoogleAdvertise />
+              {data.newPosts.map((post, idx) => {
+                if (idx >= 8) {
+                  return (
+                    <PostItem
+                      key={post.id}
+                      createdAt={post.createdAt}
+                      title={post.title}
+                      imageURL={post.thumbnailURL}
+                      postId={post.id}
+                      category={post.category}
+                    />
+                  );
+                }
+              })}
+            </S.PostContainer>
+          </S.BlogSection>
+        </S.BlogContentsContainer>
       </S.BlogContainer>
     </Layout>
   );

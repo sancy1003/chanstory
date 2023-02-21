@@ -49,15 +49,18 @@ export default class MyDocument extends Document {
             href="https://hangeul.pstatic.net/hangeul_static/css/nanum-barun-gothic.css"
             rel="stylesheet"
           />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
-            rel="stylesheet"
-          />
+          {/* 애드센스 */}
           {/* <script
             async
             src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3131973401944410"
             crossOrigin="anonymous"
+          ></script>
+          <script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3131973401944410"
+            crossOrigin="anonymous"
           ></script> */}
+          {/* 애드센스 */}
           <script
             async
             src={`https://www.googletagmanager.com/gtag/js?${process.env.GOOGLE_ANALYTICS_ID}`}

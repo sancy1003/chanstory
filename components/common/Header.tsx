@@ -8,21 +8,8 @@ interface Props {
 }
 
 const Header = ({ activeMenu }: Props) => {
-  const [position, setPosition] = useState(0);
-
-  function onScroll() {
-    setPosition(window.scrollY);
-  }
-
-  useEffect(() => {
-    window.addEventListener('scroll', onScroll);
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-    };
-  }, []);
-
   return (
-    <S.HeaderContainer position={position}>
+    <S.HeaderContainer>
       <S.HeaderWrapper>
         <Link href={'/'} className="mainLogo">
           <Image src="/images/logo/logo.svg" fill alt="logo" priority={true} />
