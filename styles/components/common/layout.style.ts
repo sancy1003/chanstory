@@ -10,5 +10,5 @@ export const LayoutContainer = styled.div`
 
 export const LayoutContent = styled.div`
   flex: 1;
-  padding-top: 50px;
+  padding-top: 80px;
 `;

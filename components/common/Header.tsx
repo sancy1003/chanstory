@@ -1,14 +1,28 @@
 import * as S from '@styles/components/common/header.style';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 interface Props {
   activeMenu: 'BLOG' | 'GALLERY' | 'NONE';
 }
 
 const Header = ({ activeMenu }: Props) => {
+  const [position, setPosition] = useState(0);
+
+  function onScroll() {
+    setPosition(window.scrollY);
+  }
+
+  useEffect(() => {
+    window.addEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+    };
+  }, []);
+
   return (
-    <S.HeaderContainer>
+    <S.HeaderContainer position={position}>
       <S.HeaderWrapper>
         <Link href={'/'} className="mainLogo">
           <Image src="/images/logo/logo.svg" fill alt="logo" priority={true} />
