@@ -5,6 +5,7 @@ export const AdvertiseContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
+  height: 100px;
   margin: 20px 0;
 `;
 

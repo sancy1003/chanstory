@@ -26,14 +26,16 @@ const GoogleAdvertise = () => {
   }
 
   return (
-    <ins
-      className="adsbygoogle"
-      style={{ display: 'block' }}
-      data-ad-client="ca-pub-3131973401944410"
-      data-ad-slot="2962835951"
-      data-ad-format="auto"
-      data-full-width-responsive="true"
-    />
+    <S.AdvertiseContainer>
+      <ins
+        className="adsbygoogle"
+        style={{ display: 'block' }}
+        data-ad-client="ca-pub-3131973401944410"
+        data-ad-slot="2962835951"
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      />
+    </S.AdvertiseContainer>
   );
 };
 
