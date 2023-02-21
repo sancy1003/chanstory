@@ -5,6 +5,7 @@ import Document, {
   Main,
   NextScript,
 } from 'next/document';
+import Script from 'next/script';
 import { ServerStyleSheet } from 'styled-components';
 
 export default class MyDocument extends Document {
@@ -50,11 +51,12 @@ export default class MyDocument extends Document {
             rel="stylesheet"
           />
           {/* 애드센스 */}
-          <script
+          <Script
             async
             src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3131973401944410"
+            strategy="lazyOnload"
             crossOrigin="anonymous"
-          ></script>
+          ></Script>
           {/* 애드센스 */}
           <script
             async
