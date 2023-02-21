@@ -1,5 +1,5 @@
 import * as S from '@styles/components/googleAds/GoogleAdvertise.style';
-import { memo, useEffect } from 'react';
+import { useEffect } from 'react';
 
 declare global {
   interface Window {
@@ -39,4 +39,4 @@ const GoogleAdvertise = () => {
   );
 };
 
-export default memo(GoogleAdvertise);
+export default GoogleAdvertise;
