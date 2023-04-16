@@ -20,7 +20,7 @@ const Home: NextPage<Props> = ({ postResponse }) => {
         <S.BlogContentsContainer>
           <S.HomeSectionTitle>
             블로그
-            <Link href="/blog">
+            <Link href="/blog/all/1">
               <svg
                 width="24"
                 height="25"

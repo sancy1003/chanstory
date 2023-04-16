@@ -89,8 +89,21 @@ const PostCategory: NextPage<Props> = ({ data, category }) => {
 export async function getStaticPaths() {
   const paths = [];
   const categoryData = [];
+
+  const allPostCount = await client.post.count({
+    where: {
+      isHide: false,
+      type: 'POST',
+    },
+  });
+
+  categoryData.push({
+    category: 'all',
+    maxPage: Math.ceil(allPostCount / 8),
+  });
+
   for (let i = 1; i <= 4; i++) {
-    const postCount = await client.post.count({
+    const postCountPerCategory = await client.post.count({
       where: {
         isHide: false,
         type: 'POST',
@@ -99,7 +112,7 @@ export async function getStaticPaths() {
     });
     categoryData.push({
       category: categoryToString({ index: i, type: 'query' }),
-      maxPage: Math.ceil(postCount / 8),
+      maxPage: Math.ceil(postCountPerCategory / 8),
     });
   }
 
@@ -116,12 +129,26 @@ export async function getStaticPaths() {
   return { paths, fallback: 'blocking' };
 }
 
-export async function getStaticProps({ params }: GetStaticPropsContext) {
+type Params = {
+  category: string;
+  page: string;
+};
+
+interface Context extends GetStaticPropsContext {
+  params: Params;
+}
+
+export async function getStaticProps({ params }: Context) {
+  const { category, page } = params;
+
   const postCount = await client.post.count({
     where: {
       isHide: false,
       type: 'POST',
-      category: categoryToNumber({ query: params?.category?.toString() }),
+      category:
+        params?.category !== 'all'
+          ? categoryToNumber({ query: category.toString() })
+          : undefined,
     },
   });
 
@@ -129,7 +156,10 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
     where: {
       isHide: false,
       type: 'POST',
-      category: categoryToNumber({ query: params?.category?.toString() }),
+      category:
+        params?.category !== 'all'
+          ? categoryToNumber({ query: category.toString() })
+          : undefined,
     },
     select: {
       id: true,
@@ -139,14 +169,14 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
       category: true,
     },
     take: 8,
-    skip: 8 * (+params?.page! - 1),
+    skip: 8 * (+page - 1),
     orderBy: { createdAt: 'desc' },
   });
 
   return {
     revalidate: 600,
     props: {
-      category: params?.category,
+      category,
       data: {
         postCount,
         posts: posts.map((post) => ({

@@ -5,6 +5,9 @@ export interface APIResponse {
   result: boolean;
   error?: string;
 }
+export interface BlogPostListResponse {
+  posts: SimplePostType[];
+}
 export interface PostListResponse {
   newBlogPosts: SimplePostType[];
   newGalleryPosts: SimplePostType[];
