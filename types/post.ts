@@ -1,13 +1,14 @@
 import { Post } from '@prisma/client';
 import { CommentWithAuthor } from './comment';
 
-export interface PostsList {
+export interface SimplePostType {
   id: number;
   title: string;
   createdAt: string;
   category: number;
   thumbnailURL: string | null;
 }
+
 export interface PostRegistForm {
   title: string;
   tags: string;

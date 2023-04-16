@@ -5,14 +5,14 @@ import useSWR from 'swr';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { PostListWithCountResponse } from 'types/response';
 import GalleryItem from '@components/gallery/GalleryItem';
-import { PostsList } from 'types/post';
+import { SimplePostType } from 'types/post';
 import GalleryItemSkeleton from '@components/gallery/GalleryItemSkeleton';
 import * as S from '@styles/pages/gallery.style';
 
 const Gallery: NextPage = () => {
-  const [leftPosts, setLeftPost] = useState<PostsList[]>([]);
-  const [rightPosts, setRightPosts] = useState<PostsList[]>([]);
-  const [posts, setPosts] = useState<PostsList[]>([]);
+  const [leftPosts, setLeftPost] = useState<SimplePostType[]>([]);
+  const [rightPosts, setRightPosts] = useState<SimplePostType[]>([]);
+  const [posts, setPosts] = useState<SimplePostType[]>([]);
   const [scrollLoading, setScrollLoading] = useState<boolean>(false);
   const maxPage = useRef(0);
   const page = useRef(1);
@@ -43,8 +43,8 @@ const Gallery: NextPage = () => {
 
   useEffect(() => {
     if (data && data.result) {
-      const left: PostsList[] = [];
-      const right: PostsList[] = [];
+      const left: SimplePostType[] = [];
+      const right: SimplePostType[] = [];
       data.posts.forEach((post, idx) => {
         if (idx % 2 === 0) left.push(post);
         else right.push(post);

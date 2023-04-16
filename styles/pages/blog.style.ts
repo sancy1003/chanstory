@@ -15,9 +15,24 @@ export const BlogContentsContainer = styled.div`
   margin: 0 auto;
 `;
 
+export const HomeSectionTitle = styled.h2`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  box-shadow: 0px 6px 6px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  margin-bottom: 40px;
+  padding: 12px 28px;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 130.18%;
+  color: ${colors.brandColor};
+`;
+
 export const BlogSection = styled.section`
   width: 100%;
-  margin-bottom: 60px;
+  /* margin-bottom: 60px; */
 
   &:last-child {
     margin-bottom: 0px;
