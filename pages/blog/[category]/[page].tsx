@@ -20,11 +20,11 @@ import {
 import * as S from '@styles/pages/blog.style';
 
 interface Props {
-  data: PostListWithCountResponse;
+  postResponse: PostListWithCountResponse;
   category: string;
 }
 
-const PostCategory: NextPage<Props> = ({ data, category }) => {
+const PostCategory: NextPage<Props> = ({ postResponse, category }) => {
   const router = useRouter();
 
   return (
@@ -34,7 +34,7 @@ const PostCategory: NextPage<Props> = ({ data, category }) => {
           <Category active={category} />
           <S.BlogSection>
             <S.PostContainer>
-              {data.posts.map((post) => {
+              {postResponse.posts.map((post) => {
                 return (
                   <PostItem
                     key={post.id}
@@ -46,12 +46,12 @@ const PostCategory: NextPage<Props> = ({ data, category }) => {
                 );
               })}
             </S.PostContainer>
-            {data.postCount > 8 && (
+            {postResponse.postCount > 8 && (
               <div style={{ marginTop: 80 }}>
                 <Pagination
                   activePage={router?.query?.page ? +router?.query?.page : 1}
                   itemsCountPerPage={8}
-                  totalItemsCount={data ? data.postCount : 0}
+                  totalItemsCount={postResponse ? postResponse.postCount : 0}
                   pageRangeDisplayed={5}
                   prevPageText={
                     <S.PaginationIconBox>
@@ -177,7 +177,7 @@ export async function getStaticProps({ params }: Context) {
     revalidate: 600,
     props: {
       category,
-      data: {
+      postResponse: {
         postCount,
         posts: posts.map((post) => ({
           ...post,
