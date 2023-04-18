@@ -18,23 +18,27 @@ import {
   MdOutlineChevronLeft,
 } from 'react-icons/md';
 import * as S from '@styles/pages/blog.style';
+import SearchInput from '@components/blog/SearchInput';
 
 interface Props {
-  data: PostListWithCountResponse;
+  postResponse: PostListWithCountResponse;
   category: string;
 }
 
-const PostCategory: NextPage<Props> = ({ data, category }) => {
+const PostCategory: NextPage<Props> = ({ postResponse, category }) => {
   const router = useRouter();
 
   return (
     <Layout activeMenu={'BLOG'}>
       <S.BlogContainer>
         <S.BlogContentsContainer>
-          <Category active={category} />
+          <S.BlogSectionHeader>
+            <Category active={category} />
+            <SearchInput />
+          </S.BlogSectionHeader>
           <S.BlogSection>
             <S.PostContainer>
-              {data.posts.map((post) => {
+              {postResponse.posts.map((post) => {
                 return (
                   <PostItem
                     key={post.id}
@@ -46,12 +50,12 @@ const PostCategory: NextPage<Props> = ({ data, category }) => {
                 );
               })}
             </S.PostContainer>
-            {data.postCount > 8 && (
+            {postResponse.postCount > 8 && (
               <div style={{ marginTop: 80 }}>
                 <Pagination
                   activePage={router?.query?.page ? +router?.query?.page : 1}
                   itemsCountPerPage={8}
-                  totalItemsCount={data ? data.postCount : 0}
+                  totalItemsCount={postResponse ? postResponse.postCount : 0}
                   pageRangeDisplayed={5}
                   prevPageText={
                     <S.PaginationIconBox>
@@ -89,8 +93,21 @@ const PostCategory: NextPage<Props> = ({ data, category }) => {
 export async function getStaticPaths() {
   const paths = [];
   const categoryData = [];
+
+  const allPostCount = await client.post.count({
+    where: {
+      isHide: false,
+      type: 'POST',
+    },
+  });
+
+  categoryData.push({
+    category: 'all',
+    maxPage: Math.ceil(allPostCount / 8),
+  });
+
   for (let i = 1; i <= 4; i++) {
-    const postCount = await client.post.count({
+    const postCountPerCategory = await client.post.count({
       where: {
         isHide: false,
         type: 'POST',
@@ -99,7 +116,7 @@ export async function getStaticPaths() {
     });
     categoryData.push({
       category: categoryToString({ index: i, type: 'query' }),
-      maxPage: Math.ceil(postCount / 8),
+      maxPage: Math.ceil(postCountPerCategory / 8),
     });
   }
 
@@ -116,12 +133,26 @@ export async function getStaticPaths() {
   return { paths, fallback: 'blocking' };
 }
 
-export async function getStaticProps({ params }: GetStaticPropsContext) {
+type Params = {
+  category: string;
+  page: string;
+};
+
+interface Context extends GetStaticPropsContext {
+  params: Params;
+}
+
+export async function getStaticProps({ params }: Context) {
+  const { category, page } = params;
+
   const postCount = await client.post.count({
     where: {
       isHide: false,
       type: 'POST',
-      category: categoryToNumber({ query: params?.category?.toString() }),
+      category:
+        params?.category !== 'all'
+          ? categoryToNumber({ query: category.toString() })
+          : undefined,
     },
   });
 
@@ -129,7 +160,10 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
     where: {
       isHide: false,
       type: 'POST',
-      category: categoryToNumber({ query: params?.category?.toString() }),
+      category:
+        params?.category !== 'all'
+          ? categoryToNumber({ query: category.toString() })
+          : undefined,
     },
     select: {
       id: true,
@@ -139,15 +173,15 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
       category: true,
     },
     take: 8,
-    skip: 8 * (+params?.page! - 1),
+    skip: 8 * (+page - 1),
     orderBy: { createdAt: 'desc' },
   });
 
   return {
     revalidate: 600,
     props: {
-      category: params?.category,
-      data: {
+      category,
+      postResponse: {
         postCount,
         posts: posts.map((post) => ({
           ...post,

@@ -1,16 +1,20 @@
 import { CommentWithAuthor, RecommentWithAuthor } from './comment';
-import { PostsList, PostWithComments } from './post';
+import { PostWithComments, SimplePostType } from './post';
 
 export interface APIResponse {
   result: boolean;
   error?: string;
 }
-export interface PostListResponse extends APIResponse {
-  newPosts: PostsList[];
+export interface BlogPostListResponse {
+  posts: SimplePostType[];
+}
+export interface PostListResponse {
+  newBlogPosts: SimplePostType[];
+  newGalleryPosts: SimplePostType[];
   //hotPosts: PostsList[];
 }
 export interface PostListWithCountResponse extends APIResponse {
-  posts: PostsList[];
+  posts: SimplePostType[];
   postCount: number;
 }
 export interface PostDetailResponse extends APIResponse {

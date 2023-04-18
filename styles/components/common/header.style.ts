@@ -57,10 +57,18 @@ export const Navbar = styled.nav`
   & a {
     color: ${colors.black60};
     cursor: pointer;
+
+    &:hover {
+      color: #a191e2;
+    }
   }
 
   & a.active {
     color: ${colors.brandColor};
     font-weight: bold;
+
+    &:hover {
+      color: ${colors.brandColor};
+    }
   }
 `;

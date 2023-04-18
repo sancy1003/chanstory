@@ -17,7 +17,7 @@ const Header = ({ activeMenu }: Props) => {
           <ul>
             <li>
               <Link
-                href={'/blog'}
+                href={'/blog/all/1'}
                 className={activeMenu === 'BLOG' ? 'active' : ''}
               >
                 blog

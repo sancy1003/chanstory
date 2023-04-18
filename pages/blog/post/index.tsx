@@ -108,7 +108,7 @@ export const getServerSideProps = withSsrSession(async function ({
     return {
       redirect: {
         permanent: false,
-        destination: '/blog',
+        destination: '/blog/all/1',
       },
       props: {},
     };

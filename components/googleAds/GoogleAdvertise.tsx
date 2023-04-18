@@ -7,7 +7,11 @@ declare global {
   }
 }
 
-const GoogleAdvertise = () => {
+interface Props {
+  marginY?: number;
+}
+
+const GoogleAdvertise = ({ marginY }: Props) => {
   useEffect(() => {
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
@@ -19,14 +23,16 @@ const GoogleAdvertise = () => {
 
   if (process.env.NODE_ENV !== 'production') {
     return (
-      <S.AdvertiseContainer>
+      <S.AdvertiseContainer
+        style={{ marginTop: marginY, marginBottom: marginY }}
+      >
         <S.DisabledAdvertise>광고가 표시됩니다.</S.DisabledAdvertise>
       </S.AdvertiseContainer>
     );
   }
 
   return (
-    <S.AdvertiseContainer>
+    <S.AdvertiseContainer style={{ marginTop: marginY, marginBottom: marginY }}>
       {/* <ins
         className="adsbygoogle"
         style={{ display: 'block' }}

@@ -13,10 +13,10 @@ const Category = ({ active }: Props) => {
       <S.CategoryList>
         <li>
           <Link
-            href="/blog"
-            className={currentCategory === 'home' ? 'active' : ''}
+            href="/blog/all/1"
+            className={currentCategory === 'all' ? 'active' : ''}
           >
-            <span>🏠&nbsp;&nbsp;홈</span>
+            <span>📄&nbsp;&nbsp;전체보기</span>
           </Link>
         </li>
         <li>

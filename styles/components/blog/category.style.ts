@@ -1,9 +1,11 @@
 import colors from '@styles/colors';
+import screens from '@styles/screens';
 import styled from 'styled-components';
 
 export const CategoryContainer = styled.div`
-  width: 100%;
-  margin-bottom: 40px;
+  ${screens.medium} {
+    width: 100%;
+  }
 `;
 
 export const CategoryTitle = styled.div`
@@ -17,7 +19,7 @@ export const CategoryList = styled.ul`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  column-gap: 60px;
+  column-gap: 28px;
   row-gap: 24px;
 
   & a {
