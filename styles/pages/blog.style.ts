@@ -28,6 +28,11 @@ export const HomeSectionTitle = styled.h2`
   font-size: 18px;
   line-height: 130.18%;
   color: ${colors.brandColor};
+
+  a {
+    display: flex;
+    align-items: center;
+  }
 `;
 
 export const BlogSectionHeader = styled.div`
