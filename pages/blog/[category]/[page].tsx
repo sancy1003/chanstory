@@ -46,6 +46,7 @@ const PostCategory: NextPage<Props> = ({ postResponse, category }) => {
                     title={post.title}
                     imageURL={post.thumbnailURL}
                     postId={post.id}
+                    type="blog"
                   />
                 );
               })}

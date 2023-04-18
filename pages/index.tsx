@@ -46,6 +46,7 @@ const Home: NextPage<Props> = ({ postResponse }) => {
                     imageURL={post.thumbnailURL}
                     postId={post.id}
                     category={post.category}
+                    type="blog"
                   />
                 );
               })}
@@ -80,6 +81,7 @@ const Home: NextPage<Props> = ({ postResponse }) => {
                     imageURL={post.thumbnailURL}
                     postId={post.id}
                     category={post.category}
+                    type="gallery"
                   />
                 );
               })}

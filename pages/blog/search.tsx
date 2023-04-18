@@ -31,6 +31,7 @@ const BlogSearch: NextPage<Props> = ({ searchText, postResponse }) => {
                     title={post.title}
                     imageURL={post.thumbnailURL}
                     postId={post.id}
+                    type="blog"
                   />
                 );
               })}

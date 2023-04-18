@@ -12,12 +12,20 @@ interface Props {
   imageURL: string | null;
   postId: number;
   category?: number;
+  type: 'blog' | 'gallery';
 }
 
-const PostItem = ({ createdAt, title, imageURL, postId, category }: Props) => {
+const PostItem = ({
+  createdAt,
+  title,
+  imageURL,
+  postId,
+  category,
+  type,
+}: Props) => {
   return (
     <S.PostItemCard>
-      <Link href={`/blog/post/${postId}`}>
+      <Link href={`/${type}/post/${postId}`}>
         <S.ImageWrapper>
           <Image
             alt={`${title}-thumbnail`}
