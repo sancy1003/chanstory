@@ -18,6 +18,7 @@ import {
   MdOutlineChevronLeft,
 } from 'react-icons/md';
 import * as S from '@styles/pages/blog.style';
+import SearchInput from '@components/blog/SearchInput';
 
 interface Props {
   postResponse: PostListWithCountResponse;
@@ -31,7 +32,10 @@ const PostCategory: NextPage<Props> = ({ postResponse, category }) => {
     <Layout activeMenu={'BLOG'}>
       <S.BlogContainer>
         <S.BlogContentsContainer>
-          <Category active={category} />
+          <S.BlogSectionHeader>
+            <Category active={category} />
+            <SearchInput />
+          </S.BlogSectionHeader>
           <S.BlogSection>
             <S.PostContainer>
               {postResponse.posts.map((post) => {

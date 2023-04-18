@@ -30,6 +30,25 @@ export const HomeSectionTitle = styled.h2`
   color: ${colors.brandColor};
 `;
 
+export const BlogSectionHeader = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+  row-gap: 28px;
+
+  ${screens.medium} {
+    justify-content: flex-end;
+  }
+`;
+
+export const BlogSearchTitle = styled.p`
+  font-size: 20px;
+  font-weight: bold;
+`;
+
 export const BlogSection = styled.section`
   width: 100%;
   /* margin-bottom: 60px; */

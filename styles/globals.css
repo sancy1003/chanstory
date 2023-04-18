@@ -120,7 +120,6 @@ button:focus,
 button:active,
 textarea:focus,
 textarea:active {
-  outline: none;
 }
 ol,
 ul {
@@ -144,7 +143,6 @@ table {
 a {
   color: initial;
   text-decoration: none;
-  outline: none;
 }
 a:hover,
 a:active {

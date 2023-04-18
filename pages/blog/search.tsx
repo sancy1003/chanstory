@@ -5,16 +5,22 @@ import client from '@libs/server/client';
 import { dateToStringFromServer } from '@libs/client/commonFunction';
 import { BlogPostListResponse } from 'types/response';
 import PostItem from '@components/blog/PostItem';
+import SearchInput from '@components/blog/SearchInput';
 
 interface Props {
+  searchText: string;
   postResponse: BlogPostListResponse;
 }
 
-const BlogSearch: NextPage<Props> = ({ postResponse }) => {
+const BlogSearch: NextPage<Props> = ({ searchText, postResponse }) => {
   return (
     <Layout activeMenu={'BLOG'}>
       <S.BlogContainer>
         <S.BlogContentsContainer>
+          <S.BlogSectionHeader>
+            <S.BlogSearchTitle>{searchText}</S.BlogSearchTitle>
+            <SearchInput />
+          </S.BlogSectionHeader>
           <S.BlogSection>
             <S.PostContainer>
               {postResponse.posts.map((post) => {
@@ -82,7 +88,7 @@ export async function getServerSideProps({ query }: Context) {
   };
 
   return {
-    props: { postResponse },
+    props: { searchText, postResponse },
   };
 }
 
